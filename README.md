@@ -39,6 +39,8 @@
 [译文排版规则](https://github.com/xitu/gold-miner/wiki/译文排版规则指北)
 
 ### 文章来源
-> 这里需要大家一起贡献一些优秀的网站以及知名博客，这样方便大家挑选优质文章
+> 需要大家一起贡献一些优秀的网站以及知名博客，这样方便大家挑选优质文章
 
-- [echojs](http://www.echojs.com/)
+[英文网站列表请看这里](./doc/websiteMap.md)
+
+推荐也可以参考罗磊整理的一些[前端网站](https://github.com/foru17/front-end-collect)
