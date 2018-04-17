@@ -3,7 +3,6 @@
 |名称 |订阅地址 | 介绍 |
 | ----- | ----- | ------ |
 |**英文推送**|||
-|FE Weekly|http://www.feweekly.com/|每周一次，内容主要是英文的，不过有中文导读
 |EchoJs_News|http://www.echojs.com/|每天推送若干好文，都是英文的，JS技术类|
 |Html5 Weekly|http://html5weekly.com/| Html 技术类|
 |CSS Weekly|http://css-weekly.com/| |
