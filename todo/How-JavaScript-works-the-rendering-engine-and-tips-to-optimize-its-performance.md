@@ -2,7 +2,7 @@
 > * 译者：
 > * 校对者：
 
-# JavaScript 是如何工作的： 渲染引擎和优化性能的小技巧
+# JavaScript 是如何工作的： 渲染引擎和优化它性能的小技巧
 
 This is post # 11 of the series dedicated to exploring JavaScript and its building components. In the process of identifying and describing the core elements, we also share some rules of thumb we use when building [SessionStack](https://www.sessionstack.com/?utm_source=medium&utm_medium=blog&utm_content=js-series-rendering-engine-intro), a JavaScript application that needs to be robust and highly-performant to help users see and reproduce their web app defects real-time.
 
