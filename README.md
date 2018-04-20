@@ -5,7 +5,7 @@
 ## 文章来源
 > 需要大家一起贡献一些优秀的网站以及知名博客，这样方便大家挑选优质文章
 
-[英文网站列表请看这里](./doc/websiteMap.md)
+[英文网站列表请看这里](https://github.com/yued-fe/y-translation/blob/master/doc/websiteMap.md)
 
 推荐也可以参考罗磊整理的一些[前端网站](https://github.com/foru17/front-end-collect)
 
@@ -38,8 +38,9 @@
 以小组为单位，每两周发表一篇翻译文章，如果大家文章很多，中间也可以穿插。
 
 ## 关于翻译文章
+- [手摸手教你了解翻译流程 - 视频版](http://v.youku.com/v_show/id_XMzU1MDcxMTc4NA==.html?spm=a2h3j.8428770.3416059.1)
 
-[一个完整的翻译流程是什么样的](./doc/翻译流程.md)
+- [手摸手教你了解翻译流程  - 文档版](https://github.com/yued-fe/y-translation/blob/master/doc/翻译流程.md)
 
 ## 关于校对
 > 认领校对的前提是，文章已经翻译好
@@ -53,7 +54,7 @@
 - 是否有逻辑错误
 - 是否有错别字
 
-如何认领校对可以参照[这篇文章](./doc/翻译流程.md)
+如何认领校对可以参照[这篇文章](https://github.com/yued-fe/y-translation/blob/master/doc/翻译流程.md)
 
 ## 关于译文排版规范
 
@@ -79,9 +80,11 @@
   请编辑好回复之后，在两天之内发送给我，我来进行回复。
 
 ## 资源列表
-- [英文网站列表请看这里](./doc/websiteMap.md)
+- [英文网站列表请看这里](https://github.com/yued-fe/y-translation/blob/master/doc/websiteMap.md)
 - [罗磊整理的一些前端网站](https://github.com/foru17/front-end-collect)
 - [如何上传文章](https://github.com/yued-fe/y-translation/blob/master/doc/如何上传文章.md)
-- [一个完整的翻译流程是什么样的](./doc/翻译流程.md)
+- [手摸手教你了解翻译流程 - 视频版](http://v.youku.com/v_show/id_XMzU1MDcxMTc4NA==.html?spm=a2h3j.8428770.3416059.1)
+- [手摸手教你了解翻译流程  - 文档版](https://github.com/yued-fe/y-translation/blob/master/doc/翻译流程.md)
 - [译文排版规则](https://github.com/xitu/gold-miner/wiki/译文排版规则指北)
-- [校对规则](./doc/校对规则.md) 
+- [校对规则](https://github.com/yued-fe/y-translation/blob/master/doc/校对规则.md)
+- [文章模版](https://github.com/yued-fe/y-translation/blob/master/doc/文章模版.md)
