@@ -4,7 +4,7 @@
 > * 译者：
 > * 校对者：
 
-# How To Write Better Code In React
+# How To Write Better Code In React杨建修改
 
 ## 9 Useful Tips for writing better code in React: Learn about Linting, propTypes, PureComponent and more.
 
