@@ -4,7 +4,7 @@
 | ----- | ----- | ------ |
 |**英文推送**|||
 |EchoJs_News|http://www.echojs.com/|每天推送若干好文，都是英文的，JS技术类|
-|Html5 Weekly|http://html5weekly.com/| Html 技术类|
+|Frontend Focus|https://frontendfoc.us/| Html 技术类|
 |CSS Weekly|http://css-weekly.com/| |
 |Javascript Weekly|http://javascriptweekly.com/|JS相关，同样有 html,css 和工具相关|
 |Web Design Weekly| http://web-design-weekly.com/ | 设计、技术、技巧、工具聚合|
