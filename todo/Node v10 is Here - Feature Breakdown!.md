@@ -1,24 +1,22 @@
-<div class="kg-card-markdown">
+Node.js遵循一个发布计划，即每半年从主分支中抽离出一个主要版本。每年十月，新的奇数版本中断，最新的偶数版本转换到LTS计划。每年的4月都会标记新的偶数编号版本的日期，今天正好是Node V10从主分支抽离出来的日子。
+![](https://blog.risingstack.com/content/images/2018/04/whats-new-in-node-js-10-risingstack.png)
 
-Node.js follows a release plan where every major release is cut from the master branch in every 6 months. In every October, new odd-numbered versions are cut and the latest even-numbered release transitions to the LTS plan. Each year’s April marks the date of the new even numbered release and today is the day when Node v10 is cut from the master.
+我们来看看Node 10带来的新功能！
 
-![whats-new-in-node-js-10-risingstack](https://blog.risingstack.com/content/images/2018/04/whats-new-in-node-js-10-risingstack.png)
+## Node 10中的HTTP/2更稳定
 
-Let’s take a look at the new features Node 10 brings!
+[HTTP/2](https://en.wikipedia.org/wiki/HTTP/2)的支持在Node v8.4.0中作为实验功能出现。使用Node v10，http2模块已经成为Node核心的稳定补充。你可以自己使用它 - 请参阅我们在
+[Node.js & HTTP/2 Push here](https://blog.risingstack.com/node-js-http-2-push/)。
 
-## Stable HTTP/2 in Node 10
+HTTP/2是一种支持TCP多路复用的二进制协议，这意味着TCP握手只能处理一次，服务器可以重用已有的连接，通过同一个连接发送多个请求的响应。它还支持服务器推送，所以当浏览器请求一个HTML文件时，你可以在页面加载和解析之前发送必要的JavaScript脚本和CSS样式表。浏览器意识到它需要更多的回路去请求所有必要的信息来正确呈现网站。
 
-The support for [HTTP/2](https://en.wikipedia.org/wiki/HTTP/2) has landed in Node v8.4.0 as an experimental feature. With Node v10 the http2 module has become a stable addition to the Node core. You can use it on its own - see our post on [Node.js & HTTP/2 Push here](https://blog.risingstack.com/node-js-http-2-push/).
+但是，有一个问题，因为浏览器只支持SSL的HTTP/2。SSL终端是一项CPU密集型任务，因此它应该由edge代理处理。Nginx从1.13.9版本以后支持HTTP/2提供的所有功能。在您的Node服务器里有一个edge代理是最好的做法，如果您不希望你的Node进程以超级用户身份运行，您可以公开80和443端口，并且这样您可以把HTTP推送和TLS终端设置在你的服务器代码之外。
 
-HTTP/2 is a binary protocol that supports TCP multiplexing, which means that TCP handshakes have to be handled only once and the server can reuse an already existing connection to send the response of multiple requests through the same connection. It also supports server push, so when the browser requests an HTML file, you can send along the necessary JavaScript scripts and CSS stylesheets before the page is loaded and parsed. The browser realizes that it will need more round trips to requests all the necessary information to properly render the site.
+假如你在一个微服务环境，切处于合适安全的DMZ（两个防火墙之间的空间）中使用HTTP/2，你就可以直接暴露你的Node服务器 - 这样您就可以享受HTTP/ 2的所有优势，而不会因Node进程引起任何麻烦。
 
-There’s a catch, however, as browsers only support HTTP/2 over SSL. SSL termination is a CPU intensive task so it should be handled by the edge proxy. Nginx supports all the functionality HTTP/2 provides since its [1.13.9](https://www.nginx.com/blog/nginx-1-13-9-http2-server-push/) release. It is a best practice to have an edge proxy in front of your Node server, so you can expose port 80 and 443 as you don’t want your Node process to run as superuser and this way you can setup HTTP push and TLS termination outside your server code.
+截至目前，您可以使用带有hapi和koa的HTTP2模块。根据这个[github issue](https://github.com/expressjs/express/issues/2364)，该`spdy`模块具有完整的HTTP/2支持，所以你可以使用express，或者你如果觉得不保险，可以使用[`express-http2-workaround`](https://www.npmjs.com/package/express-http2-workaround)模块。
 
-If you use HTTP/2 in a microservices environment in a properly secured DMZ, you can expose your Node server directly - so you can enjoy all the benefits of HTTP/2 without any hassle straight from your Node process.
-
-As of right now, you can use the HTTP2 module with hapi and koa out of the box. According to this [github issue](https://github.com/expressjs/express/issues/2364) the `spdy` module has full HTTP/2 support so you can use that with express, or you can use the [`express-http2-workaround`](https://www.npmjs.com/package/express-http2-workaround) module if you feel adventurous.
-
-Most of the examples you’ll find will tell you that you should use `http2.createSecureServer` but as we discussed above, you should let your edge proxy handle that.
+你会发现大多数例子会告诉你，你应该使用`http2.createSecureServer`但正如我们上面所讨论的，你应该让你的边缘代理处理它。
 
 ### HTTP/2 and express
 
@@ -98,19 +96,19 @@ server.start((err) => {
 
 ```
 
-## ESM Modules in Node.js v10
+## Node.js v10中的ESM模块
 
-While browsers were plagued by the fact that even though you can load multiple script files from HTML, those could not be considered as modules because all your objects lived in the global namespace. You could work this around using the [module pattern](https://addyosmani.com/resources/essentialjsdesignpatterns/book/#modulepatternjavascript), but it still wasn’t really convenient. With the advent of bundlers and ECMAScript Modules (ES Modules or ESM for short) this problem is somewhat mitigated, but not yet fully solved.
+虽然浏览器受到这样一个事实的困扰，即使您可以从HTML加载多个脚本文件，但这些文件不能被视为模块，因为所有对象都位于全局名称空间中。你可以使用[模块模式](https://addyosmani.com/resources/essentialjsdesignpatterns/book/#modulepatternjavascript)工作，但它仍然不是很方便。随着捆绑器和ECMAScript模块（简称ES模块或ESM）的出现，这个问题有所缓解，但尚未完全解决。
 
-On the other hand, Node.js - being a server framework - came with a module system called CommonJS baked in from the very beginning.
+另一方面，Node.js - 作为一个服务器框架 - 从一开始就带有一个名为CommonJS的模块系统。
 
-The problem is that the two module systems are not compatible so the [Modules Team](https://github.com/nodejs/modules) had to find a proper solution so JavaScript modules could be built in a platform agnostic way and could be used both in Node and in browsers.
+问题在于这两个模块系统不兼容，所以[模块团队](https://github.com/nodejs/modules)必须找到合适的解决方案，以便JavaScript模块可以在Node和浏览器中跨平台使用。
 
-Node.js v10 does not bring the full implementation of ESMs, but we will definitely see rapid iterations regarding the topic. To learn more about ES Modules read Dr. Axel Rauschmayer’s [excellent post](http://2ality.com/2014/09/es6-modules-final.html).
+Node.js v10不能完全实现ESM，但我们一定会看到有关该主题的快速迭代。欲了解更多关于ES模块的信息，请阅读Axel Rauschmayer博士的[[excellent post]](http://2ality.com/2014/09/es6-modules-final.html).
 
 ## Error Codes
 
-Before Node v10 the only way to match errors in `catch` clauses was to check for the error message.
+在Node v10之前，匹配`catch`子句中的错误的唯一方法是检查错误消息。
 
 ```
 try {
@@ -125,11 +123,12 @@ try {
 
 ```
 
-The problem with this approach is that users can only match for the error message when handling errors. If there’s a typo in the error message, or you decide that it’s not descriptive enough, you need a major version bump as others depend on the exact string in your error message.
 
-In Node.js v10 all errors thrown by the Node.js APIs have an error code as well, meaning you don’t need to match the error message that should be readable for humans to begin with.
+这种方法的问题是用户在处理错误时只能匹配错误消息。如果错误信息中存在拼写错误，或者您认为它不具有足够的描述性，则需要使用主要版本缓冲区，因为其他错误信息取决于错误消息中的确切字符串。
 
-So you can change your code to the following when you migrate to Node v10:
+在Node.js v10中，Node.js API抛出的所有错误都有错误代码，这意味着您不需要匹配错误信息像以前那样具有很强的可读性。
+
+因此，当您迁移到Node v10时，您可以将代码更改为以下内容：
 
 ```
 try {
@@ -144,30 +143,28 @@ try {
 
 ```
 
-To find out which specific error code you need to use, check the [documentation](https://nodejs.org/dist/latest/docs/api/errors.html#errors_node_js_error_codes)
 
-You can read more about error codes [here](https://medium.com/the-node-js-collection/node-js-errors-changes-you-need-to-know-about-dc8c82417f65)
+要找出您需要使用哪个特定的错误代码，请检查[文档](https://nodejs.org/dist/latest/docs/api/errors.html#errors_node_js_error_codes)
 
-## Experimental Fs promises
+你可以在[这里](https://medium.com/the-node-js-collection/node-js-errors-changes-you-need-to-know-about-dc8c82417f65)阅读更多关于错误代码
+## 实验性功能-Fs promises
 
-Node.js v8 introduced `util.promisify` to easily wrap functions that provide a callback API. In the latest release functions of the `fs` return promises directly, eliminating the extra step and overhead of the old way.
+Node.js v8开始引入了`util.promisify`以便轻松包装提供回调API的函数。在`fs`的最新版本中，消除了旧方式的额外步骤和开销。
 
-## N-API in Node 10
+## Node 10中的N-API
 
-Native modules have always been a pain point in Node.js, especially when switching versions. Before Node v8, native modules had to directly depend on the V8 / [NAN](https://github.com/nodejs/nan) Apis. That caused a lack of API / ABI stability guarantees and forced native addon developers to update or at least recompile their code with every major release.
+原生模块一直是Node.js中的一个难点，特别是在切换版本时。在Node v8之前，本地模块必须直接依赖V8 / [NAN](https://github.com/nodejs/nan) Apis。这导致API / ABI稳定性缺乏保证，并迫使本地插件开发人员更新或至少在每个主要版本中重新编译其代码。
 
-The N-API provides an abstraction layer over the V8 / NAN APIs so changes in those can be handled in a higher level layer, resulting in a more stable surface that native addon developers can use. So far it was an experimental feature, but it has been promoted to stable in Node v10, so it might be time to start experimenting and maybe migrating to it if you haven’t already done so.
+N-API提供了V8 / NAN API上的抽象层，因此可以在更高级别的层中处理这些变化，从而使本地插件的开发人员在表现层使用起来更稳定。到目前为止，这是一个实验性功能，但在Node v10中它已被提升到稳定状态，因此如果您尚未这样做，可能是时候开始尝试并可能迁移到它了。
 
-The N-API is also a major stepping stone towards VM-diversity. Node.js originally ran only on Chrome’s V8, but lately it’s implementation on Microsoft’s [ChakraCore](https://github.com/Microsoft/ChakraCore) is under development. By using the N-API, it is easier to create bindings for different VMs, so porting Node.js to other runtimes will be a lot easier than it is now. It will especially be useful for IoT developers, so soon you might be actually able to run Node.js on your fridge.
+N-API也是VM多样性的主要垫脚石。Node.js最初只运行在Chrome的V8上，但最近它在微软的[ChakraCore](https://github.com/Microsoft/ChakraCore)上的实现正在开发中。通过使用N-API，为不同的虚拟机创建绑定更加容易，因此将Node.js移植到其他运行时会比现在更容易。它对于物联网开发人员尤其有用，所以很快您可能实际上能够在您的冰箱上运行Node.js。
 
-## V8 6.6: Say hello to async generators & array performance improvements
+## V8 6.6：向异步生成器和数据性能改进问好
 
-Node.js is shipped with the V8 v6.6 that brings async generators and array performance improvements. `Array.reduce` has become 10 times faster for holey double arrays. The performance of async generators and async iteration has also been increased by a great margin.
+Node.js随附V8 v6.6，带来异步生成器和数据性能改进。`Array.reduce`把多重数组的速度提高了10倍。异步生成器和异步迭代的性能也大幅提高。
 
-The new release provides new JavaScript language features as well. The full list can be found [here](https://v8project.blogspot.hu/)
+新版本也提供了新的JavaScript语言功能。完整列表可以在[这里](https://v8project.blogspot.hu/)找到
 
-## What’s next for Node.js?
+## Node.js的下一步是什么？
 
-One thing is for sure, Node will keep on improving and the fine people behind it’s development are going to add even more features. If you’d like to keep track on what’s going to happen with Node 11.0.0 - I recommend to follow [this thread](https://github.com/nodejs/Release/issues/328).
-
-</div>
+有一件事是可以肯定的，Node会不断改进，并且开发背后的优秀人才会添加更多的功能。如果您想跟踪Node 11.0.0会发生什么事情 - 我建议关注[这里](https://github.com/nodejs/Release/issues/328)。
