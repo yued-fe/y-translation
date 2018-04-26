@@ -1,9 +1,15 @@
+* 原文地址：[node-js-10-lts-feature-breakdown](https://blog.risingstack.com/node-js-10-lts-feature-breakdown/)
+* 译者：[周文康](https://github.com/wenkangzhou)
+* 校对者：
+
+# Node V10 的特性解析
+
 Node.js遵循一个发布计划，即每半年从主分支中抽离出一个主要版本。每年十月，新的奇数版本中断，最新的偶数版本转换到LTS计划。每年的4月都会标记新的偶数编号版本的日期，今天正好是Node V10从主分支抽离出来的日子。
 ![](https://blog.risingstack.com/content/images/2018/04/whats-new-in-node-js-10-risingstack.png)
 
 我们来看看Node 10带来的新功能！
 
-## Node 10中的HTTP/2更稳定
+## Node 10中的 HTTP/2 更稳定
 
 [HTTP/2](https://en.wikipedia.org/wiki/HTTP/2)的支持在Node v8.4.0中作为实验功能出现。使用Node v10，http2模块已经成为Node核心的稳定补充。你可以自己使用它 - 请参阅我们在
 [Node.js & HTTP/2 Push here](https://blog.risingstack.com/node-js-http-2-push/)。
