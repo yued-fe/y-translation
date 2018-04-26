@@ -7,9 +7,9 @@ The release of Node.js v10 is just a week away, and will include a suite of new 
 
 Beyond these new additions, I believe we will continue to see increased adoption and development of Node.js features that have been recently proposed or otherwise landed since the release Node.js 8.
 
-## Let's take a closer look at what we can expect from Node.js v10:Codes for Errors in Node.js 10
+## 让我们近距离看看Node.js第十版带我们的期待:Node.js 10 中的错误代码
 
-There's a rather large change coming to errors in Node.js: **errors will have codes that follow a consistent and repeatable scheme**.
+There's a rather large change  to errors in Node.js: **errors will have codes that follow a consistent and repeatable scheme**.
 
 Previously, any kind of change to errors needed to be shipped in a semver major release. This became a major pain point, and is exemplified by something as trivial as wanting to correct a typo in an error, but needing to wait until the next major version of Node.js to ship.
 
