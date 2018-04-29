@@ -2,26 +2,22 @@
 
 >译文地址：
 
->译者：
+>译者：刘鹏
 
 >校对者：
 
-description: Push notifications are one of the most valuable capabilities of native apps, and this capability is now available on the web. To get the most out of them, notifications need to be timely, precise, and relevant.
+描述：推送通知是原生APP中最重要的能力之一。现在Web也有这个能力了。为了能让大家充分使用它们，通知必须能够达到及时、准确和相关。
 
-
-# Web Push Notifications: Timely, Relevant, and Precise 
+# Web推送通知: 及时、相关和准确 
 
 {% include "web/_shared/contributors/josephmedley.html" %}
 
 
 <img src="images/cc-good.png" alt="Example Notification" class="attempt-right">
 
-If you ask a room of developers what mobile device features are missing from
-the web, push notifications are always high on the list.
+如果你问一屋子的开发者，有哪些功能是移动设备拥有，而Web缺失的。推送通知一定是其中排名非常高的那个。
 
-Web push notifications allow users to opt-in to timely updates from sites
-they love and allow you to effectively re-engage them with customized,
-relevant content.
+有了Web推送通知，用户喜欢的网站一有更新之后，他们就可以选择参与进来。开发者还可以将根据用户订制的相关内容推送给他们。
 
 The Push API and Notification API open a whole new set of possibilities for
 you to re-engage with your users.
