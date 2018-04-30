@@ -2,43 +2,32 @@
 
 >译文地址：
 
->译者：
+>译者：刘鹏
 
 >校对者：
 
 
-# How Push Works 
+# 推送是怎么工作的?
 
+在我们接触这个API之前，让我们先从一个高水平从头到尾来看一下`推送`。稍后我们通过逐一介绍各个主题和API让你知道为什么`推送`是这么的重要。
 
+下面将介绍实现`push`的三个重要的步骤：
 
+1. 添加客户端侧的逻辑来给用户订阅推送（也就是使用Web app当中的Javascript和UI，帮助用户注册推送消息）。
+2. 从你的后台/应用调用API来触发推送消息到用户的设备。
+3. 当推送到达用户的设备，service worker的Javascript将接收到 `推送事件`。在这个Javascript当中，你将能够展示出一个通知。
 
+让我们更加详细的来看一下这三个步骤。
 
-Before getting into the API, let's look at push from a highlevel, start to finish. Then as we
-step through individual topics or API's later on, you'll have an idea of how and why it's
-important.
+## Step 1: 客户端侧
 
-The three key steps to implementing push are:
+第一步是`注册`一个用户来推送消息。
 
-1. Adding the client side logic to subscribe a user to push (i.e. the JavaScript and UI in your
-web app that registers a user to push messages).
-1. The API call from your back-end / application that triggers a push message to a user's device.
-1. The service worker JavaScript file that will receive a "push event" when the push arrives on
-the device. It's in this JavaScript that you'll be able to show a notification.
+注册一个用户需要2个条件。第一，从用户那里获取给他们发送消息的**许可**。第二，从浏览器那里获取 `推送的订阅`。
 
-Let's look at what each of these steps entails in a little more detail.
+`推送的订阅`包括我们需要推送消息给那个用户的所有信息。这个信息你可以部分认为是用户设备的ID。
 
-## Step 1: Client Side
-
-The first step is to "subscribe" a user to push messaging.
-
-Subscribing a user requires two things. First, getting **permission** from the user to send
-them push messages. Second, getting a `PushSubscription` from the browser.
-
-A `PushSubscription` contains all the information we need to send a push message to that user.
-You can "kind of" think of this as an ID for that user's device.
-
-This is all done in JavaScript with the [Push
-API](https://developer.mozilla.org/en-US/docs/Web/API/Push_API).
+这些全部可以通过Javascript使用[Push API](https://developer.mozilla.org/en-US/docs/Web/API/Push_API)完成。
 
 Before subscribing a user you'll need to generate a set of
 "application server keys", which we'll cover later on.
