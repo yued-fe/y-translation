@@ -23,15 +23,11 @@
 
 ## 和service-worker相关吗? {: #service-worker-involved }
 
-是的，推送是基于service worker的，因为service worker在后台负责操作。这就是说只有用户点击或者关掉通知的时候，
-相关代码才会运行（换另一句话说就是电池被消耗）。如果你现在还对这个不熟悉，请查看[service worker introduction][service-worker-primer]章节。
-在后面的章节当中我们会使用service worker代码给大家展示如何实现推送和通知。
+是的，推送是基于service worker的，因为service worker在后台负责操作。这就是说只有用户点击或者关掉通知的时候，相关代码才会运行（换另一句话说就是电池被消耗）。如果你现在还对这个不熟悉，请查看[service worker introduction][service-worker-primer]章节。在后面的章节当中我们会使用service worker代码给大家展示如何实现推送和通知。
 
 ## 两种技术 {: #two-technologies }
 
-推送和通知使用不同但是互补的API。[**推送**](https://developer.mozilla.org/en-US/docs/Web/API/Push_API)在服务器提供给service worker信息
-的时候被调用。[**通知**](https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API)是service worker或者网页script展示信息给
-用户的一种方式。
+推送和通知使用不同但是互补的API。[**推送**](https://developer.mozilla.org/en-US/docs/Web/API/Push_API)在服务器提供给service worker信息的时候被调用。[**通知**](https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API)是service worker或者网页script展示信息给用户的一种方式。
 
 ## 对通知的一点剖析 {: #anatomy }
 
@@ -54,16 +50,18 @@
 
 <img src="images/cc-good.png" alt="Example Notification" class="attempt-right">
 
-这些代码将生成和图片中一样的一个通知。它通常会提供和原生应用一样的能力。在深入到实现这些能力的细节之前，我将给你们展示如何
-有效地使用这些能力。我们将继续回到讲述实现推送通知的机制，包括如何处理权限，订阅，发送消息，以及如何回应消息等这些方面。
+这些代码将生成和图片中一样的一个通知。它通常会提供和原生应用一样的能力。在深入到实现这些能力的细节之前，我将给你们展示如何有效地使用这些能力。我们将继续回到讲述实现推送通知的机制，包括如何处理权限，订阅，发送消息，以及如何回应消息等这些方面。
 
 
 ## 我要怎样才能试用它呢?
 
 在你完全了解它们是怎么运作或者你必须实现这些功能之前，有好几种方式让你可以试用这些特性。
-第一个是，查看[our own sample](https://github.com/GoogleChrome/samples/tree/gh-pages/push-messaging-and-notifications)；
-第二个是，Peter Beverloo的[Notification Generator](https://tests.peter.sh/notification-generator/)；
-第三个是，Mozilla的[Push Payload Demo](https://serviceworke.rs/push-payload_demo.html).
+
+1. 第一个是，查看[our own sample](https://github.com/GoogleChrome/samples/tree/gh-pages/push-messaging-and-notifications)；
+
+2. 第二个是，Peter Beverloo的[Notification Generator](https://tests.peter.sh/notification-generator/)；
+
+3. 第三个是，Mozilla的[Push Payload Demo](https://serviceworke.rs/push-payload_demo.html).
 
 提示: 除非你的页面是localhost, 否则的话推送API必须要求页面是HTTPS的。
 
