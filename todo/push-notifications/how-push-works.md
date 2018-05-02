@@ -29,12 +29,9 @@
 
 这些全部可以通过Javascript使用[Push API](https://developer.mozilla.org/en-US/docs/Web/API/Push_API)完成。
 
-Before subscribing a user you'll need to generate a set of
-"application server keys", which we'll cover later on.
+在我们订阅一个用户之前，我们需要生成一套应用器服务密钥。这个我们后续会解释。
 
-The application server keys, also known as VAPID keys, are unique to your server. They allow a
-push service to know which application server subscribed a user and ensure that it's the same
-server triggering the push messages to that user.
+应用服务器密钥，也被称为VAPID密钥，对你的服务器来说是独一无二的。它使推送服务知道哪一个应用服务器注册了一个用户，并且确保了是同一个服务器触发了推送消息给那个用户。
 
 Once you've subscribed the user and have a `PushSubscription`, you'll need to send the
 `PushSubscription` details to your backend / server.  On your server, you'll save this
