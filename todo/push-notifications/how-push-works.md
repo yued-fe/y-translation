@@ -88,48 +88,37 @@
 你通过推送消息发送的数据必须是加密的。原因是推送服务可能是任何人，你通过他来发送的数据必须防止他能够看到数据明文。
 这很重要，因为是浏览器决定（而不是开发者）该用哪一个推送服务，而那些不安全的推送服务可能打开通往浏览器的大门。
 
-当你触发
+当你触发一个推送消息，推送服务接收了API调用，然后将消息放到队列当中。这个消息会一直呆在队列当中，直到用户的设备上线，然后
+推送服务就可以将消息发送过去。通过下面的说明你可以知道推送消息在推送服务当中是怎么排队的。
 
-When you trigger a push message, the push service will receive the API call and queue the
-message. This message will remain queued until the user's device comes online and the push
-service can deliver the messages. The instructions you can give to the push service define how
-the push message is queued.
+这些说明详情如下：
 
-The instructions include details like:
+- 推送消息的TTL(生存时间)。这个定义了一条消息在没有发送并移除前，能在队列当中排多久的队。
 
-- The time-to-live for a push message. This defines how long a message should be queued before
-it's removed and not delivered.
+- 设置消息的紧急度。这在推送服务为了保持用户的电量情况下，只推送高优先级的消息时很有用。
 
-- Define the urgency of the message. This is useful in case the push service is preserving the
-users battery life by only delivering high priority messages.
-
-- Give a push message a "topic" name which will replace any pending message with this new message.
+- 给推送消息一个话题名，它将用这个新消息替换任何其他排队的消息。
 
 ![When your server wishes to send a push message, it makes a web push protocol request to a
 push service.](./images/svgs/server-to-push-service.svg)
 
-## Step 3: Push Event on the User's Device
+## Step 3: 用户设备上的推送事件
 
-Once we've sent a push message, the push service will keep your message on its server until
-one of following events occurs:
+一旦我们发出一个推送消息，推送服务会保留我们的消息，直至下面的任一一种情况发生：
 
-1. The device comes online and the push service delivers the message.
-1. The message expires. If this occurs the push service removes the message from its queue and
-it'll never be delivered.
+1. 设备在线，然后推送服务发送消息。
 
-When the push service does deliver a message, the browser will receive the message, decrypt any
-data and dispatch a `push` event in your service worker.
+2. 消息过期。如果消息过期，推送服务会将这条消息从它的队列当中移除，这样消息就永远不会再发送了。
 
-A [service worker](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) is a
-"special" JavaScript file. The browser can execute this JavaScript without your page being
-open. It can even execute this JavaScript when the browser is closed. A service worker also has
-API's, like push, that aren't available in the web page (i.e. API's that aren't available out
-of a service worker script).
+当推送服务确实发送了一条消息，浏览器会接收到这条消息，解密数据，并且会在你的`service worker`当中发出一个`push`的事件。
 
-It's inside the service worker's 'push' event that you can perform any background tasks. You
-can make analytics calls, cache pages offline and show notifications.
+[service worker](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API)是一个特殊的JS文件。
+即使你的页面没有找到，浏览器依然可以执行这个JS文件。甚至当浏览器关闭了的时候，这个JS也可以被执行。`service worker`也拥有它自己的API，比如`push`，
+这些API在Web页面是不能被调用的（也就是说这些API不能在service worker脚本之外的地方被调用）
+
+就是`service worker`的这个push事件让你能执行任何后台任务。你可以执行分析调用，缓存离线页面和弹出通知等。
 
 ![When a push message is sent from a push service to a user's device, your service worker
 receives a push event.](./images/svgs/push-service-to-sw-event.svg)
 
-That's the whole flow for push messaging. Lets go through each step in more detail.
+这就是整个推送消息的流程。让我们更详细的来看一下其中的每一步吧。
