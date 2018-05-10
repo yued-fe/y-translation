@@ -31,41 +31,33 @@
 
 在我们订阅一个用户之前，我们需要生成一套应用器服务密钥。这个我们后续会解释。
 
-应用服务器密钥，也被称为VAPID密钥，对你的服务器来说是独一无二的。它使推送服务知道哪一个应用服务器注册了一个用户，并且确保了是同一个服务器触发了推送消息给那个用户。
+应用服务器密钥，也被称为VAPID密钥，对你的服务器来说是独一无二的。有了它，推送服务知道哪一个应用服务器注册了一个用户，并且确保了是同一个服务器触发了推送消息给那个用户。
 
-Once you've subscribed the user and have a `PushSubscription`, you'll need to send the
-`PushSubscription` details to your backend / server.  On your server, you'll save this
-subscription to a database and use it to send a push message to that user.
+一旦你注册了一个用户，并且拿到了`PushSubscription`，你需要将关于这个`PushSubscription`的详细信息发送至你的后台或服务器。在服务器上，你需要将这个订阅保存至数据库当中。你可以使用这个订阅信息给那个用户推送消息。
 
-![Make sure you send the PushSubscription to your backend.](./images/svgs/browser-to-server.svg)
+![确保你发送了`PushSubscription`到你的后端](./images/svgs/browser-to-server.svg)
 
-## Step 2: Send a Push Message
+## Step 2: 发送一个推送消息
 
-When you want to send a push message to your users you need to make an API call to a push
-service. This API call would include what data to send, who to send the message to and any
-criteria about how to send the message.  Normally this API call is done from your server.
+当你想要发送一个推送消息到你的用户，你需要执行一个API调用到推送服务。这个API包括：发送的数据，发送的对象和任何关于如何发送这条消息的标准。一般情况下这个API调用是由你的服务器来完成的。
 
-Some questions you might be asking yourself:
+你可能会有一些疑问：
 
-- Who and what is the push service?
+- 推送服务是谁/什么？
 
-- What does the API look like? Is it JSON, XML, something else?
+- 这个API长什么样？它是JSON格式，XML格式，还是其他什么格式？
 
-- What can the API do?
+- 这个API能干什么？
 
-### Who and What is the Push Service?
+### 推送服务是谁/什么?
 
-A push service receives a network request, validates it and delivers a push message to the appropriate browser. If the browser is offline, the message is queued until the the browser comes online.
+推送服务接收到一个网络请求，校验该请求的正确性，然后发送一个推送消息到对应的浏览器。如果浏览器正好离线，这条消息会排队直到这个浏览器重新在线，然后发送给它。
 
-Each browser can use any push service they want, it's something developers have no control
-over. This isn't a problem because every push service expects the **same** API call. Meaning
-you don't have to care who the push service is. You just need to make sure that your API call
-is valid.
+每个浏览器都能他们想用的任何一个推送服务，这个是开发者管控不了的。这其实并不是一个问题，因为每一个推送服务都接受**相同**的API调用。也就是说你不必担心这个推送服务是谁。你只需要确保你的API调用是合法的。
 
-To get the appropriate URL to trigger a push message (i.e. the URL for the push service) you
-just need to look at the `endpoint` value in a `PushSubscription`.
+要获得合适的触发推送消息的URL（也就是推送服务的URL），你只需要查看一下前面获得的`pushSubscription`的`endpoint`的值。
 
-Below is an example of the values you'll get from a **PushSubscription**:
+下面是`pushSubscription`的一个示例：
 
 	{
 	  "endpoint": "https://random-push-service.com/some-kind-of-unique-id-1234/v2/",
@@ -75,32 +67,28 @@ Below is an example of the values you'll get from a **PushSubscription**:
 	    "auth"   : "tBHItJI5svbpez7KI4CCXg=="
 	  }
 	}
+	
+这个示例当中的**endpoint**是*https://random-push-service.com/some-kind-of-unique-id-1234/v2/*。推送服务应该是'random-push-service.com'，每个endpoint对用户来说都是独一无二的。
+即'some-kind-of-unique-id-1234'所代表的一样。当你开始着手于推送之后，你会注意到这一点。
 
-The **endpoint** in this case is
-*https://random-push-service.com/some-kind-of-unique-id-1234/v2/*. The push service would be
-'random-push-service.com' and each endpoint is unique to a user, indicated with
-'some-kind-of-unique-id-1234'. As you start working with push you'll notice this pattern.
+关于上述示例当中的**key**这个字段，我们后续会讲到，这里就先不解释了。
 
-The **keys** in the subscription will be covered later on.
+### 这个API是什么?
 
-### What does the API look like?
+我前面提到每个Web推送服务都需要的是相同的API调用。这个API就是[**Web Push Protocol**](https://tools.ietf.org/html/draft-ietf-webpush-protocol)。
+它是一个IETF标准，它定义了你要如何向一个推送服务执行一个API调用。
 
-I mentioned that every web push service expects the same API call. That API is the
-[**Web Push Protocol**](https://tools.ietf.org/html/draft-ietf-webpush-protocol).
-It's an IETF standard that defines how you make an API call to a push service.
+这个API调用需要设置一些头部，并且需要以字节流的方式发送数据。我们将看一下如何用库来执行这个API，以及我们自己如何来实现这个API。
 
-The API call requires certain headers to be set and the data to be a stream of bytes. We'll
-look at libraries that can perform this API call for us as well as how to do it ourselves.
+### 这个API能做什么？ 
 
-### What can the API do?
+这个API提供了一种发送消息到用户的一种方式，消息可以携带，也可以不携带数据。同时它也提供了*如何*发送消息的说明。
 
-The API provides a way to send a message to a user, with / without data, and provides
-instructions of *how* to send the message.
 
-The data you send with a push message must be encrypted. The reason for this is that it
-prevents push services, who could be anyone, from being able to view the data sent with the
-push message. This is important given that it's the browser who decides which push service to
-use, which could open the door to browsers using a push service that isn't safe or secure.
+你通过推送消息发送的数据必须是加密的。原因是推送服务可能是任何人，你通过他来发送的数据必须防止他能够看到数据明文。
+这很重要，因为是浏览器决定（而不是开发者）该用哪一个推送服务，而那些不安全的推送服务可能打开通往浏览器的大门。
+
+当你触发
 
 When you trigger a push message, the push service will receive the API call and queue the
 message. This message will remain queued until the user's device comes online and the push
