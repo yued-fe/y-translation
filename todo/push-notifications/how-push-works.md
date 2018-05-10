@@ -113,7 +113,7 @@ push service.](./images/svgs/server-to-push-service.svg)
 当推送服务确实发送了一条消息，浏览器会接收到这条消息，解密数据，并且会在你的`service worker`当中发出一个`push`的事件。
 
 [service worker](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API)是一个特殊的JS文件。
-即使你的页面没有找到，浏览器依然可以执行这个JS文件。甚至当浏览器关闭了的时候，这个JS也可以被执行。`service worker`也拥有它自己的API，比如`push`，
+即使你的页面没有打开，浏览器依然可以执行这个JS文件。甚至当浏览器关闭了的时候，这个JS也可以被执行。`service worker`也拥有它自己的API，比如`push`，
 这些API在Web页面是不能被调用的（也就是说这些API不能在service worker脚本之外的地方被调用）
 
 就是`service worker`的这个push事件让你能执行任何后台任务。你可以执行分析调用，缓存离线页面和弹出通知等。
