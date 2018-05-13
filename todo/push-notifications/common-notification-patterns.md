@@ -7,20 +7,28 @@
 >校对者：
 
 # Common Notification Patterns
+# 常用的通知模式
 
 We're going to look at some common implementation patterns for web push.
+我们将要探索web push(web消息推送)的一些常用应用模式。
 
 This will involve using a few different API's that are available in the service worker.
+包括service worker提供的一些不同的API的使用。
 
 ## Notification close event
+## 通知关闭事件
 
 In the last section we saw how we can listen for `notificationclick` events.
+在上一节中，我们了解了如何监听'notificationclick'事件。
 
 There is also a `notificationclose` event that is called if the user dismisses one of your
 notifications (i.e. rather than clicking the notification, the user clicks the cross or swipes the
 notification away).
+除了'notificationclick'事件，我们还可以监听'notificationclose'事件，它会在用户驳回其中一个通知
+（例如，用户点击了关闭按钮或划掉了通知，而不是用户点击了通知）的时候被调用。
 
 This event is normally used for analytics to track user engagement with notifications.
+这个事件通常被用于分析用户对于通知的参与度。
 
     self.addEventListener('notificationclose', function(event) {
       const dismissedNotification = event.notification;
@@ -30,14 +38,17 @@ This event is normally used for analytics to track user engagement with notifica
     });
 
 ## Adding data to a notification
+## 给通知添加数据
 
 When a push message is received it's common to have data that is only
 useful if the user has clicked the notification. For example, the URL
 that should be opened when a notification is clicked.
+当收到了推送的信息，在用户点击通知的时候获取有用的数据是很正常的。例如，当通知被点击时获取到应该被打开的页面URL.
 
 The easiest way to take data from a push event and attach it to a
 notification is to add a `data` parameter to the options object passed
 into `showNotification()`, like so:
+要从推送信息中获取数据然后将其传递给通知，最简单的方式就是给'showNotification()'方法传递一个options的对象型的参数，并在其中添加一个对象类型的'data'的参数，就像以下代码这样：
 
         const options = {
           body: 'This notification has data attached to it that is printed ' +
@@ -51,6 +62,7 @@ into `showNotification()`, like so:
         registration.showNotification('Notification with Data', options);
 
 Inside a click handler the data can be accessed with `event.notification.data`.
+在点击事件触发的时候，可以用'event.notification.data'来访问数据。
 
       const notificationData = event.notification.data;
       console.log('');
@@ -61,13 +73,17 @@ Inside a click handler the data can be accessed with `event.notification.data`.
       console.log('');
 
 ## Open a window
+## 打开一个窗口
 
 One of the most common responses to a notification is to open a
 window / tab to a specific URL. We can do this with the
 [clients.openWindow()](https://developer.mozilla.org/en-US/docs/Web/API/Clients/openWindow)
 API.
+对于通知来说，一个最常用的反馈就是去打开指定地址的窗口或标签页，这里我们可以通过[clients.openWindow()]（https://developer.mozilla.org/en-US/docs/Web/API/Clients/openWindow）
+API来实现。
 
 In our `notificationclick` event we'd run some kind like this:
+在我们的'notificationclick'事件我们会运行类似下面的代码：
 
       const examplePage = '/demos/notification-examples/example-page.html';
       const promiseChain = clients.openWindow(examplePage);
@@ -76,16 +92,20 @@ In our `notificationclick` event we'd run some kind like this:
 In the next section we'll look at how to check if the page we want to direct the user to is
 already open or not. This way we can focus the open tab rather than opening new
 tabs.
+在下一节中，我们会探讨下如何检查我们想要引导用户去的地址是否已经被打开或没打开，这种情况我们就可以直接聚焦到已打开的标签页，而不是再次打开新的页面。
 
 ## Focus an existing window
+## 聚焦一个已打开的窗口
 
 When it's possible, we should focus a window rather than open a new window every time the user
 clicks a notification.
+如果可能，我们应该聚焦一个已打开的窗口而不是在用户点击通知的时候每次都打开一个新的窗口。
 
 Before we look at how to achieve this, it's worth highlighting that this
 is **only possible for pages on your origin**. This is because we can
 only see what pages are open that belong to our site. This prevents
 developers from being able to see all the sites their users are viewing.
+在我们查看如何实现之前，值得一提的是*你只能够在你域名下的页面实现这个需求*。这是因为我们只能看到属于我们站点的页面被打开，这是为了
 
 Taking the previous example, we'll alter the code to see if '/demos/notification-examples
 /example-page.html' is already open.
