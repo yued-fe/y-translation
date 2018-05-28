@@ -42,17 +42,9 @@
 
 ## 资源整合
 
-1、周会小组长挑选一篇英文文章，并且提 issue
+大家可以把备选的文章，添加到项目的 [wiki](https://github.com/yued-fe/y-translation/wiki/资源池) 中，直接编辑即可添加。
 
-2、自己看到感兴趣或者想要学习的文章，也可以提 issue
-
-3、任何人看到符合翻译要求的文章都可以提 issue
-
-4、如何上传文章请参考： https://github.com/yued-fe/y-translation/blob/master/doc/如何上传文章.md
-
-因为可能每个人关注的点不一样，所以不一定每一篇文章都会有人来认领翻译。超过一个月没有人认领或者已经有其他的团队翻译出来的文章，master 会自动关闭 Issue。
-
-**注意：** 你上传的文章，可以等别人来认领，也可以自己认领。
+确定翻译的文章，需要把文章添加到项目中，具体操作可以看[这个教程](https://github.com/yued-fe/y-translation/blob/master/doc/如何上传文章.md)，然后提 issue。
 
 ## 分组、发表周期
 
