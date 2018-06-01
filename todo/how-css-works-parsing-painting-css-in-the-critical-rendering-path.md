@@ -6,7 +6,7 @@
 
 > * 校对者：
 
-#How CSS works: Parsing & painting CSS in the critical rendering path
+# How CSS works: Parsing & painting CSS in the critical rendering path
 
 CSS often feels like this mysterious, whimsical force governing everything that we see on the web. It can be inherently simple at times, yet writing scalable, performant CSS seems to be the exception rather than the norm.
 
