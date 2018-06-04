@@ -112,7 +112,7 @@ $background: red;
   background: $background;
 }
 ```
-这将导致：
+编译后为：
 ``` scss
 .example {
   background: blue;
@@ -174,7 +174,7 @@ CSS是相似的。我们有一些东西适用于全局，有些东西更具局�
 
 ![Alt text](./0EC9CEDB-10EE-4FEC-9E67-CBCB1C72A600.png)
 
-我scss可能看起来像这样：
+我的scss可能看起来像这样：
 ``` scss
 $button-sml: 1em;
 $button-med: 1.5em;
