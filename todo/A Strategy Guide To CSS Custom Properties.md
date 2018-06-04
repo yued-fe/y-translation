@@ -42,7 +42,7 @@ $breakpoint: 800px;
 $smashing-red: #d33a2c;
 $smashing-things: ".smashing-text, .cats";
 
-media screen and (min-width: $breakpoint) {
+@media screen and (min-width: $breakpoint) {
   #{$smashing-things} {
     color: $smashing-red;
   }
