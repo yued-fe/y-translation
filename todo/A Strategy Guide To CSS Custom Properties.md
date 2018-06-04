@@ -1,3 +1,12 @@
+> * 原文地址：https://www.smashingmagazine.com/2018/05/css-custom-properties-strategy-guide/?utm_source=CSS-Weekly&utm_campaign=Issue-315&utm_medium=web
+
+> * 译文地址：
+
+> * 译者：
+
+> * 校对者：
+
+
 # CSS定制属性的策略指南
 
 **关于作者** Mike是来自澳大利亚的独立网站开发人员，曾在澳大利亚的一些最大的网站以及一些最小的社区工作...... <a href="">关于Michael的更多信息...</a>
