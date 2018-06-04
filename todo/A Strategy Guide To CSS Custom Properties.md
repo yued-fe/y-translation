@@ -172,7 +172,7 @@ CSS是相似的。我们有一些东西适用于全局，有些东西更具局�
 
 考虑具有多种尺寸变化的按钮组件的经典示例。
 
-![Alt text](./0EC9CEDB-10EE-4FEC-9E67-CBCB1C72A600.png)
+![Alt text](./_0EC9CEDB-10EE-4FEC-9E67-CBCB1C72A600.png)
 
 我的scss可能看起来像这样：
 ``` scss
