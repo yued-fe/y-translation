@@ -9,7 +9,7 @@
 
 # A Strategy Guide To CSS Custom Properties
 
-**ABOUT THE AUTHOR** Mike is an independent web developer from Australia who has worked on some of Australia’s largest websites as well as some of the smallest community … 
+**ABOUT THE AUTHOR** Mike is an independent web developer from Australia who has worked on some of Australia’s largest websites as well as some of the smallest community … <a href="https://www.smashingmagazine.com/author/michaelriethmuller/">More about Michael…</a>
 
 > CSS Custom Properties (sometimes known as ‘CSS variables’) are now supported in all modern browsers, and people are starting to use them in production. This is great, but they’re different from variables in preprocessors, and I’ve already seen many examples of people using them without considering what advantages they offer.
 
