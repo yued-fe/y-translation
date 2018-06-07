@@ -384,7 +384,6 @@ $button-lrg: 2em;
 ```
 我们立即知道这--row-display是一个值得改变的价值。最初，它会是block，所以flex值将被忽略。
 
-
 这个例子是非常简单的，但如果我们扩大到包括灵活的宽度，柱填充剩余空间，很可能flex-grow，flex-shrink和flex-basis值将需要转换为自定义属性。你可以试试这个或者<a href="https://codepen.io/MadeByMike/pen/f42ce1a954af9796ae76c62a9ea801f4/">在这里看一个更详细的例子</a>。
 
 ### 用于主题的自定义属性
