@@ -2,9 +2,9 @@
 
 > * 译文地址：https://github.com/yued-fe/y-translation/blob/master/todo/A%20Strategy%20Guide%20To%20CSS%20Custom%20Properties.md
 
-> * 译者：
+> * 译者：@popeyesailorman
 
-> * 校对者：
+> * 校对者：@ziven27 @djmaxwow
 
 
 # CSS 自定义属性的策略指南
