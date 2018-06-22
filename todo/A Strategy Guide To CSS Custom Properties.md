@@ -1,6 +1,6 @@
 > * 原文地址：https://www.smashingmagazine.com/2018/05/css-custom-properties-strategy-guide/?utm_source=CSS-Weekly&utm_campaign=Issue-315&utm_medium=web
 
-> * 译文地址：
+> * 译文地址：https://github.com/yued-fe/y-translation/blob/master/todo/A%20Strategy%20Guide%20To%20CSS%20Custom%20Properties.md
 
 > * 译者：
 
@@ -9,16 +9,16 @@
 
 # CSS 自定义属性的策略指南
 
-**关于作者** Mike是来自澳大利亚的独立网站开发人员，曾在澳大利亚的一些最大的网站以及一些最小的社区工作...... <a href="https://www.smashingmagazine.com/author/michaelriethmuller/">关于Michael的更多信息...</a>
+**关于作者** Mike是来自澳大利亚的独立网站开发人员，曾在澳大利亚的一些大型网站以及一些小型社区工作过...... <a href="https://www.smashingmagazine.com/author/michaelriethmuller/">关于Michael的更多信息...</a>
 
-> CSS 自定义属性(也称为“ CSS 变量”)，在目前所有的现代浏览器中都得到了支持，开发者已经在项目中开始使用，这很好，但是它们与预处理器中的变量是不同的，我已经看到了很多例子，却没有搞清楚他们真正的优势在哪里。
+> CSS 自定义属性(也称为“CSS 变量”)，在目前所有的现代浏览器中都得到了支持，开发者已经在项目中开始使用，这很好，但是它们与预处理器中的变量是不同的，我已经看到了很多例子，却没有搞清楚他们真正的优势在哪里。
 
-自定义属性有很大的潜力可以改变我们编写和组织 CSS 的方式，并且在一定程度上改变JavaScript与UI组件的调用方式。我并不关心语法和它们的工作方式（为此，我建议你阅读“<a href="https://www.smashingmagazine.com/2017/04/start-using-css-custom-properties/">现在是时候开始使用自定义属性</a>”）。相反，我想更深入地研究如何充分利用 CSS 自定义属性。
+自定义属性有很大的潜力可以改变我们编写和组织 CSS 的方式，并且在一定程度上改变 JavaScript 与 UI 组件的调用方式。我并不关心语法和它们的工作方式（为此，我建议你阅读“<a href="https://www.smashingmagazine.com/2017/04/start-using-css-custom-properties/">现在是时候开始使用自定义属性了</a>”）。相反，我想更深入地研究如何充分利用 CSS 自定义属性。
 
 ### 它们与预处理器中的变量有何相似之处?
 自定义属性有点像预处理器中的变量，但还是有很大的差别。最重要也是最明显的区别是在于语法。
 
-在 SCSS 中我们用美元符号来定义变量：
+在 SCSS 中我们用 $ 符号来定义变量：
 
 ``` scss
 $smashing-red: #d33a2c;
@@ -50,7 +50,7 @@ $smashing-things: ".smashing-text, .cats";
 ```
 以上的大多数自定义属性示例都是无效的
 
-自定义属性和常规CSS属性的用法是一样的。把它们当作动态属性会比变量要好。这意味着它们只能在声明块中使用，换句话说，自定义属性和选择器是强绑定的。这可以是 :root 选择器或任何其它有效的选择器。
+自定义属性和常规 CSS 属性的用法是一样的。把它们当作动态属性会比变量要好。这意味着它们只能在声明块中使用，换句话说，自定义属性和选择器是强绑定的。这可以是 :root 选择器或任何其它有效的选择器。
 ``` css
 :root { --smashing-red: #d33a2c; }
 
@@ -68,7 +68,7 @@ $smashing-things: ".smashing-text, .cats";
   padding: calc(var(--margin-horizontal) / 2)
 }
 ```
-但是，它们不能用于 media 查询或选择器，包括 :nth-child() 。
+但是，它们不能用于 media 查询或选择器，包括 :nth-child()。
 
 关于语法和自定义属性的工作原理可能还有很多，比如如何使用 fallback 值，以及是否可以将变量分配给其他变量（是），本文介绍的基础知识应该已经足以让大家理解其中的概念。更多关于自定义属性工作方式的详细信息，可以阅读由 Serg Hospodarets 编写的“<a href="https://www.smashingmagazine.com/2017/04/start-using-css-custom-properties/"> 现在开始使用自定义属性 </a>”。
 
@@ -97,7 +97,7 @@ $background: red;
   background: red;
 }
 ```
-一旦编译了这个 CSS ，这个变量就消失了。而这意味着我们在读取一个 .scss 文件并输出的时候并不需要关心 HTML 浏览器或其它的输入，这些在自定义属性中都不是问题。
+一旦编译了这个 CSS，这个变量就消失了。而这意味着我们在读取一个 .scss 文件并输出的时候并不需要关心 HTML 浏览器或其它的输入，这些在自定义属性中都不是问题。
 预处理器确实有一种“块级作用域”，其中变量可以在选择器，函数或mixin中临时更改。这改变了块内变量的值，但它仍然是静态的。这与块有关，而不是选择器。在下面的例子中，变量 $background 在 .example 类内部被改变。即使我们使用相同的选择器，它也会变回块级作用域之外的初始值。
 
 ``` scss
@@ -152,7 +152,7 @@ CSS 也一样。有全局的，也有局部的。品牌颜色，垂直间距，�
 
 这是我们在CSS中熟悉的东西。我们开发了设计系统，命名规范和 JavaScript 库，这些可以分离局部组件和全局组件。自定义属性给这类问题提供了新的思路。
 
-通常 CSS 自定义属性的范围局限于我们指定的选择器中。这看起来有点像局部变量。但是，自定义属性具有继承的特性，所以在很多情况下，它们表现的更像全局变量 - 特别是在应用于:root选择器的时候。这意味着我们需要考虑如何使用它们。
+通常 CSS 自定义属性的范围局限于我们指定的选择器中。这看起来有点像局部变量。但是，自定义属性具有继承的特性，所以在很多情况下，它们表现的更像全局变量 - 特别是在应用于 :root 选择器的时候。这意味着我们需要考虑如何使用它们。
 
 大量的示例都表示将自定义属性应用到 :root 元素上，对于 Demo 这还说得过去，但它可能会污染全局作用域，从而导致意外的继承问题。幸运的是，我们已经吸取了教训。
 
@@ -194,7 +194,7 @@ $button-lrg: 2em;
 ```
 显然，如果我多次使用变量，或者从 size 变量中派生空白和填充值，这个示例将更有意义。然而，快速原型化不同尺寸的能力可能是一个充分的理由。
 
-因为大多数静态变量都是全局的，所以我喜欢区分只在组件内部使用的静态变量。为此，可以在这些变量前面加上组件名，或者可以使用另一个前缀，如组件的c变量名或本地的l变量名。您可以使用任何您想要的前缀，或者可以在全局变量前面加上前缀。无论您选择什么，区分都是很有帮助的，特别是当转换一个现有的代码基来使用自定义属性时。
+因为大多数静态变量都是全局的，所以我喜欢区分只在组件内部使用的静态变量。为此，可以在这些变量前面加上组件名，或者可以使用另一个前缀，如组件的 c 变量名或本地的 l 变量名。您可以使用任何您想要的前缀，或者可以在全局变量前面加上前缀。无论您选择什么，区分都是很有帮助的，特别是当转换一个现有的代码基来使用自定义属性时。
 
 ### 何时使用自定义属性
 如果可以在组件内部使用静态变量，那么什么时候应该使用自定义属性呢?将现有的预处理器变量转换为自定义属性通常没什么意义。毕竟，自定义属性的原因是完全不同的。当我们有 CSS 属性时，自定义属性是有意义的，尤其是在 DOM 中(尤其是动态条件)，例如:焦点、悬停、媒体查询或 JavaScript。
@@ -203,7 +203,7 @@ $button-lrg: 2em;
 
 知道我们可以为自定义属性分配静态变量是有帮助的。无论它们是全局的还是局部的，在许多情况下，将静态变量转换为局部动态自定义属性都是有意义的。
 
->注意:您知道 $var 是自定义属性的有效值吗?Sass的最新版本认识到了这一点，因此我们需要插入分配给自定义属性的变量，如: #{$var}。这告诉 Sass 您希望输出变量的值，而不是样式表中的 $var。这只适用于自定义属性等情况，其中变量名也可以是有效的 CSS。
+>注意:您知道 $var 是自定义属性的有效值吗? Sass 的最新版本认识到了这一点，因此我们需要插入分配给自定义属性的变量，如: #{$var}。这告诉 Sass 您希望输出变量的值，而不是样式表中的 $var。这只适用于自定义属性等情况，其中变量名也可以是有效的 CSS。
 
 如果我们以上面的按钮示例为例，决定所有的按钮都应该使用移动设备上的小变化，而不考虑 HTML 中应用的类，这是一种更动态的情况。为此，我们应该使用自定义属性。
 
@@ -238,7 +238,7 @@ $button-lrg: 2em;
 
 自定义属性同样也会出现这样的状况，我期待看到更多聪明的例子。但从长远来看，可读和可维护的代码总会是更好的选择（至少在项目中是这样）。
 
-我最近在 Free Code Camp Medium 上阅读了关于此主题的优秀文章。它是由 Bill Sourou r撰写的，它叫“<a href="https://medium.freecodecamp.org/dont-do-it-at-runtime-do-it-at-design-time-c4f59d1775e4">Don’t Do It At Runtime. Do It At Design Time</a>“与其解释他的观点，我更推荐你先去看一下。
+我最近在 Free Code Camp Medium 上阅读了关于此主题的优秀文章。它是由 Bill Sourou r 撰写的，它叫‘<a href="https://medium.freecodecamp.org/dont-do-it-at-runtime-do-it-at-design-time-c4f59d1775e4"> Don’t Do It At Runtime. Do It At Design Time </a>’与其解释他的观点，我更推荐你先去看一下。
 
 预处理变量和自定义属性之间的一个关键区别是自定义属性在运行时工作。这意味着，在复杂性方面，可能是可以被接受的东西，因为预处理器可能不是具有自定义属性的好主意。
 
@@ -407,9 +407,9 @@ $button-lrg: 2em;
 ### 避免直接设置全局动态属性
 自定义属性接受回退值。避免直接覆盖全局自定义属性的值并保持用户值分离可能是有用的。我们可以使用回退值来执行此操作。
 
-上面的例子将 --THEME-COLOR 的值设置为 --user-theme-color。如果 --user-theme-color 未设置，则将使用 #d33a2c。这样，我们无需在每次使用时提供 --THEME-COLOR。
+上面的例子将 --THEME-COLOR 的值设置为 --user-theme-color。如果 --user-theme-color 未设置，则将使用 #d33a2c。这样，我们无需在每次使用时提供  --THEME-COLOR。
 
-你可能会在下面的例子中期望背景将被设置为green。但是，--user-theme-color 根元素的值尚未设置，所以值--THEME-COLOR 没有改变。
+你可能会在下面的例子中期望背景将被设置为green。但是，--user-theme-color 根元素的值尚未设置，所以值 --THEME-COLOR 没有改变。
 
 ``` css
 :root {
@@ -434,7 +434,7 @@ body {
 ```
 现在 --THEME-COLOR 在每个元素中的值都会重新计算，因此可以使用 --user-theme-color 这个局部值。换句话说，这个例子中的背景颜色是 green。
 
-你可以在 <a href="https://www.smashingmagazine.com/2018/05/css-custom-properties-strategy-guide/?utm_source=CSS-Weekly&utm_campaign=Issue-315&utm_medium=web#manipulating-color-with-custom-properties>使用自定义属性操纵颜色</a>一节中看到此模式的更多详细示例。
+你可以在 “<a href="https://www.smashingmagazine.com/2018/05/css-custom-properties-strategy-guide/?utm_source=CSS-Weekly&utm_campaign=Issue-315&utm_medium=web#manipulating-color-with-custom-properties>使用自定义属性操纵颜色</a>”一节中看到此模式的更多详细示例。
 
 ### 使用JAVASCRIPT更新自定义属性
 如果你想使用 JavaScript 设置自定义属性，那么就有一个相当简单的 API，它看起来像这样：
@@ -462,7 +462,7 @@ elm.style.setProperty('--note-color', 'yellow');
 ```
 然后，我定位一个 .note 元素的特定实例，并仅更改该元素的 --note-color 自定义属性的值。这将比默认值具有更高的特异性。
 
-你可以看到这个例子<a href="https://codepen.io/MadeByMike/pen/WzbGdE?editors=0110">使用 React </a>如何工作。这些用户首选项可以保存在布局存储中，或者也可以保存在数据库中，也可以保存在更大的应用程序中。
+你可以看到这个例子“<a href="https://codepen.io/MadeByMike/pen/WzbGdE?editors=0110">使用 React </a>”如何工作。这些用户首选项可以保存在布局存储中，或者也可以保存在数据库中，也可以保存在更大的应用程序中。
 
 ### 使用自定义属性操作颜色
 除了十六进制值和已命名的颜色之外，CSS 还具有诸如 rgb() 和的 颜色功能 hsl()。这些允许我们为组件设置独立的颜色，例如色调或亮度。自定义属性可以与颜色函数结合使用。
@@ -480,7 +480,7 @@ darken($base-color, 10%);
 lighten($base-color, 10%);
 desaturate($base-color, 20%);
 ```
-在浏览器中使用这些功能会很有用。<a href="https://www.w3.org/TR/css-color-4/#funcdef-color-mod">他们即将到来</a>，但直到我们在 CSS 中拥有原生色彩修改功能之后，自定义属性才能填补这一空白。
+在浏览器中使用这些功能会很有用。“<a href="https://www.w3.org/TR/css-color-4/#funcdef-color-mod">他们即将到来</a>”，但直到我们在 CSS 中拥有原生色彩修改功能之后，自定义属性才能填补这一空白。
 
 我们已经看到，自定义属性可以在现有的颜色函数中使用 rgb()，hsl() 但也可以在其中使用 calc()。这意味着我们可以通过乘以实数将其转换为百分比，例如calc(50 * 1%) = 50%。
 ``` css
@@ -501,7 +501,7 @@ body {
   background: hsl(25, 80%, calc(var(--lightness) * 1%));
 }
 ```
-我们甚至可以抽象出更多的计算结果，并<a href="https://codepen.io/MadeByMike/pen/YLQWeb">基于 CSS 定义属性的颜色修改功能</a>。这个例子对于大多数主题的实际情况来说可能太复杂，但它展示了动态自定义属性的全部功能。
+我们甚至可以抽象出更多的计算结果，并“<a href="https://codepen.io/MadeByMike/pen/YLQWeb">基于 CSS 定义属性的颜色修改功能</a>”。这个例子对于大多数主题的实际情况来说可能太复杂，但它展示了动态自定义属性的全部功能。
 
 ### 简化主题
 使用自定义属性的优点之一是能够简化主题。应用程序不需要知道如何使用自定义属性。相反，我们使用 JavaScript 或服务器端代码来设置自定义属性的值。这些值的使用方式由样式表决定。
@@ -514,7 +514,7 @@ body {
 ### 从今天开始使用自定义属性吧！
 即使您支持 IE10 和 11，你也可以在今天开始使用自定义属性。本文中的大多数示例都与如何编写和构造 CSS 有关。但是，从可维护性的角度来说，这些好处是非常重要的，大多数示例只减少了使用更复杂的代码所能做的事情。
 
-我使用一个名为<a href="https://github.com/MadLittleMods/postcss-css-variables">postcss-css-variables</a>的工具将自定义属性的大部分特性转换为相同代码的静态表示。其他类似的工具忽略媒体查询或复杂选择器中的自定义属性，将自定义属性处理得更像预处理变量。
+我使用一个名为‘<a href="https://github.com/MadLittleMods/postcss-css-variables">postcss-css-variables</a>’的工具将自定义属性的大部分特性转换为相同代码的静态表示。其他类似的工具忽略媒体查询或复杂选择器中的自定义属性，将自定义属性处理得更像预处理变量。
 
 这些工具不能模仿自定义属性的运行时特性。这意味着没有动态特性，比如使用 JavaScript 进行主题化或更改属性。这在很多情况下都是可以的。根据不同的情况，UI  定制可能被认为是一种渐进式的增强，默认的主题对于旧的浏览器来说是完全可以接受的。
 
@@ -551,11 +551,11 @@ gulp.task("css", () =>
 ```
 这将产生两个 CSS 文件:一个常规文件具有自定义属性(styles.css)，另一个用于旧浏览器(styles.no . var . CSS)。我想要 IE10 和 11 的样式。css 和其他浏览器获取常规的 css 文件。
 
-通常，我主张使用功能查询，但<a href="https://caniuse.com/#search=%40supports">IE11不支持功能查询</a>，然而我们已经大量使用自定义属性，在这种情况下，提供不同样式表是有意义的。
+通常，我主张使用功能查询，但“<a href="https://caniuse.com/#search=%40supports"> IE11 不支持功能查询</a>”，然而我们已经大量使用自定义属性，在这种情况下，提供不同样式表是有意义的。
 
 智能地服务于不同的样式表和避免一闪而过的无样式的内容不是一项简单的任务。如果不需要定制属性的动态特性，可以考虑使用所有的浏览器样式。css 和使用自定义属性作为开发工具。
 
-如果你想充分利用自定义属性的所有动态特性，我建议使用<a href="https://www.smashingmagazine.com/2015/08/understanding-critical-css/">关键的 CSS 技术</a>。按照这些技术，主样式表是异步加载的，而关键的 CSS 则是内联的。你的页眉可能看起来像这样:
+如果你想充分利用自定义属性的所有动态特性，我建议使用“<a href="https://www.smashingmagazine.com/2015/08/understanding-critical-css/">关键的 CSS 技术</a>”。按照这些技术，主样式表是异步加载的，而关键的 CSS 则是内联的。你的页眉可能看起来像这样:
 ``` html
 <head>
   <style> /* inlined critical CSS */ </style>
@@ -583,5 +583,5 @@ if ( window.CSS && CSS.supports('color', 'var(--test)') ) {
 #### 进一步阅读
 “ <a href="https://www.smashingmagazine.com/2017/04/start-using-css-custom-properties/">是时候使用自定义属性了</a> ”，Serg Hospodarets自定义属性的语法和特性的一般介绍。<br/>
 “ <a href="https://csswizardry.com/2016/10/pragmatic-practical-progressive-theming-with-custom-properties/">渐进式实用的CSS自定义属性 </a> ”，Harry Roberts 关于主题的更多有用信息。<br/>
-<a href="https://codepen.io/collection/naJLrB/">自定义属性集合</a>，CodePen上的Mike Riethmuller 
+“<a href="https://codepen.io/collection/naJLrB/">自定义属性集合</a>”，CodePen上的Mike Riethmuller 
 你可以尝试多个不同的示例。
