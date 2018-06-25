@@ -229,7 +229,7 @@ $button-lrg: 2em;
   font-size: var(--button-size);
 }
 ```
-这里，我创建了一个自定义属性: —button-size。这个自定义属性最初的作用域是使用 btn 类的所有按钮元素。然后，我将 btn-min 和 btn-lrg 类的按钮大小更改为 600px 以上。最后，我将这个自定义属性应用到一个位置的所有按钮元素。
+这里，我创建了一个自定义属性: —button-size。这个自定义属性最初的作用域是使用 btn 类的所有按钮元素。然后，我将 btn-med 和 btn-lrg 类的按钮大小更改为 600px 以上。最后，我将这个自定义属性应用到一个位置的所有按钮元素。
 
 ### 不要太聪明过头
 自定义属性的动态特性允许我们创建一些聪明而复杂的组件。
@@ -240,7 +240,7 @@ $button-lrg: 2em;
 
 我最近在 Free Code Camp Medium 上阅读了关于此主题的优秀文章。它是由 Bill Sourou r 撰写的，它叫‘<a href="https://medium.freecodecamp.org/dont-do-it-at-runtime-do-it-at-design-time-c4f59d1775e4"> Don’t Do It At Runtime. Do It At Design Time </a>’与其解释他的观点，我更推荐你先去看一下这篇文章。
 
-预处理变量和自定义属性之间的一个关键区别是:自定义属性在运行时工作。这意味着，在复杂性方面是可以被接受的，因为预处理器没有自定义属性这么好的办法。
+预处理变量和自定义属性之间的一个关键区别是:自定义属性在运行时工作。这意味着，在复杂性方面是自定义属性是可以被接受的，因为预处理器没有自定义属性这么好的办法。
 
 最近我常用来举例说明的一个例子是：
 ``` css
@@ -293,7 +293,7 @@ $button-lrg: 2em;
 ### 更改值不是变量
 更改值而不是变量是有效使用自定义属性的最重要准则之一。
 
-作为一般规则，你绝对不应该更改用于任何单一用途的自定义属性。这很容易做到，因为这正是我们如何处理预处理器的事情，但对于自定义属性来说没有多大意义。
+作为一般规则，你不应该更改用于任何单一用途的自定义属性。这很容易做到，因为这正是我们如何处理预处理器的事情，但对于自定义属性来说没有多大意义。
 
 在这个例子中，我们有两个在示例组件上使用的自定义属性。根据屏幕大小，我将从 --font-size-small 切换到 --font-size-large。
 
@@ -432,12 +432,12 @@ body {
   background: var(--THEME-COLOR);
 }
 ```
-现在 --THEME-COLOR 在每个元素中的值都会重新计算，因此可以使用 --user-theme-color 这个局部值。换句话说，这个例子中的背景颜色是 green。
+现在 --THEME-COLOR 在每个元素中的值都会重新计算，因此可以使用 --user-theme-color 这个局部变量。换句话说，这个例子中的背景颜色是 green。
 
 你可以在 “<a href="https://www.smashingmagazine.com/2018/05/css-custom-properties-strategy-guide/?utm_source=CSS-Weekly&utm_campaign=Issue-315&utm_medium=web#manipulating-color-with-custom-properties>使用自定义属性操纵颜色</a>”一节中看到此模式的更多详细示例。
 
 ### 使用JAVASCRIPT更新自定义属性
-如果你想使用 JavaScript 设置自定义属性，那么就有一个相当简单的 API，它看起来像这样：
+如果你想使用 JavaScript 设置自定义属性，那么就有一个相当简单的 API，它是这样的：
 ``` css
 const elm = document.documentElement;
 elm.style.setProperty('--USER-THEME-COLOR', 'tomato');
@@ -474,7 +474,7 @@ body {
   background: hsl(var(--hue), 80%, 50%);
 }
 ```
-这很有用，但预处理器中最广泛使用的一些功能是高级颜色功能，它允许我们使用亮化，变暗或去饱和等功能来操作颜色：
+这很有用，但预处理器中最广泛使用的一些功能是高级颜色功能，它允许我们使用亮化、变暗或去饱和等功能来操作颜色：
 ``` css
 darken($base-color, 10%);
 lighten($base-color, 10%);
@@ -482,7 +482,7 @@ desaturate($base-color, 20%);
 ```
 在浏览器中使用这些功能会很有用。“<a href="https://www.w3.org/TR/css-color-4/#funcdef-color-mod">他们即将到来</a>”，但直到我们在 CSS 中拥有原生色彩修改功能之后，自定义属性才能填补这一空白。
 
-我们已经看到，自定义属性可以在现有的颜色函数中使用 rgb()，hsl() 但也可以在其中使用 calc()。这意味着我们可以通过乘以实数将其转换为百分比，例如calc(50 * 1%) = 50%。
+我们已经看到，自定义属性可以在现有的颜色函数中使用 rgb()、hsl() 但也可以在其中使用 calc()。这意味着我们可以通过乘以实数将其转换为百分比，例如calc(50 * 1%) = 50%。
 ``` css
 :root {
   --lightness: 50;
