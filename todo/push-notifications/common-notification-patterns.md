@@ -49,7 +49,7 @@ The easiest way to take data from a push event and attach it to a
 notification is to add a `data` parameter to the options object passed
 into `showNotification()`, like so:
 如果需要将推送事件中获取的数据传递给通知，最简单的方式就是在调用'showNotification()'方法时，
-给options参数添加一个'data'参数（对象类型），例如以下代码：
+给options参数添加一个'data'属性，其值为对象类型，例如以下所示：
 
         const options = {
           body: 'This notification has data attached to it that is printed ' +
@@ -63,7 +63,7 @@ into `showNotification()`, like so:
         registration.showNotification('Notification with Data', options);
 
 Inside a click handler the data can be accessed with `event.notification.data`.
-在点击事件的回调内，可以通过'event.notification.data'来获取数据，例如以下代码：
+在点击事件的回调内，可以通过'event.notification.data'来获取数据，例如：
 
       const notificationData = event.notification.data;
       console.log('');
@@ -80,11 +80,11 @@ One of the most common responses to a notification is to open a
 window / tab to a specific URL. We can do this with the
 [clients.openWindow()](https://developer.mozilla.org/en-US/docs/Web/API/Clients/openWindow)
 API.
-对于通知来说，最普通的反馈就是去打开指定地址的窗口／标签页，我们可以通过[clients.openWindow()]API来实现。
+对一个通知来说，打开指定地址的窗口／标签页可以作为一种最常见的反馈，这个我们可以通过[clients.openWindow()]API来实现。
 （https://developer.mozilla.org/en-US/docs/Web/API/Clients/openWindow）
 
 In our `notificationclick` event we'd run some kind like this:
-在我们的'notificationclick'事件中，我们会运行类似下面的代码：
+在我们的'notificationclick'事件中，我们会运行类似下面的代码来实现以上需求：
 
       const examplePage = '/demos/notification-examples/example-page.html';
       const promiseChain = clients.openWindow(examplePage);
@@ -93,14 +93,14 @@ In our `notificationclick` event we'd run some kind like this:
 In the next section we'll look at how to check if the page we want to direct the user to is
 already open or not. This way we can focus the open tab rather than opening new
 tabs.
-在下一节中，我们会看一下如何检测用户点击通知后跳转的页面是否已经被打开或没打开，这种情况我们可以直接呼起已打开的标签页，而不是再次打开新的页面。
+在下一节中，我们会看下如何检测用户点击通知后跳转的页面是否已被打开，如果已被打开，我们可以直接呼起已打开的标签页，而不是再次打开新的页面。
 
 ## Focus an existing window
 ## 呼起一个已打开的窗口
 
 When it's possible, we should focus a window rather than open a new window every time the user
 clicks a notification.
-如果可能，我们应该呼起一个已打开的窗口而不是每次用户点击通知时都打开一个新的窗口。
+如果可能，我们应该呼起一个已打开的窗口，而不是在每次用户点击通知时都打开一个新的窗口。
 
 Before we look at how to achieve this, it's worth highlighting that this
 is **only possible for pages on your origin**. This is because we can
@@ -150,13 +150,13 @@ Origin>/').
 首先，我们将示例中目标页面的地址传递给URL API。这是我从[Jeff Posnick](https://twitter.com/jeffposnick)twitter中学到的一个巧妙的计策。
 调用'new URL()'并传入location对象，如果传入的第一个参数是相对地址，则会返回页面的绝对地址。
 We make the URL absolute so we can match it against window URL's later on.
-我们将地址转成了绝对地址方便之后与窗口的地址作对比。
+我们将地址转成了绝对地址则是为了之后与窗口的地址作对比。
 
       const urlToOpen = new URL(examplePage, self.location.origin).href;
 
 Then we get a list of the `WindowClient` objects, which are the list of
 currently open tabs and windows. (Remember these are tabs for your origin only.)
-之后，我们会通过调用matchAll()得到一系列当前打开的标签页、窗口的'WindowClient'对象。（记住，这些标签页只是你域名下的页面）
+之后，我们会通过调用matchAll()得到一系列'WindowClient'对象，包含了当前打开的标签页和窗口。（记住，这些标签页只是你域名下的页面）
 
       const promiseChain = clients.matchAll({
         type: 'window',
@@ -171,7 +171,7 @@ worker, i.e. the service worker running this code. Generally, you'll
 always want `includeUncontrolled` to be true when calling `matchAll()`.
 
 'matchAll'方法中传入的options对象则告诉浏览器我们只想获取'window'类型的对象（例如，只查看标签页、窗口，不包含web workers[浏览器的其他工作线程]）。
-'includeUncontrolled'属性则让我们只获取没有被当前service workder控制的所有标签页（本域下），例如service worker正在运行当前代码。一般来说，在调用'matchAll()'时，你通常会将'includeUncontrolled'
+'includeUncontrolled'属性表示我们只能获取没有被当前service workder控制的所有标签页（本域下），例如service worker正在运行当前代码。一般来说，在调用'matchAll()'时，你通常会将'includeUncontrolled'
 设置为true。
 
 We capture the returned promise as `promiseChain` so that we can pass it into
@@ -182,8 +182,8 @@ When the `matchAll()` promise resolves, we iterate through the returned window c
 compare their URLs to the URL we want to open. If we find a match, we focus that
 client, which will bring that window to the users attention. Focusing is done with the
 `matchingClient.focus()` call.
-当'matchAll()'返回的promise对象已完成，我们遍历返回的window对象并将这些对象的URL和想要打开的目标URL进行对比，如果发现有匹配的，
-则调用'matchingClient.focus()'方法，它会将匹配的窗口呼起以引起用户的注意。
+当上一步的'matchAll()'返回的promise对象已完成异步操作，我们接着遍历返回的window对象并将这些对象的URL和想要打开的目标URL进行对比，如果发现有匹配的，
+则调用'matchingClient.focus()'方法，它会将匹配的窗口呼起来引起用户的注意。
 
 If we can't find a matching client, we open a new window, same as in the previous section.
 如果没有与之匹配的URL，我们则采用上一节的方式新开窗口打开地址。
@@ -210,20 +210,20 @@ If we can't find a matching client, we open a new window, same as in the previou
 `clients.openWindow()` so that the promises are accounted for in our promise
 chain.
 **注意：** 我们会返回'matchingClient.focus()'、'clients.openWindow()'方法执行后返回的'promise'对象，
-因此这些promise对象会组成我们的promise链
+因此这些promise对象就可以组成我们的promise链了。
 
 ## Merging notifications
 ## 合并通知
 
 We saw that adding a tag to a notification opts in to a behavior where any
 existing notification with the same tag is replaced.
-我们已经知道，在给一个通知添加标签后会导致同一个标签标识的已有通知被代替。
+我们已经看到，在给一个通知添加标签后会导致用同一个标签标识的已有通知被代替。
 
 You can however get more sophisticated with the collapsing of notifications using the
 Notifications API. Consider a chat app, where the developer might want a new notification to
 show a message similar to "You have two messages from Matt" rather than just showing the latest
 message.
-通过使用通知相关的API，你会变得更有经验来实现各种覆盖展示通知的方式。比如一个聊天应用，
+但通过使用通知相关的API，你可以变得更有经验来覆盖展示通知。比如一个聊天应用，
 开发者可能更希望用新的通知来展示"你有2条未读信息"等类似信息，而不是只展示最新接收到的信息。
 
 You can do this, or manipulate current notifications in other ways, using the
@@ -242,7 +242,7 @@ In our chat app, let's assume each notification has as some data which includes 
 The first thing we'll want to do is find any open notifications for a user with a specific
 username. We'll get `registration.getNotifications()` and loop over them and check the
 `notification.data` for a specific username:
-我们想要做的第一件事就是在已打开的通知中，通过'registration.getNotifications()'方法，找到所有带有具体用户名为标识的通知，
+我们要做的第一件事就是在已打开的通知中，通过'registration.getNotifications()'方法，找到所有带有具体用户名为标识的通知，
 遍历这些通知，获取某个具体用户名的相关通知。
 
         const promiseChain = registration.getNotifications()
@@ -328,11 +328,11 @@ I've been stating that you **must** show a notification when you receive a push 
 true *most* of the time. The one scenario where you don't have to show a notification is when
 the user has your site open and focused.
 我所讲的就是，你**必须**在收到推送信息时展示通知，这个规则在**大多数**情况下是正确的。只有在一种场景下你不需要展示通知，
-那就是用户已经打开了你的站点，并且它已经是呼起的状态。
+那就是用户已经打开了你的站点，并且站点已经是呼起的状态。
 
 Inside your push event you can check whether you need to show a notification or not by
 examining the window clients and looking for a focused window.
-在你的推送事件中，可以通过验证目标窗口是否已被打开并呼起来决定你是否需要展示通知。
+在你的推送事件中，你可以通过检测目标窗口是否已被打开并呼起，来决定是否需要展示通知。
 
 The code to getting all the windows and looking for a focused window looks like this:
 获得浏览器所有窗口、查询当前已呼起窗口的代码可以参考如下：
