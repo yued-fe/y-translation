@@ -13,45 +13,29 @@
 
 
 
-One of the pain points when working with web push is that triggering a push message is extremely
-"fiddly". To trigger a push message an application needs to make a POST request to a push
-service following the [web push
-protocol](https://tools.ietf.org/html/draft-ietf-webpush-protocol). To use push across all
-browsers you need to use [VAPID](https://tools.ietf.org/html/draft-thomson-webpush-vapid)
-(a.k.a application server keys) which basically requires setting a header with a value proving
-your application can message a user. To send data with a push message, the data needs to be
-[encrypted](https://tools.ietf.org/html/draft-ietf-webpush-encryption) and specific headers
-added so the browser can decrypt the message correctly.
+开发网页推送的痛点之一就是触发一个推送消息是极其"繁琐"的，应用程序需要按照[ Web推送协议](https://tools.ietf.org/html/draft-ietf-webpush-protocol)向推送服务发送POST请求。为了使推送能够跨浏览器使用，你还需要使用 [VAPID](https://tools.ietf.org/html/draft-thomson-webpush-vapid)
+(即应用服务器秘钥)——需要在 header 中设置一个值来证明你的应用能够向用户发送消息。发送推送消息数据时，需要对数据进行![加密](https://tools.ietf.org/html/draft-ietf-webpush-encryption)并添加特定的headers，以便浏览器正确地解密消息。
 
-The main issue with triggering push is that if you hit a problem, it's difficult to diagnose
-the issue. This is improving with time and wider browser support but it's far from easy. For
-this reason, I strongly recommend using a library to handle the encryption, formatting and
-triggering of your push message.
+触发推送的主要问题是，如果遇到问题，很难进行诊断。随着时间的推移和更多浏览器的支持，这一点正在得到改善，但仍然并不容易。因此，我强烈推荐使用库来处理推送的加密、格式化、触发这一系列流程。
 
-If you really want to learn about what the libraries, we'll cover it
-in the next section. For now, we are going to look at managing subscriptions and using an
-existing web push library to make the push requests.
+如果你想要深入学习这个库，我们会在下一个章节中介绍。现在，我们将着眼于管理订阅，并且使用现有的Web推送库来发送推送请求。
 
-In this section we'll be using the [web-push Node
-library](https://github.com/web-push-libs/web-push). Other languages will have differences, but
-they won't be too dissimilar. We are looking at Node since it's JavaScript and should be the
-most accessible for readers.
+在这个章节，我们将使用[web-push Node
+library](https://github.com/web-push-libs/web-push)。其他语言会有差异，但不会差太多。我们正在研究 node，因为它是 JavaScript，应该是读者最容易理解的。
 
-Note: If you want a library for a different language, checkout the [web-push-libs organization
+注：如果你想要其他语言的库，可以查看 [web-push-libs organization
 on Github](https://github.com/web-push-libs/).
 
-We'll go through the following steps:
+我们将完成以下步骤:
 
-1. Send a subscription to our backend and save it.
-1. Retrieve saved subscriptions and trigger a push message.
+1. 向我们的后端发送订阅并保存。
+2. 检索保存的订阅并触发推送消息。
 
-## Saving Subscriptions
+## 保存订阅
 
-Saving and querying `PushSubscriptions` from a database will vary depending on
-your server side language and database choice, but it might be useful to see
-an example of how it could be done.
+从数据库中保存并检索 `PushSubscriptions` 将取决于你的服务端语言和数据库选择，但查看如何完成这个步骤的示例可能很有用。
 
-In the demo web page the `PushSubscription` is sent to our backend by making a simple POST request:
+在 demo 页面中，通过发送简单的 POST 请求，`PushSubscription` 被发送到我们的后端:
 
 ```
 function sendSubscriptionToBackEnd(subscription) {
@@ -76,13 +60,11 @@ function sendSubscriptionToBackEnd(subscription) {
 }
 ```
 
-The [Express](http://expressjs.com/) server in our demo has a matching request listener for the
-`/api/save-subscription/` endpoint:
+demo 中的[Express](http://expressjs.com/)服务器会监听 `/api/save-subscription/` 路径:
 
-    app.post('/api/save-subscription/', function (req, res) {
+```    app.post('/api/save-subscription/', function (req, res) {```
 
-In this route we validate the subscription just to make sure the request is OK and not full of
-garbage:
+在这个路由下，我们会验证订阅以确保请求正确并且内容有效：
 
 ```
 const isValidSaveRequest = (req, res) => {
@@ -103,11 +85,9 @@ const isValidSaveRequest = (req, res) => {
 };
 ```
 
-Note: In this route we only check for an endpoint. If you **require** payload support, make sure
-you check for the auth and p256dh keys as well.
+注：在这个路由中，我们只检查路径，如果你需要检验**必需**载荷，确保你也检查了 auth 和 p256dh 秘钥。
 
-If the subscription is valid, we need to save it and return an appropriate
-JSON response:
+如果这个订阅是有效的，我们需要将其保存并返回一个合适的 JSON 响应:
 
 ```
 return saveSubscriptionToDatabase(req.body)
@@ -127,10 +107,7 @@ return saveSubscriptionToDatabase(req.body)
 });
 ```
 
-This demo uses [nedb](https://github.com/louischatriot/nedb) to store the subscriptions, it's a
-simple file based database, but you could use any database you chose. We are only using this as
-it requires zero set-up. For production you'd want to use something more reliable. (I tend to
-stick with good old MySQL.)
+这个 demo 使用了 [nedb](https://github.com/louischatriot/nedb) 存储订阅数据，这是一个简单的基于文件的数据库，你可以选择其他数据库，我们使用它仅是因为它支持零配置使用。在生产环境，你应该使用可靠性更高的数据库（我倾向使用旧版本的MySQL）。
 
 ```
 function saveSubscriptionToDatabase(subscription) {
@@ -147,27 +124,19 @@ function saveSubscriptionToDatabase(subscription) {
 };
 ```
 
-## Sending Push Messages
+## 发送推送请求
 
-When it comes to sending a push message we ultimately need some event to trigger the process of
-sending a message to users. A common approach is creating an admin page that let's you
-configure and trigger the push message. But you could create a program to run locally or any
-other approach that allows accessing the list of `PushSubscriptions` and running the code to
-trigger the push message.
+当发送推送消息时，我们最终需要一些事件来触发推送消息的流程。常用的方法是创建一个管理员页面，让你配置并触发消息推送。你也可以创建一个跑在本地的程序或者其他任何方法来访问 `PushSubscriptions` 列表、触发消息推送。
 
-Our demo has an "admin like" page that lets you trigger a push. Since it's just a demo it's a
-public page.
+我们的 demo 有一个"类管理系统"的页面能够触发一个推送，因为是演示版本，所以这个页面是公开的。
 
-I'm going to go through each step involved in getting the demo working, these will be baby
-steps to everyone follow along, including anyone who is new to Node.
+我将演示开发这个 demo 所涉及的每个步骤，这是每个人都应该遵循的小步骤，包括任何刚接触Node的人。
 
-When we discussed subscribing a user we covered adding an `applicationServerKey` to the
-`subscribe()` options. It's on the back end that we'll need this private key.
+在前文讨论订阅用户时，我们介绍了在 `subscribe()` 选项中添加 `applicationServerKey`，后端会需要这个私钥。
 
 
 
-In the demo these values are added to our Node app like so (boring code I know, but just want
-you to know there is no magic):
+在 demo 中，这些值会被添加到我们的 Node 应用中，如下（我知道这段代码很无聊，但此处没有魔法）：
 
 ```
 const vapidKeys = {
@@ -177,22 +146,19 @@ const vapidKeys = {
 };
 ```
 
-Next we need to install the `web-push` module for our Node server:
+下一步，我们需要在 Node 服务器中安装 `web-push` 模块:
 
 ```
 npm install web-push --save
 ```
 
-Then in our Node script we require in the `web-push` module
-like so:
+然后在我们的 Node 脚本中引用 `web-push` 模块，如下：
 
 ```
 const webpush = require('web-push');
 ```
 
-Now we can start to use the `web-push` module. First we need to tell the `web-push` module about
-our application server keys. (Remember they are also known as VAPID keys because that's the name
-of the spec.)
+现在我们可以使用 `web-push` 模块了。首先我们需要将应用服务器的秘钥（记住它们同时也是 VAPID 秘钥，这才是规范的命名）传给 `web-push` 模块。
 
 ```
 const vapidKeys = {
@@ -208,27 +174,21 @@ webpush.setVapidDetails(
 );
 ```
 
-We also include a "mailto:" string as well. This string needs to be either a URL or a mailto
-email address. This piece of information will actually be sent to web push service as part of
-the request to trigger a push. The reason this is done is so that if a web push service needs
-to get in touch with the sender, they have some information that will enable them to.
+我们也添加了一个 "mailto:" 字符串，这个字符串需要是一个 URL 或邮箱地址。这部分信息实际上会被作为触发推送请求的一部分发送给推送服务器。这么做的原因是，如果网络推搡服务需要与消息发送者联系，这些信息就能派上用场。
 
-With this, the `web-push` module is ready to use, the next step is to trigger a push message.
+通过上述步骤，`web-push` 模块就可以使用了，下一步是触发一个消息推送。
 
-The demo uses the pretend admin panel to trigger push messages.
+这个 demo 使用了一个伪管理面板来触发消息推送。
 
-![Screenshot of the Admin Page.](./images/demo-admin-page.png)
+![管理页面截图](./images/demo-admin-page.png)
 
-Clicking the "Trigger Push Message" button will make a POST request to `/api/trigger-push-msg/`
-which is the signal for our backend to send push messages, so we create the route in
-express for this endpoint:
+点击"触发消息推送"将会给 `/api/trigger-push-msg/` 接口发送一个 POST 请求，相当于给后端一个信号去推送消息。所以我们需要在 express 中创建这个路径：
 
 ```
 app.post('/api/trigger-push-msg/', function (req, res) {
 ```
 
-When this request is received, we grab the subscriptions from the database and
-for each one, we trigger a push message.
+当这个请求被收到时，我们会抓取并遍历数据库中的订阅信息，然后推送消息。
 
 ```
 return getSubscriptionsFromDatabase()
@@ -246,8 +206,7 @@ return getSubscriptionsFromDatabase()
 })
 ```
 
-The function `triggerPushMsg()` can then use the web-push library to send a message to the
-provided subscription.
+方法 `triggerPushMsg()` 能够使用 web-push 库来给订阅者发送消息。
 
 ```
 const triggerPushMsg = function(subscription, dataToSend) {
@@ -262,26 +221,17 @@ const triggerPushMsg = function(subscription, dataToSend) {
 };
 ```
 
-The call to `webpush.sendNotification()` will return a promise. If the
-message was sent successfully the promise will resolve and there is
-nothing we need to do. If the promise rejects, you need to examine the
-error as it'll inform you as to whether the PushSubscription is still
-valid or not.
+调用 `webpush.sendNotification()` 方法会返回一个 promise 对象。 如果这个消息发送成功，promise 会回调 resolve 函数，这时我们不用做其他事情。但当 promise 的回调 reject，你需要检验错误信息，它会告诉你 `PushSubscription` 是否仍然有效。
 
-To determine the type of error from a push service it's best to look at the status code. Error
-messages vary between push services and some are more helpful than others.
+要确定推送服务的错误类型，最好的方法是查看状态码。错误消息因推送服务而异，不一定都有帮助。
 
-In this example it checks for status codes '404' and '410', which are the HTTP status codes for
-'Not Found' and 'Gone'. If we receive one of these, it means the subscription has expired
-or is no longer valid. In these scenarios we need remove the subscriptions from our database.
+在这个例子中，我们检验了状态码'401'和'402'，分别是 HTTP 状态码中的 'Not Fount（资源未找到）' 和 'Gone（资源不再可用）' ，收到这两个状态码意味着订阅过期或失效，我们需要将订阅信息从数据库中移除。
 
-We'll cover some of the other status codes in the next section when we look at the web push
-protocol in more detail.
+下个章节中我们将会更仔细地介绍 Web 推送协议以及一些其他状态码。
 
-Note: If you hit problems at this stage, it's worth looking at the error logs from Firefox before
-Chrome. The Mozilla push service has much more helpful error messages compared to Chrome / FCM.
+注：如果你在这个步骤遇到了问题，推荐去 Firefox 上查看错误日志而不是 Chrome。因为相比于 Chrome / FCM，Mozilla 的推送服务提供的错误信息更加有用。
 
-After looping through the subscriptions, we need to return a JSON response.
+遍历完订阅后，我们需要返回一个 JSON 响应。
 
 ```
 .then(() => {
@@ -301,17 +251,13 @@ After looping through the subscriptions, we need to return a JSON response.
 });
 ```
 
-We've gone over the major implementation steps.
+至此，我们已经完成了主要的实现步骤。
 
-1. Create an API to send subscriptions from our web page to our back-end
-so it can save them to a database.
-1. Create an API to trigger the sending of push messages (in this case an
-  API called from the pretend admin panel).
-1. Retrieve all the subscriptions from our backend
-and send a message to each subscription with one of the [web-push
-libraries](https://github.com/web-push-libs/).
+创建一个订阅请求 API，让前端能够向后端发送一个订阅请求，并将订阅信息保存在数据库中。
+2. 创建一个发送推送消息的 API（这一次请求需要从管理面板发出）。
+3. 后端读取所有的订阅，并选择一个 [web-push
+库](https://github.com/web-push-libs/)给每一个订阅发送消息。
 
-Regardless of your backend (Node, PHP, Python, ...) the steps for implementing push are going
-to be the same.
+无论你的后端使用什么语言 (Node, PHP, Python, ...) ，实现推送的步骤都是一样的。
 
-Next up, what exactly are these web-push libraries doing for us?
+接下来，这些 web-push 库究竟能为我们做了什么呢？
