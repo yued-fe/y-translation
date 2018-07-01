@@ -319,7 +319,7 @@ A second notification would collapse the notifications into this:
 The nice thing with this approach is that if your user witnesses the
 notifications appearing one over the other, it'll look and feel more cohesive
 than just replacing with notification with the latest message.
-这种方法好的方面是，如果你的用户目睹了通知一个接着一个的出现，相比于只用最新的信息替代当前的通知内容，它所带给用户的感觉则更为成功。
+这种方法好的方面是，如果你的用户目睹了通知一个接着一个的出现，相比于只用最新的信息替代当前的通知内容，消息看起来则更紧密相连。
 
 ## The exception to the rule
 ## 各种规则的例外
