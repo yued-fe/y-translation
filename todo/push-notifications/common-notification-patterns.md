@@ -10,7 +10,7 @@
 # 常用的通知模式
 
 We're going to look at some common implementation patterns for web push.
-此篇我们将会探索web push(web消息推送)的一些常用模式。
+此篇我们将会探索web消息推送的一些常用模式。
 
 This will involve using a few different API's that are available in the service worker.
 包括使用一些service worker提供的API。
@@ -25,7 +25,7 @@ There is also a `notificationclose` event that is called if the user dismisses o
 notifications (i.e. rather than clicking the notification, the user clicks the cross or swipes the
 notification away).
 除了'notificationclick'事件，我们还可以监听'notificationclose'事件，它会在用户驳回其中一个通知
-（例如，用户点击了关闭按钮或划掉了通知，而不是用户点击了通知）的时候被调用。
+（例如，用户点击了关闭按钮或划掉了通知，而不是用户点击了通知）时被调用。
 
 This event is normally used for analytics to track user engagement with notifications.
 这个事件通常被用作数据分析，用于监测用户对于通知的参与度。
@@ -385,7 +385,7 @@ Inside our push event we'd use this function to decide if we need to show a noti
 We've seen that you can skip showing a notification if the user is currently on your site. But
 what if you still want to let the user know that an event has occurred, but a notification is
 too heavy handed?
-我们已知可以做到在用户当前正在浏览我们站点时不进行通知。但如果你仍然想要让用户知道这个推送事件发生了，但又觉得通知行为实在太蠢了。
+我们已知可以做到在用户当前正在浏览我们站点时不进行通知。但如果你仍然想要让用户知道这个推送事件发生了，但又觉得进行通知太突兀，
 
 
 One approach is to send a message from the service worker to the page, this way the web page
