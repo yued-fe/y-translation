@@ -23,7 +23,7 @@ the following behaviours:
 
 - Each new notification is shown one after the other. The browser will not collapse the
 notifications in any way.
-- 每个新的通知会逐一有序的展示，浏览器不会以任何方式重叠展示通知。
+- 每个新的通知会逐一有序的展示，浏览器不会以任何方式叠加展示通知。
 
 - The platform may play a sound or vibrate the user's devices (depending on the platform).
 - 系统会以音效或震动的方式提示用户（具体方式则取决于设备系统）。
