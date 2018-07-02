@@ -16,7 +16,7 @@ are also options that alter the behaviour of notifications.
 
 Be default, calling `showNotification()` with just visual options will have
 the following behaviours:
-默认情况下，在设置好视觉展示选项时，调用"showNotification()" 会出现以下行为：
+默认情况下，在设置好视觉相关选项时，调用"showNotification()" 会出现以下行为：
 
 - Clicking on the notification does nothing.
 - 点击通知不会触发任何事件。
