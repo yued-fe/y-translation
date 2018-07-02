@@ -171,7 +171,7 @@ With this we would detect notification clicks or action clicks like so:
 The *tag* option is essentially a string ID that "groups" notifications together, providing
 an easy way to determine how multiple notifications are displayed to the user. This is easiest
 to explain with an example.
-标签选项本质上可以理解为：使用一个字符串类型的ID将通知"聚集"到一起，同时提供了一个简单的方式来抉择多个通知的展示方式，这里可能用示例来解释最为简单：
+标签选项本质上可以理解为：使用一个字符串类型的ID将通知"组织"到一起，同时提供了一个简单的方式来抉择多个通知的展示方式，这里可能用示例来解释最为简单：
 
 Let's display a notification and give it a tag, of
 'message-group-1'. We'd display the notification with this code:
@@ -225,7 +225,7 @@ are currently displayed will be closed if they have the same tag as a new notifi
 
 A subtlety to using `tag` is that when it replaces a notification, it
 will do so *without* a sound and vibration.
-使用标签有一个需要注意的小细节：当它替换了一个通知时，是没有音效和震动提醒的。
+使用标签有一个容易被忽略的小细节：当它替换了一个通知时，是没有音效和震动提醒的。
 
 This is where the `renotify` option comes in.
 此时'Renotify'选项就有了用武之地。
@@ -263,7 +263,7 @@ error:
 
 This option allows you to show a new notification but prevents the default
 behavior of vibration, sound and turning on the device's display.
-这一选项可以阻止默认的震动及音效来展示新的提示，同时会打开设备的屏幕。
+这一选项可以阻止默认的震动及音效来展示新的提示，同时会亮起设备的屏幕。
 
 This is ideal if your notifications don't require immediate attention
 from the user.
@@ -276,20 +276,20 @@ from the user.
         registration.showNotification(title, options);
 
 **Note:** If you define both *silent* and *renotify*, silent will take precedence.
-**注意** 如果同时设置了*silen(静音)*和*renotify(重复通知)*，silent(静音)选项会取得更高的优先级。
+**注意** 如果同时设置了*静音(silent)*和*是否替换之前的通知(Renotify)*，静音(silent)选项会取得更高的优先级。
 
 ### Requires Interaction
-### 是否需要与通知进行交互
+### 与通知进行交互
 
 Chrome on desktop will show notifications for a set time period before hiding them. Chrome on
 Android doesn't have this behaviour. Notifications are displayed until
 the user interacts with them.
-桌面的chrome浏览器会在通知消失前展示一段时间。而安卓设备的chrome浏览器不会有这种行为，通知会一直展示，直到用户对其进行操作。
+桌面的chrome浏览器会在通知消失前展示一段时间，而安卓设备的chrome浏览器不会有这种行为，通知会一直展示，直到用户对其进行操作。
 
 To force a notification to stay visible until the user interacts with it
 add the `requireInteraction` option. This will show the notification
 until the user dismisses or clicks your notification.
-如果要强制让通知持续展示直到用户对其操作，需要添加'requireInteraction'选项，这个选项会展示通知直到用户划走（驳回）或点击它。
+如果要强制让通知持续展示直到用户对其操作，需要添加'requireInteraction'选项，此选项会展示通知直到用户划走（驳回）或点击它。
 
         const title = 'Require Interaction Notification';
         const options = {
@@ -300,9 +300,9 @@ until the user dismisses or clicks your notification.
 
 Please use this option with consideration. Showing a notification and forcing the user to stop
 what they are doing to dismiss your notification can be frustrating.
-请谨慎使用这个选项，一直展示通知、并强制让用户停下手头的事情来取消通知可能会干扰到用户。
+请谨慎使用这个选项，因为一直展示通知、并强制让用户停下手头的事情来取消通知可能会干扰到用户。
 
 In the next section we are going to look at some of the common patterns used on the web for
 managing notifications and performing actions such as opening pages when a notification is clicked.
-在下一节中，我们会看一些可以在web上适用的常见模式来管理通知，同时在点击通知时执行打开网页的行为。
+在下一节中，我们会浏览一些web上适用的用于管理通知的常见模式，例如在点击通知时执行打开网页的行为。
 
