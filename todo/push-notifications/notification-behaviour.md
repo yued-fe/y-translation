@@ -240,7 +240,7 @@ notifications vibrate and play a system sound.
 There are scenarios where you might want a replacing notification to
 notify the user rather than silently update. Chat applications are a good
 example. In this case you should set `tag` and `renotify` to true.
-某些场景下，你可能更希望替换通知时进行提醒而不是默默地进行，社交应用则是一个很好的例子。这种情况你需要同时使用'标签'和'Renotify(是否替换之前的通知)'选项。
+某些场景下，你可能更希望替换通知时能够提醒到用户，而不是默默地进行。聊天应用则是一个很好的例子。这种情况你需要同时使用'标签'和'是否替换之前的通知(Renotify)'选项。
 
             const title = 'Notification 2 of 2';
             const options = {
@@ -255,8 +255,8 @@ error:
     TypeError: Failed to execute 'showNotification' on 'ServiceWorkerRegistration':
     Notifications which set the renotify flag must specify a non-empty tag
 
-**注意：** 如果你设置了'renotify'(是否替换之前的通知)为true但却没有设置标签，会出现以下报错信息：
-    类型错误：不能够在'ServiceWorkerRegistration'上执行'showNotification'方法：设置了'renotify'(重复提醒)标识的通知必须声明一个不为空的标签。
+**注意：** 如果你设置了'是否替换之前的通知'(Renotify)为true但却没有设置标签，会出现以下报错信息：
+    类型错误：不能够在'ServiceWorkerRegistration'上执行'showNotification'方法：设置了renotify标识的通知必须声明一个不为空的标签。
 
 ### Silent
 ### 静音
