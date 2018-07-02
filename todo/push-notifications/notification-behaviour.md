@@ -16,26 +16,26 @@ are also options that alter the behaviour of notifications.
 
 Be default, calling `showNotification()` with just visual options will have
 the following behaviours:
-默认情况下，在设置好视觉展示相关选项时，调用"showNotification()" 会出现以下行为：
+默认情况下，在设置好视觉展示选项时，调用"showNotification()" 会出现以下行为：
 
 - Clicking on the notification does nothing.
 - 点击通知不会触发任何事件。
 
 - Each new notification is shown one after the other. The browser will not collapse the
 notifications in any way.
-- 每个新的通知会逐一有序的展示，浏览器不会以任何方式叠加展示通知。
+- 每个新的通知会逐一有序的展示，浏览器不会以任何方式重叠展示通知。
 
 - The platform may play a sound or vibrate the user's devices (depending on the platform).
-- 系统会以音效或震动设备的方式提示用户（具体方式则取决于设备系统）。
+- 系统会以音效或震动的方式提示用户（具体方式则取决于设备系统）。
 
 - On some platforms the notification will disappear after a short
 period of time while others will show the notification unless the user interacts with it.
 (For example, compare your notifications on Android and Desktop.)
-- 在一些系统上，短时间后通知会自动消失，而其他的系统则会一直展示通知直到用户对其进行操作。（可以对比安卓和电脑的通知行为）
+- 在某些系统上，短时间后通知会自动消失，而其他系统则会一直展示通知直到用户对其进行操作。（可以对比安卓和电脑的通知行为）
 
 In this section we are going to look at how we can alter these default behaviours using options
 alone. These are relatively easy to implement and take advantage of.
-在这一节中，我们会探讨下单独使用这些选项会如何改变默认的通知行为，这些都相对来说比较容易实施并且都具有优势。
+在这一节中，我们会探讨下单独使用一些选项会如何改变默认的通知行为，这相对来说都比较容易实施并且都具有各自的优势。
 
 ### Notification Click Event
 ### 通知的点击事件
@@ -46,11 +46,11 @@ to happen. It doesn't even close or remove the notification.
 
 The common practice for a notification click is for it to close and perform some other logic
 (i.e. open a window or make some API call to the application).
-通知点击事件的常见用法是调用它来关闭并展示一些其他的交互逻辑（例如，打开一个窗口或调用一些可用的API）
+通知点击事件的常见用法是调用它来关闭通知、同时展示一些其他的逻辑（例如，打开一个窗口或调用一些可用的API）
 
 To achieve this we need to add a 'notificationclick' event listener to our service worker. This
 will be called when ever a notification is clicked.
-要实现以上所说的，我们需要让service worker来监听'notificationclick'事件。这个事件在每次点击通知时都被调用。
+要实现以上所说的，我们需要让service worker来监听'notificationclick'事件。这个事件在每次点击通知时都会被调用。
 
     self.addEventListener('notificationclick', function(event) {
       const clickedNotification = event.notification;
