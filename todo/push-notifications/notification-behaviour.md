@@ -12,7 +12,7 @@
 
 So far we've looked at the options that alter the visual appearance of a notification. There
 are also options that alter the behaviour of notifications.
-到此为止我们已经研究了各种可以改变通知样式的选项，当然这里还有一些选项可以改变通知行为的选项。
+到此为止，我们已经浏览了可以改变通知样式的选项，除了样式，我们还可以通过一些选项来改变通知的行为。
 
 Be default, calling `showNotification()` with just visual options will have
 the following behaviours:
