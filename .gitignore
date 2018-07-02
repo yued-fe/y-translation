@@ -1,3 +1,14 @@
-.idea
+# npm
+node_modules
+.npm
+npm-debug.log
+
+# mac
 .DS_Store
-.idea/*
+
+# WebStorm
+.idea
+
+# map
+*.map
+
