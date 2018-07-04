@@ -238,7 +238,7 @@ $button-lrg: 2em;
 
 自定义属性同样也会出现这样的状况，我期待看到更多聪明的例子。但从长远来看，可读和可维护的代码总会是更好的选择（至少在项目中是这样）。
 
-我最近在 Free Code Camp Medium 上阅读了关于此主题的优秀文章。它是由 Bill Sourour 撰写的，叫‘<a href="https://medium.freecodecamp.org/dont-do-it-at-runtime-do-it-at-design-time-c4f59d1775e4"> Don’t Do It At Runtime. Do It At Design Time </a>’与其解释他的观点，我更推荐你先去看一下这篇文章。
+我最近在 Free Code Camp Medium 上阅读了关于此主题的优秀文章。它是由 Bill Sourour 撰写的，叫‘<a href="https://medium.freecodecamp.org/dont-do-it-at-runtime-do-it-at-design-time-c4f59d1775e4"> Don’t Do It At Runtime. Do It At Design Time </a>’。与其解释他的观点，我更推荐你先去看一下这篇文章。
 
 预处理变量和自定义属性之间的一个关键区别是：自定义属性在运行时工作。这意味着，在复杂性方面自定义属性是可以被接受的，因为预处理器没有自定义属性这么好的办法。
 
