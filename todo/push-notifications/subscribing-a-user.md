@@ -6,25 +6,20 @@
 
 >校对者：
 
-# Subscribing a User 
+# 订阅一个用户
 
 
+第一步是是从用户那里获取发送消息的权限，然后我们才能着手于`推送订阅`。
 
+实现这个的Javascript API是相当直接，所以让我们来一步一步来看一下这个逻辑流程。
 
+## 特征检测
 
-The first step is to get permission from the user to send them push messages and then we can
-get our hands on a `PushSubscription`.
+第一步，我们需要检查用户当前的浏览器是否支持推送消息。我们可以通过下面两个简单的方法来检查推送是否支持。
 
-The JavaScript API to do this is reasonably straight forward, so let's step
-through the logic flow.
+1. 检查*navigator*上是否有*serviceWorker*属性。
+2. 检查*window*上是否有*PushManager*属性。
 
-## Feature Detection
-
-First we need to check if the current browser actually supports push messaging. We can check if
-push is supported with two simple checks.
-
-1. Check for *serviceWorker* on *navigator*.
-1. Check for *PushManager* on *window*.
 ```
 if (!('serviceWorker' in navigator)) {
   // Service Worker isn't supported on this browser, disable or hide UI.
@@ -36,22 +31,17 @@ if (!('PushManager' in window)) {
   return;
 }
 ```
-While browser support is growing quickly for both service worker and
-push messaging support, it's always a good idea to feature detect for both and
-[progressively enhance](https://en.wikipedia.org/wiki/Progressive_enhancement).
 
-## Register a Service Worker
+*service worker*和*推送消息*的已经被浏览器越来越快的支持，特性检测这两者并且进行[渐进增强](https://en.wikipedia.org/wiki/Progressive_enhancement)总是一个好主意。
 
-With the feature detect we know that both service workers and Push are supported. The next step
-is to "register" our service worker.
+## 注册一个service worker
 
-When we register a service worker, we are telling the browser where our service worker file is.
-The file is still just JavaScript, but the browser will "give it access" to the service worker
-APIs, including push. To be more exact, the browser runs the file in a service worker
-environment.
+通过特性检测，我们已经知道*service worker*和*push*都已经支持了。下一步就是去注册我们的*service worker*。
 
-To register a service worker, call `navigator.serviceWorker.register()`, passing in the path to
-our file. Like so:
+当我们注册*service worker*的时候，我们告诉浏览器我们的service worker文件在哪里。这个文件依然是Javascript，但是浏览器会给它访问系统service worker API的权限，包括*push*。
+更确切的说，就是浏览器在service worker环境来运行这个文件。
+
+通过调用`navigator.serviceWorker.register()`来注册一个service worker。传入参数是我们文件的路径。如下面所示：
 
     function registerServiceWorker() {
       return navigator.serviceWorker.register('service-worker.js')
@@ -64,33 +54,25 @@ our file. Like so:
       });
     }
 
-This code above tells the browser that we have a service worker file and where it's located. In
-this case, the service worker file is at `/service-worker.js`. Behind the scenes the browser
-will take the following steps after calling `register()`:
+上面的代码告诉浏览器，我们有一个service worker文件，并且告知了它的地址。在这个示例中，service worker文件地址是 `/service-worker.js`。
+在调用完`register()`之后，浏览器会进行下面几个步骤。
 
-1. Download the service worker file.
+1. 下载service worker文件。
 
-1. Run the JavaScript.
+2. 运行JavaScript代码。
 
-1. If everything ran correctly and there were no errors, the promise returned by `register()`
-will resolve. If there are errors of any kind, the promise will reject.
+3. 如果一切都运行正常并且没有发生错误，调用`register()`之后返回的promise将会调用resolve方法。如果有任何错误发生，promise会reject。
 
-> If `register()` does reject, double check your JavaScript for typos / errors in Chrome DevTools.
+> 如果`register()` reject了，在Chrome的开发者工具当中再检查一遍你的JavaScript代码中的拼写/错误。
 
-When `register()` does resolve, it returns a `ServiceWorkerRegistration`. We'll use this
-registration to access to the [PushManager
-API](https://developer.mozilla.org/en-US/docs/Web/API/PushManager).
+如果`register()`确认resolve了， 它会返回一个`ServiceWorkerRegistration`的方法。我们将使用它来访问[`推送管理API`](https://developer.mozilla.org/en-US/docs/Web/API/PushManager)
 
-## Requesting Permission
+## 获取许可
 
-We've registered our service worker and are ready to subscribe the user, the next step is to get
-permission from the user to send them push messages.
+我们注册了service worker，为订阅用户做好了准备，下一步就是从用户那里获取给他们发送消息的权限。
 
-The API for getting permission is relatively simple, the downside is that
-the API [recently changed from taking a callback to returning a
-Promise](https://developer.mozilla.org/en-US/docs/Web/API/Notification/requestPermission). The
-problem with this, is that we can't tell what version of the API is implemented by the current
-browser, so you have to implement both and handle both.
+获取权限的API比较简单，下面就是那个API [最近变化为需要传入一个回调来返回一个Promise对象](https://developer.mozilla.org/en-US/docs/Web/API/Notification/requestPermission)
+问题是我们不能分辨当前浏览器实际了哪一个API，所以我们必须同时实现两个。
 
     function askPermission() {
       return new Promise(function(resolve, reject) {
@@ -109,32 +91,23 @@ browser, so you have to implement both and handle both.
       });
     }
 
-In the above code, the important snippet of code is the call to
-`Notification.requestPermission()`. This method will display a prompt to the user:
-
+在上面的代码当中，最重要的代码片段就是调用`Notification.requestPermission()`。这个方法会显示一个提示给用户：
 ![Permission Prompt on Desktop and Mobile Chrome.](./images/permission-prompt.png)
 
-Once the permission has been accepted / allowed, closed (i.e. clicking the cross on the pop-up),
-or blocked, we'll be given the result as a string: 'granted', 'default' or 'denied'.
+一旦这个权限被同意 / 允许，关闭（也就是点击弹层上的叉）或者被拦截，我们将获取结果字符串：'granted', 'default'或者'denied'。
 
-In the sample code above, the promise returned by `askPermission()` resolves if the permission
-is granted, otherwise we throw an error making the promise reject.
+在上面的示例代码中，如果权限被许可了，调用`askPermission()`返回的promise会resolve，否则的话我们会抛出一个错误让promise拒绝。
 
-One edge case that you need to handle is if the user clicks the 'Block' button. If this
-happens, your web app will not be able to ask the user for permission again. They'll have to
-manually "unblock" your app by changing its permission state, which is buried
-in a settings panel. Think carefully about how and when you ask the user for permission,
-because if they click block, it's not an easy way to reverse that decision.
+一个边界情况，我们一定要处理，那就是如果用户点击了'Block'的按钮。如果这个发生了，我们将再也不能够跟用户请求授权。他们必须手动地
+"unblock"我们的应用，改变我们就用的权限状态，这个入口隐藏在浏览器的设置面板。仔细想想以什么方法以及什么时间向用户询问授权，因为如果他们点击block，想让他们更改这个决定不是那么容易。
 
-The good news is that most users are happy to give permission as long as
-they *know* why the permission is being asked.
+好消息是，只要他们知道为什么需要这个权限，大多数用户都很乐意授权给我们。
 
-We'll look at how some popular sites ask for permission later on.
+后续，我们将看一下一些流行的站点是怎么请求授权的。
 
-## Subscribe a User with PushManager
+## 使用PushManager订阅一个用户
 
-Once we have our service worker registered and we've got permission, we can subscribe a user by
-calling `registration.pushManager.subscribe()`.
+一旦我们注册了service worker并且获得取权限，我们就能调用`registration.pushManager.subscribe()`订阅一个用户。
 
     function subscribeUserToPush() {
       return navigator.serviceWorker.register('service-worker.js')
@@ -154,112 +127,73 @@ calling `registration.pushManager.subscribe()`.
       });
     }
 
-When calling the `subscribe()` method, we pass in an *options* object, which consists of both
-required and optional parameters.
 
-Lets look at all the options we can pass in.
+当调用`subscribe()`方法的时候，我们传入*options*的一个对象，这个对象包含必须的和可选的参数。
 
-### userVisibleOnly Options
+让我们来看一下我们所有能传入的参数。
 
-When push was first added to browsers, there was uncertainty about whether developers should be
-able to send a push message and not show a notification. This is commonly referred to as silent
-push, due to the user not knowing that something had happened in the background.
+### 仅用户可见的选项
 
-The concern was that developers could do nasty things like track a user's location on an
-ongoing basis without the user knowing.
+当**push**一开始被添加到浏览器的时候，用户是否能够发送了个push消息并且不显示通知是不确定的。这个一般被称为静默推送，这是因为用户不知道后台正在发生什么。
 
-To avoid this scenario and to give spec authors time to consider how best to support this
-feature, the `userVisibleOnly` option was added and passing in a value of `true` is a symbolic
-agreement with the browser that the web app will show a notification every time a push is
-received (i.e. no silent push).
+关注点就要是开发者能做一些让人讨厌的事情，比如说持续不断地追踪用户的位置，而不让用户知道。
 
-At the moment you **must** pass in a value of `true`. If you don't include the
-`userVisibleOnly` key or pass in `false` you'll get the following error:
+为了避免这个场景以及让规范作者们有时间来考虑如何更好地支持这个特性，他们添加了**userVisibleOnly**这个选项，并且和浏览器达成了一个象征性的协议，传入一个*true*的值，这样的话
+每次收到一个push，web应用都会展示出一个notification(也就是说没有静默推送）。
 
-> Chrome currently only supports the Push API for subscriptions that will result in
-user-visible messages. You can indicate this by calling
-`pushManager.subscribe({userVisibleOnly: true})` instead. See
-[https://goo.gl/yqv4Q4](https://goo.gl/yqv4Q4) for more details.
+所以说当前，你**必须**传入一个**true**的值。如果你没有传入一个**userVisibleOnly**的键值或者传入的是*false*值，你会得到如下的错误：
 
-It's currently looking like blanket silent push will never be implemented in Chrome. Instead,
-spec authors are exploring the notion of a budget API which will allow web apps a certain
-number of silent push messages based on the usage of a web app.
+> Chrome当前仅支持能够产生让用户可见消息的推送API的订阅。你可以调用`pushManager.subscribe({useVisibleOnly: true})。查看[https://goo.gl/yqv4Q4](https://goo.gl/yqv4Q4)获取更多详情。
 
+当前看起来，在Chrome当中，完全的静默推送永远都不会被实现。规范作者们正在探索一个预算API的概念，它会基于用户对web app的使用而给开发者们一定量的静默推送消息次数。
 
+### applicationServerKey 选项
 
-### applicationServerKey Option
+在之前的章节当中，我们很明确地提到了"application server keys"，推送服务使用"application server keys"来用来鉴别订阅用户的应用，并且确保是同样的应用发送消息给那个订阅的用户。
 
-We briefly mentioned "application server keys" in the previous section. "Application
-server keys" are used by a push service to identify the application subscribing a user and
-ensure that the same application is messaging that user.
+"Application server keys"是一对公私钥的键值对，对于你的应用来说是独一无二的。私钥应该对你的应用保密，而公钥可以自由地分享。
 
-Application server keys are a public and private key pair that are unique to your application.
-The private key should be kept a secret to your application and the public key can be shared
-freely.
+传入到`subscribe()`方法的"applicationServerKey"选项应该是公钥。当订阅一个用户的时候，浏览器会将这个值传递给推送服务，这意味着推送服务可以将你的应用的公钥和用户的推送订阅绑定起来。
 
-The `applicationServerKey` option passed into the `subscribe()` call is the application's public
-key. The browser passes this onto a push service when subscribing the user, meaning the push
-service can tie your application's public key to the user's `PushSubscription`.
+下面的表格描述了这些步骤。
 
-The diagram below illustrates these steps.
-
-1. Your web app is loaded in a browser and you call `subscribe()`, passing in your public
-application server key.
-1. The browser then makes a network request to a push service who will generate an endpoint,
-associate this endpoint with the applications public key and return the endpoint to the
-browser.
-1. The browser will add this endpoint to the `PushSubscription`, which is returned via the
-`subscribe()` promise.
+1. 浏览器加载了你的web app，然后你调用`subscribe()`，传入你的application server key中的公钥。
+2. 然后浏览器发出一个网络请求到推送服务，推送服务会生成一个和applications public key联系在一起的结束点，并把该结束点返回给浏览器。
+3. 浏览器将这个值添加到，通过`subscribe()`返回的Promise对象 PushSubscription。
 
 ![Illustration of the public application server key is used in subscribe
 method.](./images/svgs/application-server-key-subscribe.svg)
 
-When you later want to send a push message, you'll need to create an **Authorization** header
-which will contain information signed with your application server's **private key**. When the
-push service
-receives a request to send a push message, it can validate this signed **Authorization** header
-by looking up the public key linked to the endpoint receiving the request. If the signature is
-valid the push service knows that it must have come from the application server with the
-**matching private key**. It's basically a security measure that prevents anyone else sending
-messages to an application's users.
+当你后续想要发送一个推送消息，你将需要创建一个**Authorization**的header头，这个header头将包含使用你的application server的私钥签名的信息。
+当推送服务接收到一个要求发送推送消息的请求，它通过查询关联到接收请求的这个结束点的公钥，来验证这个签名过的**Authorization**的header头。如果签名是合法的，
+推送服务知道它一定来自于拥有匹配的私钥的应用服务器。总的来说，它是一个安全措施，用来防止其他人发送消息给应用用户。
 
 ![How the private application server key is used when sending a
 message.](./images/svgs/application-server-key-send.svg)
 
-Technically, the `applicationServerKey` is optional. However, the easiest
-implementation on Chrome requires it, and other browsers may require it in
-the future. It's optional on Firefox.
+从技术上来说，`applicationSecretKey`是一个可选项。然后，在Chrome浏览器上最容易的实现是需要它的，其他浏览器在以后也可能需要它。在Firefox中当前是可选项。
 
-The specification that defines *what* the application server key should be is
-the [VAPID spec](https://tools.ietf.org/html/draft-thomson-webpush-vapid).
-Whenever you read something referring to *"application server keys"* or
-*"VAPID keys"*, just remember that they are the same thing.
+在[VAPID spec](https://tools.ietf.org/html/draft-thomson-webpush-vapid)中定义application server key的规范。
+记住*application server key*和*VAPID keys*是同一个概念。
 
-#### How to Create Application Server Keys
+#### 如何创建一个Application server keys
 
-You can create a public and private set of application server keys by visiting
-[web-push-codelab.glitch.me](https://web-push-codelab.glitch.me/) or you can use the
-[web-push command line](https://github.com/web-push-libs/web-push#command-line)
-to generate keys by doing the following:
+你可以通过访问[web-push-codelab.glitch.me](https://web-push-codelab.glitch.me/)创建一个application server keys的公私钥。
+或者你也可以使用[web-push command line](https://github.com/web-push-libs/web-push#command-line)通过下面几步来生成密钥。
 
     $ npm install -g web-push
     $ web-push generate-vapid-keys
 
-You only need to create these keys once for your application, just make sure you keep the
-private key private. (Yeah, I just said that.)
+你只需要为你的应用生成一次密钥，并且确保你把私钥保管好。（是的，我刚才说过这个）。
 
-## Permissions and subscribe()
+## 授权和订阅
 
-There is one side effect of calling `subscribe()`. If your web app doesn't have permissions for
-showing notifications at the time of calling `subscribe()`, the browser will request the
-permissions for you. This is useful if your UI works with this flow, but if you want more
-control (and I think most developers will), stick to the `Notification.requestPermission()` API
-that we used earlier.
+在调用`subscribe()`有一个副作用。就是你在调用`subscribe()`的时候，如果web应用没有获得弹出通知的许可，浏览器会为你请求许可。
+如果你的UI和这个流程是匹配的，那这样的话是很有用的。但是如果你需要更多的控制（我认为绝大多数开发者都是这样想的），请使用我们之前用过的`Notification.requestPermission()`。
 
-## What is a PushSubscription?
+## 什么是推送订阅
 
-We call `subscribe()`, pass in some options, and in return we get a promise that resolves to a
-`PushSubscription` resulting in some code like so:
+我们调用`subscribe()`，传入一些选项，然后作为回报我们获得一个promise对象，这个对象resolve返回的就是`PubSubscription`。相应的代码如下：
 
     function subscribeUserToPush() {
       return navigator.serviceWorker.register('service-worker.js')
@@ -279,9 +213,7 @@ We call `subscribe()`, pass in some options, and in return we get a promise that
       });
     }
 
-The `PushSubscription` object contains all the required information needed to send a push
-messages to that user. If you print out the contents using `JSON.stringify()`, you'll see the
-following:
+这个`PushSubscription`对象包含发送推送消息给那个用户所需要的所有信息。如果使用`JSON.stringify()`来打印内容，你可以看到如下所示：
 
     {
       "endpoint": "https://some.pushservice.com/something-unique",
@@ -292,18 +224,14 @@ following:
       }
     }
 
-The `endpoint` is the push services URL. To trigger a push message, make a POST request
-to this URL.
+`endpoint`值就是推送服务的URL。如果要触发一个推送消息的话，向这个URL发送一个POST请求。
 
-The `keys` object contains the values used to encrypt message data sent with a push message
-(which we'll discuss later on in this section).
+`keys`对象包含用于加密随着推送消息发送的消息数据的值。
 
-## Send a Subscription to Your Server
+## 发送订阅到你的服务器
 
-Once you have a push subscription you'll want to send it to your server. It's up to you how you
-do that but a tiny tip is to use `JSON.stringify()` to get all the necessary data out of the
-subscription object.  Alternatively you can piece together the same
-result manually like so:
+一旦你有了一个推送的订阅，你将想要把它发送到你的服务器。怎么来做完全由你，但是一个小提示就是使用`JSON.stringify()`来从订阅对象当中获取所有的必需数据。
+同样地你也可以手动地像这样拼凑成同样的结果：
 
     const subscriptionObject = {
       endpoint: pushSubscription.endpoint,
@@ -313,11 +241,10 @@ result manually like so:
       }
     };
 
-    // The above is the same output as:
-
+    // 上面和下面的输出是一样的
     const subscriptionObjectToo = JSON.stringify(pushSubscription);
 
-Sending the subscription is done in the web page like so:
+在web页面当中，像下面一样完成一个订阅的发送：
 
     function sendSubscriptionToBackEnd(subscription) {
       return fetch('/api/save-subscription/', {
@@ -341,7 +268,7 @@ Sending the subscription is done in the web page like so:
       });
     }
 
-The node server receives this request and saves the data to a database for use later on.
+node服务接收到这个请求并且保存数据到数据库当中供以后使用。
 
     app.post('/api/save-subscription/', function (req, res) {
       if (!isValidSaveRequest(req, res)) {
@@ -365,31 +292,23 @@ The node server receives this request and saves the data to a database for use l
       });
     });
 
-With the `PushSubscription` details on our server we are good to send our user
-a message whenever we want.
+我们的服务器有了`PushSubscription`的详细信息，我们就可以在任何我们想要的时候给我们的用户发送一条消息。
 
-## FAQs
+## 常见问题解答
 
-A few common questions people have asked at this point:
+当前人们经常问的问题如下：
 
-> Can I change the push service a browser uses?
+> 我可以更换浏览器使用的推送服务吗？
 
-No. The push service is selected by the browser and as we saw with the
-`subscribe()` call, the browser will make network requests to the push service
-to retrieve the details that make up the *PushSubscription*.
+不行。推送服务是由浏览器选择的。正如我们看到的，当我们调用`subscribe()`时，浏览器会产生一个发送给推送服务的网络请求，来获取组成*PushSubscription*的细节信息。
 
-> Each browser uses a different Push Service, don't they have different API's?
+> 每个浏览器都使用不同的推送服务，那它们会有不同的API吗？
 
-All push services will expect the same API.
+所有的推送服务拥有相同的API。
 
-This common API is called the
-[Web Push Protocol](https://tools.ietf.org/html/draft-ietf-webpush-protocol)
-and describes the network request
-your application will need to make to trigger a push message.
+这个相同的API被称为[网络推送协议](https://tools.ietf.org/html/draft-ietf-webpush-protocol)
+它描述了你的应用需要怎样的网络请求来触发一个推送消息。
 
-> If I subscribe a user on their desktop, are they subscribed on their phone
-as well?
+> 如果用户在桌面版进行了订阅，那他们是不是同时在他们的手机版也订阅了？
 
-Unfortunately not. A user must register for push on each browser they wish to
-receive messages on. It's also worth noting that this will require
-the user granting permission on each device.
+不幸的是，没有。一个用户必须在他想要接收消息的所有浏览器都进行注册推送。值得注意的是，用户需要在每一个设备上都进行授权。
