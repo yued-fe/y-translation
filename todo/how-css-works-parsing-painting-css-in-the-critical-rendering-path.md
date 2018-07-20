@@ -2,9 +2,9 @@
 
 > * 译文地址：
 
-> * 译者：
+> * 译者：[chengbapi](https://github.com/chengbapi)
 
-> * 校对者：
+> * 校对者：[foru](https://github.com/foru17) [zhangyunling](https://github.com/zhangyunling) [zuoxue0119](https://github.com/zuoxue0119)
 
 # CSS 是如何工作的：关键渲染路径中的 CSS 解析和渲染
 
