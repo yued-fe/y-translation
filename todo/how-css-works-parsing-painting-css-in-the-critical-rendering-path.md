@@ -40,7 +40,7 @@ CSS 是一种神奇又古怪的力量，他控制着网页上我们看到的一�
 
 既然我们的重点是 CSS，我们不会花太多篇幅在 DOM 构建上。然而，CSS 是一个样式标记语言，我们要知道它是如何和 DOM 工作的。
 
-DOM 是包含页面所有 HTML 节点的类树形结构。每一个节点包含了 HTML 元素的数据（比如属性、id、class）。如果 HTML 元素有子节点，它会指向这些子节点。比如，下图中的HTML将会构建出右边的 DOM 结构。会发现HTML的缩进和DOM结构的十分相似。
+DOM 是包含页面所有 HTML 节点的类树形结构。每一个节点包含了 HTML 元素的数据（比如属性、id、class）。如果 HTML 元素有子节点，它会指向这些子节点。比如，下图中的 HTML 将会构建出右边的 DOM 结构。会发现 HTML 的缩进和 DOM 结构的十分相似。
 
 ![](https://luoleiorg.b0.upaiyun.com/source/translation/1.png)
 
