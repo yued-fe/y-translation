@@ -1,6 +1,6 @@
 > * 原文地址：https://blog.logrocket.com/how-css-works-parsing-painting-css-in-the-critical-rendering-path-b3ee290762d3
 
-> * 译文地址：
+> * 译文地址：https://github.com/yued-fe/y-translation/blob/master/todo/how-css-works-parsing-painting-css-in-the-critical-rendering-path.md
 
 > * 译者：[chengbapi](https://github.com/chengbapi)
 
@@ -97,7 +97,7 @@ CSSOM 长什么样子？下图中的 CSS 将会构建出右边的 CSSOM
 
 理解 CSSOM 是如何构建的另一个好处，是可以对选择器性能有更深入的了解。因为嵌套的选择器必须检查 CSSOM 上的父节点，所以尽量避免使用嵌套的选择器，可以提升 CSSOM 的性能。然而，我想说的是，在大多数的应用程序中，它并不会成为性能的瓶颈，相对于重写 CSS 选择器，还有其他更值得优化的地方。
 
-和其他 web 性能相关的问题一样，在修改 CSS 之前，你最好可以分析下加载时间。如果你在使用 Chrome，打开工具栏切换到 Perfomarnce 标签下。你可以通过 Recalculate Styles、 Layout, 和 Paint 这些事件，看到 CSSOM 构建、排版、绘制所需的时间。然后你可以根据瓶颈来针对性的开始优化。
+和其他 web 性能相关的问题一样，在修改 CSS 之前，你最好可以分析下加载时间。如果你在使用 Chrome，打开工具栏切换到 Perfomarnce 标签下。你可以通过 Recalculate Styles、 Layout 和 Paint 这些事件，看到 CSSOM 构建、排版、绘制所需的时间。然后你可以根据瓶颈来针对性的开始优化。
 
 
 
