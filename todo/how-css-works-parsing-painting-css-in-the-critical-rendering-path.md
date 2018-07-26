@@ -30,11 +30,11 @@ CSS 是一种神奇又古怪的力量，他控制着网页上我们看到的一�
 
 关键渲染路径是从浏览器收到 HTML 第一个字节起到开始渲染像素所要经历的最少步骤。本质上，它是浏览器对关键资源进行处理、渲染、展示给用户的过程。这个过程大致如下：
 
-* 1.根据收到的 HTML 创建 DOM（文档对象模型）
-* 2.如果遇到 CSS（内联或者外链）则开始创建 CSSOM（CSS 对象模型—后面会详细说明）
-* 3.遇到 JavaScript（非异步）则等待 CSSOM 构建，停止 DOM 构建，首先解析执行 JavaScript 代码。因为 JavaScript 可能会修改 DOM，修改和使用 CSSOM。
+* 根据收到的 HTML 创建 DOM（文档对象模型）
+* 如果遇到 CSS（内联或者外链）则开始创建 CSSOM（CSS 对象模型—后面会详细说明）
+* 如果遇到 JavaScript（非异步）则停止 DOM 构建，等待 CSSOM 构建完毕后再解析和执行。这么做的原因是 JavaScript 可能会修改和访问 DOM 和 CSSOM。
 
-研究的第二个步骤：CSS 是如何影响关键渲染路径的。对于 JavaScript，我们使用了诸如 tree-shake、路由拆分、懒加载各种手段进行优化，对于 CSS 的优化则经常被我们忽视，实际上，未优化的 CSS 能给轻而易举地让你的加载时间增加。
+研究的第二个步骤：CSS 是如何影响关键渲染路径的。对于 JavaScript，我们使用了诸如 tree-shake、路由拆分、懒加载各种手段进行优化，对于 CSS 的优化则经常被我们忽视，实际上，未优化的 CSS 能轻而易举地让你的加载时间增加。
 
 #### HTML 和关键渲染路径
 
@@ -79,7 +79,7 @@ CSSOM 长什么样子？下图中的 CSS 将会构建出右边的 CSSOM
 
 布局是浏览器通过 CSS 规则计算 `margin`、`padding`、`width`、`position`，从而得到元素的位置和所需的空间的过程。在计算布局的时候，由于元素的位置、宽度、高度是由其父元素计算而来，浏览器从渲染树的顶端向下遍历。
 
-如果你对 CSS 盒子模型很熟悉的话，本质上就是浏览器在页面上绘制了一系列 CSS 盒子（如果你想要了解盒子模型，可以阅读这篇） [here](https://developer.mozilla.org/en-US/docs/Learn/CSS/Introduction_to_CSS/Box_model)).
+如果你对 CSS 盒子模型很熟悉的话，本质上就是浏览器在页面上绘制了一系列 CSS 盒子（如果你想要了解盒子模型，可以阅读[这篇](https://developer.mozilla.org/en-US/docs/Learn/CSS/Introduction_to_CSS/Box_model))。
 
 然而，要注意这个时候页面上还没有显示任何内容。想象成仅仅是在视窗上绘制了轮廓线，等待开始填充。
 
