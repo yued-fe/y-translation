@@ -1,103 +1,103 @@
 > * 原文地址：https://blog.logrocket.com/how-css-works-parsing-painting-css-in-the-critical-rendering-path-b3ee290762d3
 
-> * 译文地址：
+> * 译文地址：https://github.com/yued-fe/y-translation/blob/master/todo/how-css-works-parsing-painting-css-in-the-critical-rendering-path.md
 
-> * 译者：
+> * 译者：[chengbapi](https://github.com/chengbapi)
 
-> * 校对者：
+> * 校对者：[foru](https://github.com/foru17)、 [zhangyunling](https://github.com/zhangyunling)、 [zuoxue0119](https://github.com/zuoxue0119)
 
-# How CSS works: Parsing & painting CSS in the critical rendering path
+# CSS 是如何工作的：关键渲染路径中的 CSS 解析和渲染
 
-CSS often feels like this mysterious, whimsical force governing everything that we see on the web. It can be inherently simple at times, yet writing scalable, performant CSS seems to be the exception rather than the norm.
+CSS 是一种神奇又古怪的力量，他控制着网页上我们看到的一切。本质上他应该很简单，但是真要写出可拓展、高性能的 CSS 又没那么容易。
 
-Whether you think of CSS as a “necessary evil” or think of it as capable-yet-misunderstood, CSS is a must-have for anyone working on web applications. A deep knowledge of CSS can be the difference between a beautiful, polished web application and one that just feels kinda “meh”.
+不管你觉得 CSS 是“必经之痛”还是被大家误解了，CSS 依旧是每个 web 开发者必须掌握的能力。对CSS的理解深浅将会决定你的网站是光鲜亮丽还是平淡无奇。
 
-This post is going to be the first in a series where we take a deep dive into CSS as well as its attached ecosystem. The vision is that by popping open the hood on CSS we can gain deeper understanding and appreciation for the de-facto styling language of the web, enabling us to write faster, cleaner, beautiful CSS that scales as our applications grow in size and complexity.
+这篇文章是深入了解 CSS 系列文章的第一篇。通过掀开CSS神秘的面纱，我们能够更深入的理解这门语言，让我们可以写出更快、更简洁、更漂亮的 CSS，来适应我们的应用程序规模和复杂度的增长。
 
-For the first post of this series, we’re gonna jump into how CSS gets rendered to the screen on initial page load.
+在这篇文章中，我们将要研究页面初次加载后，CSS 是如何被渲染到屏幕上的。
 
-The reason we care about the path that CSS has to take to turn into beautiful pixels boils down to two words.
+我们之所以关心 CSS 的渲染过程，归结为下面两点：
 
-**Load time.**
+**加载时间**
 
-If your site takes forever to load, chances are your users aren’t gonna wait for it to finish, even if there’s valuable content to be found there. Some studies have shown that up to [50% of users leave a page after 3 seconds of waiting.](https://www.thinkwithgoogle.com/marketing-resources/data-measurement/mobile-page-speed-new-industry-benchmarks/).
+如果你的网站加载太慢，就算它的内容很有价值，用户也很有可能会在它加载完成前就关闭网页。一些研究表明，如果页面加载时间超过 3s，超过 50% 的用户会离开。
 
-With users expecting those types of load times, it’s our responsibility as web developers to not bloat the amount of stuff we’re sending to the user. Sadly, CSS is often the culprit of increased load times, so having a nuanced understanding of how the CSS you send is transformed into beautiful pixels will help you optimize that crucial seconds where users are most likely to bounce.
+基于用户对于加载时间的期望，作为 web 开发者，我们应当减少用户的等待时间。不幸的是，CSS 通常是导致加载时间增加的罪魁祸首，所以如果你对 CSS 是如何被渲染到像素的有细致的了解，将会帮助你优化这关键的几秒，提升用户的留存。
 
-#### What is the Critical Rendering Path, Anyway?
+#### 然而，什么是关键渲染路径?
 
-When we say that users want quick load times, we have to draw the distinction between critical and non-critical resources. Perhaps you’re lazy-loading some of your images or you’ve set up a bit of fancy route-splitting (thank you webpack!) to not send all of your JavaScript at once. These resources that are loaded after the initial page render are considered to be non-critical — that is, they don’t delay the initial render of the page. Resources that delay the first render of the page are considered to be critical.
+想让网页加载更快，首先需要区分关键资源与非关键资源。也许你已经应用了某些策略，让一些图片使用懒加载，根据路由拆分 JavaScript 按需加载(感谢 webpack）。这些在页面初次渲染完成后才加载的资源，就是我们所说的非关键资源，这些资源不会影响页面初次渲染的时间。那些会影响初次渲染时间的资源，才是至关重要的。
 
-The critical rendering path is the minimum steps that the browser has to take from the moment it receives the first byte of HTML to the moment that it renders pixels on the screen for the first time. Essentially, it’s what the browser has to do to process our critical resources into something our users can enjoy. It looks something like this.
+关键渲染路径是从浏览器收到 HTML 第一个字节起到开始渲染像素所要经历的最少步骤。本质上，它是浏览器对关键资源进行处理、渲染、展示给用户的过程。这个过程大致如下：
 
-* 1.Build the DOM (Document Object Model) from the recieved HTML
-* 2.If we encounter a CSS style sheet (embedded or linked), start building the CSSOM (CSS Object Model — we’ll get into what this is in a bit).
-* 3.If we encounter a JS block (not designated as async) while building the DOM, wait for CSSOM construction, stop DOM construction and parse/execute the code. The reason for this is because JS execution can modify the DOM and access/modify the CSSOM.
+* 根据收到的 HTML 创建 DOM（文档对象模型）
+* 如果遇到 CSS（内联或者外链）则开始创建 CSSOM（CSS 对象模型—后面会详细说明）
+* 如果遇到 JavaScript（非异步）则停止 DOM 构建，等待 CSSOM 构建完毕后再解析和执行。这么做的原因是 JavaScript 可能会修改和访问 DOM 和 CSSOM。
 
-For the purposes of this article, we’ll be diving into that second step — how CSS factors into the critical rendering path. It’s easy to take utmost care to tree-shake, route-split, and lazy-load our JavaScript, but sometimes CSS can be forgotten. However, an unoptimized CSS bundle can easily wreak havoc on your load times.
+研究的第二个步骤：CSS 是如何影响关键渲染路径的。对于 JavaScript，我们使用了诸如 tree-shake、路由拆分、懒加载各种手段进行优化，对于 CSS 的优化则经常被我们忽视，实际上，未优化的 CSS 能轻而易举地让你的加载时间增加。
 
-#### HTML and the critical rendering path
+#### HTML 和关键渲染路径
 
-Since this is primarily an article on CSS, we won’t spend a ton of time on DOM construction. However, CSS is fundamentally a language for styling markup, so we need to be aware of how it interacts with the DOM.
+既然我们的重点是 CSS，我们不会花太多篇幅在 DOM 构建上。然而，CSS 是一个样式标记语言，我们要知道它是如何和 DOM 工作的。
 
-The DOM is a tree-like data structure containing all of the HTML nodes on the page. Each node contains the data about that HTML element (such as attributes, ids, and classes) If the node has any HTML elements as children, it will also point to those child nodes. For example, given the following HTML, we would construct the following DOM. Notice how the HTML’s indentation and the DOM’s structure are very similar.
+DOM 是包含页面所有 HTML 节点的类树形结构。每一个节点包含了 HTML 元素的数据（比如属性、id、class）。如果 HTML 元素有子节点，它会指向这些子节点。比如，下图中的 HTML 将会构建出右边的 DOM 结构。会发现 HTML 的缩进和 DOM 结构的十分相似。
 
 ![](https://luoleiorg.b0.upaiyun.com/source/translation/1.png)
 
-As far as the critical rendering path goes, we consider HTML to be one of our render-blocking, critical resources — we can’t render any content if we haven’t parsed it yet!
+从关键渲染路径这个角度来看，我们认为 HTML 是一个阻碍渲染的关键资源。在未解析完 HTML 之前，任何内容都无法被渲染。
 
-#### Building the CSS Object Model
+#### 创建 CSS对象模型
 
-When the browser encounters a CSS stylesheet (either embedded or external), it needs to parse the text into something it can use for style layouts and paints. The data structure that the browser turns CSS into is creatively named the CSSOM, — the CSS Object Model.
+当浏览器解析到一个 CSS 样式表（不管是内联还是外链）时，需要解析文本，使之可以用于样式排布和绘制。这种数据结构就是 CSSOM。
 
-What does the CSSOM look like? Given the following CSS, the browser would construct a CSSOM that looks like this.
+CSSOM 长什么样子？下图中的 CSS 将会构建出右边的 CSSOM
 
 ![](https://luoleiorg.b0.upaiyun.com/source/translation/2.png)
 
-Essentially, we parse through any CSS selectors we have and assign them their place in the tree. If there’s a single selector, it will be attached to the root node of the tree. Nested selectors will be attached to the node which they are nested underneath. The CSS parser has to read nested selectors from right-to-left in order to guarantee that they end up underneath the correct nodes.
+本质上，我们通过解析所有的 CSS 选择器并将它插入到树中对应的位置。如果是一个单独的选择器，将会被添加到树的根节点下。嵌套的选择器将会被添加到嵌套的节点下。CSS 解析器将会从右往左遍历选择器来保证其正确性。
 
-Turning CSS into the CSSOM is considered to be a “render-blocking” stage just like building the DOM out of our HTML. If it just went ahead and rendered to pixels without waiting for the CSSOM we’d see a flash of unstyled content (ugly!) for a moment while the CSSOM was parsing. After that, everything would shift around when finally applying the CSS. Not exactly a great UX by a long shot.
+解析 CSS 到 CSSOM 和通过 HTML 构建 DOM 一样，是一个阻碍渲染的过程。如果不等待 CSSOM 的构建而开始渲染，将会导致用户短暂看到没有样式的内容，然后被应用上 CSS 的样式，这不是一个好的用户体验。
 
-#### The render tree
+#### 渲染树
 
-The browser uses the constructed CSSOM and DOM to create a “render tree”. In short, the render tree contains all of the information needed for the browser to create pixels on the page. The browser basically takes the DOM and CSSOM and smooshes them together, removing anything that won’t have an affect on the rendered output.
+浏览器用构建好的 CSSOM 和 DOM 来创建一个渲染树。简单来说，渲染树包含了需要渲染像素到屏幕上的所有信息。浏览器将 DOM 和 CSSOM 整合到一起，同时移除对渲染输出没有影响的内容。
 
 
-First, the browser removes all non-visible elements. This includes elements such as `<head>`,` <script>`, and `<meta>`, as well as HTML elements that have the hidden attribute. These elements, although used by other parts of the app, won't be rendered to the page, so the browser can safely proceed with rendering knowing that all elements in the render tree are in fact visible HTML elements.
+浏览器首先会移除那些不可见的元素。包括 <head> <script> <meta> 这些标签，以及有 hidden 属性的 HTML 元素。这些元素虽然在其他地方有用到，但是并不会渲染到页面上，基于这个原理，浏览器渲染时能够确保渲染树上的所有节点都是可见的。
 
-Next, we go through the CSSOM and find out which elements in our current render tree match the CSS selectors. The CSS rules for any selector that does match will be applied to that node of the render tree.
+接下来，遍历 CSSOM，找到与渲染树上节点相匹配的 CSS 选择器。任何匹配到的 CSS 规则将会被应用到该节点上。
 
-There’s one CSS rule that’s an exception, though. Applying `display: none;` in a CSS rule, will remove an element from the render tree entirely. This goes back to only including visible elements in the render tree. Other methods of hiding an element, such as `opacity: 0;` will not remove an element from the render tree but rather render it without showing it.
+然而有一个 CSS 规则例外：`display: none;` 它将会匹配到的节点从渲染树上完全移除，这样保证了只保留可见元素。其他隐藏元素的方法，如 `opacity: 0;` 将不会从渲染树中移除，只是进行渲染却不显示。
 
 ![](https://luoleiorg.b0.upaiyun.com/source/translation/3.png)
 
-And with that we have a render tree, all ready to go! After we’ve combined our CSSOM and DOM into a render tree, the browser can use this and safely assume that the render tree contains exactly the information needed to paint those first pixels — nothing more, nothing less.
+当我们拥有了这个渲染树，一切准备就绪！在我们整合完 CSSOM 和 DOM 到渲染树后，渲染树就只包含了那些需要被渲染的信息，浏览器就可以使用它进行安全精确的渲染，这些信息没有冗余，也没有缺失。
 
-#### Racing down the home stretch: Layout and paint
+#### 冲刺阶段：布局和绘制
 
-Armed with a complete render tree, the browser is ready to start putting actual pixels on the page. The last phase of the critical rendering pipeline contains two main steps: Layout and Paint.
+配备了完整的渲染树，浏览器已经可以开始渲染像素到屏幕上了。关键渲染路径的最后阶段包括两个步骤：布局和绘制。
 
-**Layout is where the browser figures out where elements go and how much space they take up**. The browser takes rules affecting margin, padding, width, and positioning into account here. When calculating layout, the browser has to start at the top of the render tree and move downward, since each element’s positioning, width, and height is calculated based off of the positioning of its parent nodes.
+布局是浏览器通过 CSS 规则计算 `margin`、`padding`、`width`、`position`，从而得到元素的位置和所需的空间的过程。在计算布局的时候，由于元素的位置、宽度、高度是由其父元素计算而来，浏览器从渲染树的顶端向下遍历。
 
-If you’re familiar with the CSS box model, the browser is essentially drawing a bunch of CSS boxes across the page (if you want to a little more information about the box model, there’s some excellent reading [here](https://developer.mozilla.org/en-US/docs/Learn/CSS/Introduction_to_CSS/Box_model)).
+如果你对 CSS 盒子模型很熟悉的话，本质上就是浏览器在页面上绘制了一系列 CSS 盒子（如果你想要了解盒子模型，可以阅读[这篇](https://developer.mozilla.org/en-US/docs/Learn/CSS/Introduction_to_CSS/Box_model))。
 
-However, it’s important to remember that at this point nothing is shown on the page. Think of it as drawing stencil lines across the viewport, getting ready to fill them in.
+然而，要注意这个时候页面上还没有显示任何内容。想象成仅仅是在视窗上绘制了轮廓线，等待开始填充。
 
-Paint happens directly after the Layout phase, and we finally get to see some stuff rendered to the page! If you’re measuring the end of the race as time to first pixel, this is the finish line. The browser goes through and fills in all the other CSS boxes with the non-layout rules. If you’re using multiple compositor layers, the browser will make sure things get into their dedicated layer.
+布局之后就是绘制阶段，然后我们就可以看到内容被渲染到页面上！这就是首像素渲染时间。浏览器遍历非布局的 CSS 规则并且填充 CSS 盒子。如果你用了多个图层，浏览器会保证其绘制到正确的图层。
 
-It’s important to remember that some CSS properties can have a larger impact on the page weight than others (for example, a radial-gradient is much more complex to paint than a simple color). If you are experiencing some “jank” during the Paint step, decreasing the amount of “expensive” CSS rules can dramatically improve the perceived performance of your app.
+请记住，一些 CSS 属性对页面负载有很大影响（比如，`radial-gradient` 比纯色渲染就更为复杂）。如果你在绘制过程中发现一些闪跳，减少这种渲染代价高的 CSS 规则可以显著提高网站的性能。
 
-#### Why should I care about CSS in the critical rendering path?
+#### 为什么要关心关键渲染路径中的 CSS?
 
-You can spend as much time as you want optimizing the frames per second performance of your app, making it look pretty, or A-B testing for higher conversion rates, but it doesn’t matter if your users bounce before the page even loads.
+你可以花尽可能多的时间来优化网站的 FPS（每秒的渲染帧数），使它看起来更好，或者通过 A-B test 来获得更高的转化率。但是如果你的用户在页面加载完成前离开了，这些都将变成无用功。
 
-Knowing which steps the browser takes to get to that ever-so-important first pixel is critical (no pun intended 😂) if you’re trying to improve your load time. Since the browser blocks rendering until it has parsed all CSS you can greatly improve your load time by removing any CSS that doesn’t apply to the first paint from your initial HTML document. Doing so greatly decreases the amount of time the browser needs to construct the CSSOM and render tree.
+如果你在尝试提高页面加载速度，知道浏览器需要哪些步骤才能渲染出第一像素是至关重要的。既然浏览器在解析全部 CSS 之前会阻碍渲染，那么可以在 HTML 文档中去掉那些不会在首次页面渲染中使用到的 CSS 文件。这么做可以大幅度降低浏览器构建 CSSOM 和渲染树的时间。
 
-Any CSS that is not necessary for the first load can be considered “non-critical” and can be lazy-loaded after users have gotten that first paint (this is especially important if you have a single page app, it’s a big performance hit to send CSS for pages that aren’t even visible yet!)
+那些在初次加载中并非必要的 CSS 可以被认为是非关键资源，可以通过懒加载，在用户看到初次渲染页面之后再加载（如果你的页面是一个单页应用，这将会特别重要，传送那些还看不到页面的 CSS 对性能有很大影响）。
 
-Another benefit of knowing how the CSSOM is constructed is deeper knowledge of selector performance. Since nested selectors must check parent nodes of the CSSOM, they tend to be slightly less performant than a flat CSSOM that avoids nested selectors. However, I would venture that in most apps that this isn’t your performance bottleneck, and likely other things can be optimized before you need to rewrite CSS selectors.
+理解 CSSOM 是如何构建的另一个好处，是可以对选择器性能有更深入的了解。因为嵌套的选择器必须检查 CSSOM 上的父节点，所以尽量避免使用嵌套的选择器，可以提升 CSSOM 的性能。然而，我想说的是，在大多数的应用程序中，它并不会成为性能的瓶颈，相对于重写 CSS 选择器，还有其他更值得优化的地方。
 
-As with anything related to web performance, you’re probably better off profiling your load time before you start doing an overhaul on your CSS. If you’re using Chrome, pop open DevTools and head over to the Performance tab. You can quickly see how much time you're spending on CSSOM construction, Layout and Paint by looking for the `Recalculate Styles`, `Layout`, and `Paint` events. Then you can start honing in on your bottlenecks and start optimizing accordingly.
+和其他 web 性能相关的问题一样，在修改 CSS 之前，你最好可以分析下加载时间。如果你在使用 Chrome，打开工具栏切换到 Perfomarnce 标签下。你可以通过 Recalculate Styles、 Layout 和 Paint 这些事件，看到 CSSOM 构建、排版、绘制所需的时间。然后你可以根据瓶颈来针对性的开始优化。
 
 
 
