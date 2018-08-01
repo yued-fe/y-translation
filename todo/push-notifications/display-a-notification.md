@@ -8,7 +8,7 @@
 
 
 # Displaying a Notification 
-# 如何显示一个通知
+# 显示一个通知
 
 I've split up notification options into two sections, one that deals with the visual aspects
 (this section) and one section that explains the behavioural aspects of notifications.
