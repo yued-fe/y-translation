@@ -199,7 +199,7 @@ At the time of writing the badge is only used on Chrome for Android.
 
 On other browsers (or Chrome without the badge), you'll see an icon of the browser.
 
-在其他浏览器（或没有指定 badge 的 Chrome）上，您会看到浏览器的图标。
+在其他浏览器（或没有指定 badge 的 Chrome）上，你会看到浏览器的图标。
 
 ![Notification with badge on Firefox for Android.](./images/notification-screenshots/mobile/firefox-badge.png)
 
@@ -270,7 +270,7 @@ bet.
 
 You can defined `actions` to display buttons with a notification.
 
-您可以定义 `actions` ，来显示带按钮的通知。
+你可以定义 `actions` ，来显示带按钮的通知。
 
         const title = 'Actions Notification';
         const options = {
@@ -319,13 +319,13 @@ For each action you can define a title, an "action" (which is essentially an ID)
 The title and icon is what you can see in the notification. The ID is used when detecting that
 the action button had been clicked (We'll look into this more in the next section).
 
-对于每个 action，你可以定义一个 title，一个 “action”（即一个 ID）和一个图标。标题和图标是您可以在通知中看到的内容。ID 是用来检测操作按钮是否已经被点击过（我们将在下一节中更详细地介绍这一点）。
+对于每个 action，你可以定义一个 title，一个 “action”（即一个 ID）和一个图标。标题和图标是你可以在通知中看到的内容。ID 是用来检测操作按钮是否已经被点击过（我们将在下一节中更详细地介绍这一点）。
 
 In the example above I've defined 4 actions to illustrate that you can define more actions than
 will be displayed. If you want to know the number actions that will be displayed by the browser
 you can check `Notification.maxActions`, which is used in the body text in the demo.
 
-在上面的示例中，我定义了 4 个 actions，来证明你可以定义比显示的 actions 更多的 actions。 如果你想知道浏览器可以显示多少个action 按钮，您可以查看演示正文中使用的 `Notification.maxActions`。
+在上面的示例中，我定义了 4 个 actions，来证明你可以定义比显示的 actions 更多的 actions。 如果你想知道浏览器可以显示多少个action 按钮，你可以查看演示正文中使用的 `Notification.maxActions`。
 
 On desktop the action button icons display their colors (See the pink doughnut above).
 
