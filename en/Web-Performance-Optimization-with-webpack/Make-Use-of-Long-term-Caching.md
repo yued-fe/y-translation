@@ -22,7 +22,7 @@ The common approach of doing caching is to:
 
  1. tell the browser to cache a file for a very long time (e.g., a year):
 
- 1.告诉浏览器需要缓存一个文件很长时间（比如，一年）
+ 1. 告诉浏览器需要缓存一个文件很长时间（比如，一年）
 
     ``` js
     # Server header
@@ -98,7 +98,7 @@ The [`WebpackManifestPlugin`](https://github.com/danethurber/webpack-manifest-pl
 
 ### Further reading
 
-### 更多内容可以阅读下面这篇文章
+### 扩展阅读
 
 * Jake Archibald [about caching best practices](https://jakearchibald.com/2016/caching-best-practices/)
 
@@ -106,15 +106,27 @@ The [`WebpackManifestPlugin`](https://github.com/danethurber/webpack-manifest-pl
 
 ## Extract dependencies and runtime into a separate file
 
+## 将依赖项和运行时提取到单独的文件中
+
 ### Dependencies
+
+### 依赖项
 
 App dependencies tend to change less often than the actual app code. If you move them into a separate file, the browser will be able to cache them separately – and won’t re-download them each time the app code changes.
 
+应用的依赖项通常比实际应用内的代码变更频率低。如果你将它们移到一个独立的文件中，浏览器可以把它们独立缓存起来 – 同时每次应用代码变更页不会去重新下载。
+
 > Key Term: In webpack terminology, separate files with the app code are called *chunks*. We’ll use this name later.
+
+> 关键术语：在 webpack 术语中，把带有应用程序代码的独立文件称之为 *chunk*。我们稍后会使用这个名字。
 
 To extract dependencies into a separate chunk, perform three steps:
 
+要将依赖项提取到独立的块中，请需要执行以下面三步：
+
 1. Replace the output filename with `[name].[chunkname].js`:
+
+1. 将输出文件名替换为`[name].[chunkname].js`：
 
     ``` js
     // webpack.config.js
@@ -130,8 +142,11 @@ To extract dependencies into a separate chunk, perform three steps:
     
     When webpack builds the app, it replaces [`[name]`](https://webpack.js.org/configuration/output/#output-filename) with a name of a chunk. If we don’t add the `[name]` part, we’ll have to differentiate between chunks by their hash – which is pretty hard!
 
+  当 webpack 编译应用时，它会将[`[name]`](https://webpack.js.org/configuration/output/#output-filename) 作为chunk的名称。如果我们没有添加 `[name]`的部分，我们将不得不通过哈希值来区分chunk - 这就会变得非常困难！
+  
 2. Convert the `entry` field into an object:
 
+2. 将`entry`的值改为对象：
     ``` js
     // webpack.config.js
     module.exports = {
@@ -146,9 +161,15 @@ To extract dependencies into a separate chunk, perform three steps:
 
     In this snippet, “main” is a name of a chunk. This name will be substituted in place of `[name]` from step 1.
     
+    在上面这段代码中，“main”是chunk的名称。这个名称会在第一步是被`[name]`所替代。
+    
     By now, if you build the app, this chunk will include the whole app code – just like we haven’t done these steps. But this will change in a sec.
-
+    
+    到目前为止，如果你编译引用，这个chunk将会包含整个应用的代码 - 就像我们没有做过这些步骤一样。但是很快就将产生变化。
+    
 3. **In webpack 4,** add the `optimization.splitChunks.chunks: 'all'` option into your webpack config:
+
+3. **如果你用的是 webpack 4,** ，可以将`optimization.splitChunks.chunks: 'all'` 选项添加到 webpack 的配置中:
 
     ``` js
     // webpack.config.js (for webpack 4)
@@ -163,8 +184,11 @@ To extract dependencies into a separate chunk, perform three steps:
 
     This option enables smart code splitting. With it, webpack would extract the vendor code if it gets larger than 30 kB (before minification and gzip). It would also extract the common code – this is useful if your build produces several bundles (e.g. [if you split your app into routes](https://developers.google.com/web/fundamentals/performance/webpack/use-long-term-caching#split-the-code-into-routes-and-pages))
     
-    **In webpack 3,** add the [CommonsChunkPlugin](https://webpack.js.org/plugins/commons-chunk-plugin/):
+    这个选项可以开启智能代码拆分。使用这个功能，webpack 将会把大于 30KB（压缩和gzip之后） 的代码提取到 vendor (公共库)。它同时也会提取 common 代码 - 如果你需要编译多个 bundles 这将非常有用。（例如：[假如你通过路由来拆分应用](https://developers.google.com/web/fundamentals/performance/webpack/use-long-term-caching#split-the-code-into-routes-and-pages)）。
     
+    **In webpack 3 ** add the [CommonsChunkPlugin](https://webpack.js.org/plugins/commons-chunk-plugin/):
+     
+    **如果是 webpack 3 ** 可以使用 [CommonsChunkPlugin](https://webpack.js.org/plugins/commons-chunk-plugin/)插件:
     ``` js
     // webpack.config.js (for webpack 3)
     module.exports = {
@@ -183,8 +207,12 @@ To extract dependencies into a separate chunk, perform three steps:
     ```
     
     This plugin takes all modules which paths include `node_modules` and moves them into a separate file called `vendor.[chunkhash].js`.
+    这个插件获取所有包含`node_modules`路径下的模块，同时将他们移到一个名为 vendor.[chunkhash].js的独立文件中。
+
 
 After these changes, each build will generate two files instead of one: `main.[chunkhash].js` and `vendor.[chunkhash].js` (`vendors~main.[chunkhash].js` for webpack 4). In case of webpack 4, the vendor bundle might not be generated if dependencies are small – and that’s fine:
+
+完成这些更改后，每次编译都会生成两个文件而不是一个：`main.[chunkhash].js` 和`vendor.[chunkhash].js` (`vendors~main.[chunkhash].js` for只有在 webpack 4 才有)。在 webpack 4 中，如果依赖项很少，则可能不会生成 vendor bundle - 这点做的不错：
 
 ``` js
 $ webpack
@@ -198,7 +226,11 @@ Time: 3816ms
 
 The browser would cache these files separately – and redownload only code that changes.
 
+浏览器会单独缓存这些文件 - 同时只有代码发生改变时才会重新下载。
+
 ### Webpack runtime code
+
+### Webpack 运行时代码
 
 Unfortunately, extracting just the vendor code is not enough. If you try to change something in the app code:
 
