@@ -8,6 +8,7 @@
 
 The next thing (after [optimizing the app size](./decrease-frontend-size)) that improves the app loading time is caching. Use it to keep parts of the app on the client and avoid re-downloading them every time.
 
+
 ## Use bundle versioning and cache headers
 
 The common approach of doing caching is to:
@@ -586,6 +587,8 @@ Time: 2150ms
 ```
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ We’ve added a new module...
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ 我们已经添加一个新的模块
 
 ``` js
    [4] ./webPlayer.js 24 kB {1} [built]
