@@ -1,24 +1,11 @@
 
 # Decrease Front-end Size
 
-<section style="display: inline-flex;margin: 16px 32px 16px 0;" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-    <img style="border-radius: 100%;min-width: 64px;height: 64px;margin: 0 16px 0 0;float: left;" itemprop="image" src="https://developers.google.com/web/images/contributors/iamakulov.jpg">
-    
-  <section style="display: block;">
-    <div>
-      <strong>By</strong>
-      <span itemprop="name">
-        <a href="https://developers.google.com/web/resources/contributors/addyosmani">
-          <span itemprop="givenName">Ivan</span>
-          <span itemprop="familyName">Akulov</span>
-        </a>
-      </span>
-    </div>
-    <div style="font-size: smaller;word-break: break-word;">
-      Contracting software engineer · Blogging, open source, performance, UX
-    </div>
-  </section>
-</section>
+> - **原文地址：** https://developers.google.com/web/fundamentals/performance/webpack/decrease-frontend-size
+> - **原文作者：** [Ivan Akulov](https://developers.google.com/web/resources/contributors/iamakulov)
+> - **译文地址：** https://github.com/yued-fe/y-translation/blob/master/en/Web-Performance-Optimization-with-webpack/Decrease-Front-end-Size.md
+> - **译者：** 
+> - **校对者：**
 
 One of the first things to do when you’re optimizing an application is to make it as small as possible. Here’s how to do this with webpack.
 

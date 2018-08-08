@@ -1,24 +1,11 @@
 
 # Introduction
 
-<section style="display: inline-flex;margin: 16px 32px 16px 0;" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-    <img style="border-radius: 100%;min-width: 64px;height: 64px;margin: 0 16px 0 0;float: left;" itemprop="image" src="https://developers.google.com/web/images/contributors/addyosmani.jpg" alt="Addy Osmani">
-    
-  <section style="display: block;">
-    <div>
-      <strong>By</strong>
-      <span itemprop="name">
-        <a href="https://developers.google.com/web/resources/contributors/addyosmani">
-          <span itemprop="givenName">Addy</span>
-          <span itemprop="familyName">Osmani</span>
-        </a>
-      </span>
-    </div>
-    <div style="font-size: smaller;word-break: break-word;">
-        Eng Manager, Web Developer Relations
-    </div>
-  </section>
-</section>
+> - **原文地址：** https://developers.google.com/web/fundamentals/performance/webpack/
+> - **原文作者：** [Addy Osmani](https://developers.google.com/web/resources/contributors/addyosmani)
+> - **译文地址：** https://github.com/yued-fe/y-translation/blob/master/en/Web-Performance-Optimization-with-webpack/Introduction.md
+> - **译者：** 
+> - **校对者：**
 
 Modern web applications often use a **bundling tool** to create a production "bundle" of files (scripts, stylesheets, etc.) that is [optimized](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/javascript-startup-optimization), [minified](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/optimize-encoding-and-transfer) and can be downloaded in less time by your users. In **Web Performance Optimization with webpack**, we will walk through how to effectively optimize site resources using [webpack](https://webpack.js.org/). This can help users load and interact with your sites more quickly.
 
