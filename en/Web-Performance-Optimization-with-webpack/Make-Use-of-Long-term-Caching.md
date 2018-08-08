@@ -1,19 +1,28 @@
 # Make use of long-term caching
 
+# 利用好持久化缓存
+
 > - **原文地址：** https://developers.google.com/web/fundamentals/performance/webpack/use-long-term-caching
 > - **原文作者：** [Ivan Akulov](https://developers.google.com/web/resources/contributors/iamakulov)
 > - **译文地址：** https://github.com/yued-fe/y-translation/blob/master/en/Web-Performance-Optimization-with-webpack/Make-Use-of-Long-term-Caching.md
-> - **译者：** 
+> - **译者：** 周文康
 > - **校对者：**
 
 The next thing (after [optimizing the app size](./decrease-frontend-size)) that improves the app loading time is caching. Use it to keep parts of the app on the client and avoid re-downloading them every time.
 
+在[优化应用体积](https://developers.google.com/web/fundamentals/performance/webpack/decrease-frontend-size)之后,下一个提升应用加载时间的策略就是缓存。在客户端中使用缓存作为应用的一部分，可以避免之后每次的重复下载。
 
 ## Use bundle versioning and cache headers
 
+## 使用 bundle 的版本控制和缓存头信息
+
 The common approach of doing caching is to:
 
+使用缓存的通用方法：
+
  1. tell the browser to cache a file for a very long time (e.g., a year):
+
+ 1.告诉浏览器需要缓存一个文件很长时间（比如，一年）
 
     ``` js
     # Server header
@@ -22,8 +31,13 @@ The common approach of doing caching is to:
 
     Note: If you aren’t familiar what `Cache-Control` does, see Jake Archibald’s excellent post [on caching best
     practices](https://jakearchibald.com/2016/caching-best-practices/).
-
+    
+    注意：如果你不熟悉 Cache-Control 的原理，请参阅 Jake Archibald 的文章: [关于缓存的最佳实践](https://jakearchibald.com/2016/caching-best-practices/)
+    
 2. and rename the file when it’s changed to force the re-download:
+
+2. 可以通过修改文件名强制去执行重新下载
+
     ``` js
     !-- Before the change -->
     <script src="./index-v15.js"></script>
@@ -35,9 +49,12 @@ The common approach of doing caching is to:
 
 This approach tells the browser to download the JS file, cache it and use the cached copy. The browser will only hit the network only if the file name changes (or if a year passes).
 
+这个方法可以告诉浏览器去下载 JS 文件，并将它缓存，之后使用的都是它的缓存副本。浏览器只会在文件名发生改变时才会请求网络（或者一年之后）。
+
 With webpack, you do the same, but instead of a version number, you specify the file hash. To include the hash into the file name, use
 [`[chunkhash]`](https://webpack.js.org/configuration/output/#output-filename):
 
+使用webpack，你可以做同样的事，但不是使用版本号，而是指定文件的哈希值。使用 [`[chunkhash]`](https://webpack.js.org/configuration/output/#output-filename) 可以将哈希值写入文件名中：
 ``` js
 // webpack.config.js
 module.exports = {
@@ -51,9 +68,16 @@ module.exports = {
 
 > ⭐️ Note: Webpack could generate a different hash even if the bundle stays the same – e.g. if you rename a file or compile the bundle under a different OS. This is a bug, and there’s no clear solution yet. [See the discussion on GitHub](https://github.com/webpack/webpack/issues/1479)
 
+> ⭐️ 注意: 即使 bundle 不变，webpack 也可能生成不同的哈希值 – 例如，你重命名了一个文件或者在不同的操作系统下编译了 bundle。 这是一个 bug.
+还没有明确的解决方案。[具体可参阅GitHub上的讨论](https://github.com/webpack/webpack/issues/1479)
+
 If you need the file name to send it to the client, use either the `HtmlWebpackPlugin` or the `WebpackManifestPlugin`.
 
+如果你需要将文件名发送给客户端，可以使用 `HtmlWebpackPlugin` 或者 `WebpackManifestPlugin`。
+
 The [`HtmlWebpackPlugin`](https://github.com/jantimon/html-webpack-plugin) is a simple, but less flexible approach. During compilation, this plugin generates an HTML file which includes all compiled resources. If your server logic isn’t complex, then it should be enough for you:
+
+[`HtmlWebpackPlugin`](https://github.com/jantimon/html-webpack-plugin)是一个简单但扩展性不强的插件。在编译期间，它生成一个包含所有已编译的资源的HTML文件。如果你的服务端逻辑不是很复杂，那么它应该能满足你：
 
 ```js
 <!-- index.html -->
@@ -64,6 +88,7 @@ The [`HtmlWebpackPlugin`](https://github.com/jantimon/html-webpack-plugin) is a 
 
 The [`WebpackManifestPlugin`](https://github.com/danethurber/webpack-manifest-plugin) is a more flexible approach which is useful if you have a complex server part. During the build, it generates a JSON file with a mapping between file names without hash and file names with hash. Use this JSON on the server to find out which file to work with:
 
+[`WebpackManifestPlugin`](https://github.com/danethurber/webpack-manifest-plugin)是一个扩展性更佳的插件，它可以帮助你解决服务端比较复杂的那部分逻辑。在编译阶段，它会生成一个JSON文件，里面包含了原文件名和带哈希文件名的映射。在服务端，通过这个JSON就能方便的找到我们真正要执行的文件：
 ``` js
 // manifest.json
 {
@@ -73,7 +98,11 @@ The [`WebpackManifestPlugin`](https://github.com/danethurber/webpack-manifest-pl
 
 ### Further reading
 
+### 更多内容可以阅读下面这篇文章
+
 * Jake Archibald [about caching best practices](https://jakearchibald.com/2016/caching-best-practices/)
+
+* Jake Archibald [关于缓存的最佳实践](https://jakearchibald.com/2016/caching-best-practices/)
 
 ## Extract dependencies and runtime into a separate file
 
