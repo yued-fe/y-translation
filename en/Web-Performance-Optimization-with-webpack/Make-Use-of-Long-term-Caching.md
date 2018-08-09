@@ -342,7 +342,7 @@ Include them into `index.html` in the reverse order – and you’re done:
 
 ### Further reading
 
-### 进一步阅读
+### 扩展阅读
 
 * Webpack guide [on long term caching](https://webpack.js.org/guides/caching/)
 
@@ -360,18 +360,22 @@ Include them into `index.html` in the reverse order – and you’re done:
   
 * [How `optimization.splitChunks` and `optimization.runtimeChunk` work](https://gist.github.com/sokra/1522d586b8e5c0f5072d7565c2bee693)
 
-* [`optimization.splitChunks` 和 `optimization.runtimeChunk` 工作原理](https://gist.github.com/sokra/1522d586b8e5c0f5072d7565c2bee693)
+* [`optimization.splitChunks` 和 `optimization.runtimeChunk` 的工作原理](https://gist.github.com/sokra/1522d586b8e5c0f5072d7565c2bee693)
 
 ## Inline webpack runtime to save an extra HTTP request
 
+## 内联 webpack 的运行时可以节省额外的 HTTP 请求
+
 To make things even better, try inlining the webpack runtime into the HTML response. I.e., instead of this:
+
+为了达到更好的体验，我们可以尝试把 webpack 的运行时内联到 HTML 中。例如，我们不要这么做：
 
 ``` js
 <!-- index.html -->
 <script src="./runtime.79f17c27b335abc7aaf4.js"></script>
 ```
 
-do this:
+而是像下面这样:
 
 ``` js
 <!-- index.html -->
@@ -382,12 +386,19 @@ do this:
 
 The runtime is small, and inlining it will help you save an HTTP request (pretty important with HTTP/1; less important with HTTP/2 but might still play an effect).
 
+运行时的代码不多，内联到 Html 中可以帮助我们节省 HTTP 请求（在 HTTP/1 中尤为重要；在 HTTP/2 中虽然没那么重要，但仍然能起到一定作用）
+
 Here’s how to do it.
+
+下面就来看看要如何做呢。
 
 ### If you generate HTML with the HtmlWebpackPlugin
 
+### 如果你使用 HtmlWebpackPlugin 插件来生成 HTML
+
 If you use the [HtmlWebpackPlugin](https://github.com/jantimon/html-webpack-plugin) to generate an HTML file, the [InlineSourcePlugin](https://github.com/DustinJackson/html-webpack-inline-source-plugin) is all you need:
 
+如果你使用 [HtmlWebpackPlugin](https://github.com/jantimon/html-webpack-plugin) 插件来生成 HTML 文件，那么 [InlineSourcePlugin](https://github.com/DustinJackson/html-webpack-inline-source-plugin) 插件就能帮你完成：
 ``` js
 // webpack.config.js
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -407,9 +418,15 @@ module.exports = {
 ```
 ### If you generate HTML using a custom server logic
 
+### 如果你使用的是自定义的服务端逻辑来生成 HTML
+
 **With webpack 4:**
 
+**在 webpack 4 中:**
+
 1. Add the [WebpackManifestPlugin](https://github.com/danethurber/webpack-manifest-plugin) to know the generated name of the runtume chunk:
+
+1. 添加[WebpackManifestPlugin](https://github.com/danethurber/webpack-manifest-plugin)插件可以获取运行时 chunk 的生成名称：
     ``` js
     // webpack.config.js (for webpack 4)
     const ManifestPlugin = require('webpack-manifest-plugin');
@@ -422,7 +439,9 @@ module.exports = {
     ```
 
     A build with this plugin would create a file that looks like this:
-
+    
+    使用这个插件编译会生成像下面这样的文件：
+    
     ``` js
     // manifest.json
     {
@@ -432,6 +451,7 @@ module.exports = {
 
 2. Inline the content of the runtime chunk in a convenient way. E.g. with Node.js and Express:
 
+2. 用一个方便的方式内联运行时 chunk 的内容。例如，可以使用 Node.js 和 Express：
     ``` js
     // server.js
     const fs = require('fs');
@@ -450,7 +470,11 @@ module.exports = {
 
 **Or with webpack 3:**
 
+**在 webpack 3 中:**
+
 1. Make the runtime name static by specifying `filename`:
+
+1. 指定运行时的名称为`filename`:
 
     ``` js
     // webpack.config.js (for webpack 3)
@@ -468,6 +492,8 @@ module.exports = {
     ```
 
 2. Inline the <code>runtime.js</code> content in a convenient way. E.g. with Node.js and Express:
+
+2. 用一个方便的方式内联<code>runtime.js</code>的内容。例如，可以使用 Node.js 和 Express：
 
     ``` js
     // server.js
