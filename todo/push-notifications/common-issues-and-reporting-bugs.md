@@ -14,7 +14,7 @@ When you hit an issue with web push, it can be difficult to debug the issue or
 find help. This doc outlines some of the common issues and what you should
 do if you've found a bug in Chrome or Firefox.
 
-当您使用网络推送遇到问题时，可能很难去调试这个问题或寻求帮助。 本文将概述了一些常见问题以及如果你在Chrome或Firefox中发现错误，应该怎么去做。
+当你使用网络推送遇到问题时，可能很难去调试这个问题或寻求帮助。 本文将概述了一些常见问题以及如果你在Chrome或Firefox中发现错误，应该怎么去做。
 
 Before we dive into debugging push, you may be hitting issues with debugging
 service workers themselves, the file not updating, failing to register or
@@ -23,7 +23,7 @@ generally just unusual behavior. There is an
 that I strongly recommend checking out if you are new to
 service worker development.
 
-在我们深入调试推送之前，您可能遇到 service workers 本身的问题，文件未更新，未注册或一般的异常行为。 关于[调试 service workers](https://developers.google.com/web/fundamentals/web/fundamentals/getting-started/codelabs/debugging-service-workers/) 的文档非常完善，如果你是初次使用 service worker 开发的话 ，我强烈建议你去阅读一下。
+在我们深入调试推送之前，你可能遇到 service workers 本身的问题，文件未更新，未注册或一般的异常行为。 关于[调试 service workers](https://developers.google.com/web/fundamentals/web/fundamentals/getting-started/codelabs/debugging-service-workers/) 的文档非常完善，如果你是初次使用 service worker 开发的话 ，我强烈建议你去阅读一下。
 
 There are two distinct stages to check off when developing and testing web push,
 each with their own set of common issues / problems.
@@ -48,8 +48,8 @@ each with their own set of common issues / problems.
        
        
 - **发送消息：**确保发送消息成功。 
-	您应该获得201 HTTP状态码。 如果你不是：
-	- **检查授权错误：**如果您收到授权错误消息，请参阅下面 “授权相关问题部分"。
+	你应该获得201 HTTP状态码。 如果不是：
+	- **检查授权错误：**如果你收到授权错误消息，请参阅下面 “授权相关问题部分"。
 	- **其他API错误：**如果收到非201状态代码，请参阅下面的 “HTTP状态代码部分“ 以获取有关问题原因的指导。
 - **接收消息：**如果你能够成功发送消息，但在浏览器上未收到消息：
 	- **检查加密问题：**请参下面的 “有效负载加密问题部分“。
@@ -62,14 +62,14 @@ bug in the push mechanism itself. In this case, refer to the
 section to file a good bug report with all the necessary information to expedite
 the bug fixing process.
 
-如果您无法发送和接收推送消息，并且本文档中的相关部分不能帮助你调试问题，那么你可能发现了推送机制本身的一个 bug。在这种情况下，请参阅 “如何提交错误报告 部分”，提交一份包含所有重要信息的错误报告，以加快错误修复过程。
+如果无法发送和接收推送消息，并且本文档中的相关部分不能帮助你调试问题，那么你可能发现了推送机制本身的一个 bug。在这种情况下，请参阅 “如何提交错误报告 部分”，提交一份包含所有重要信息的错误报告，以加快错误修复过程。
 
 One thing I'd like to call out before we start is that **Firefox and the
 Mozilla AutoPush Service have great errors messages.** If you get stuck and
 are not sure what the problem is, then test in Firefox and see if you
 get a more helpful error message.
 
-在开始之前我想说的一件事：**Firefox和Mozilla 自动推送服务给了很多有用的错误信息**。 如果您遇到问题并且不确定是什么问题的石斛，那么请在Firefox中进行测试，看看是否可以收到了更有用的错误消息。
+在开始之前我想说的一件事：**Firefox和Mozilla 自动推送服务给了很多有用的错误信息**。 如果你遇到问题并且不确定是什么问题的时候，那么请在Firefox中进行测试，看看是否可以收到了更有用的错误消息。
 
 
 ## Authorization Issues
@@ -98,12 +98,12 @@ For Chrome, which uses FCM as a push service, you'll receive an
 `UnauthorizedRegistration` response from FCM for a range of different
 errors, all involving the application server keys.
 
-对于使用FCM作为推送服务的Chrome，您将收到来自FCM 关于UnauthorizedRegistrationresponse【未经授权注册】 的一系列不同的错误，所有错误都涉及应用程序服务器密钥。
+对于使用FCM作为推送服务的Chrome，你将收到来自FCM：关于`UnauthorizedRegistration` response【未经授权注册】 的一系列不同的错误，所有错误都涉及应用程序服务器密钥。
 
 You'll receive an `UnauthorizedRegistration` error in any of the following
 situations:
 
-在以下任何一种情况下，您都会收到一个 `UnauthorizedRegistration` 错误：
+在以下任何一种情况下，你都会收到一个 `UnauthorizedRegistration` 错误：
 
 * If you fail to define an `Authorization` header in the request to FCM.
 * Your application key used to subscribe the user doesn't match the key used
@@ -114,7 +114,7 @@ situations:
 
 * 如果你没有对FCM的请求中定义Authorization header。
 * 用于订阅用户的应用程序密钥与用于签署Authorization header的密钥不匹配。
-* 您的JWT【Json web token】到期无效，即超过24小时或JWT已过期。
+* 你的JWT【Json web token】到期无效，即超过24小时或JWT已过期。
 * JWT异常或值无效。
 
 The full error response looks like this:
@@ -127,7 +127,7 @@ The full error response looks like this:
 If you receive this error message in Chrome, consider testing in Firefox to see
 if it'll provide more insight to the problem.
 
-如果您在Chrome中收到此错误消息，可以考虑在Firefox中进行测试，可能能够提供有关此问题的更多信息的话。
+如果你在Chrome中收到此错误消息，可以考虑在Firefox中进行测试，可能能够提供有关此问题的更多信息的话。
 
 ### Firefox and Mozilla AutoPush
 
@@ -142,7 +142,7 @@ You'll also receive an `Unauthorized` error response from
 Mozilla AutoPush if the `Authorization` header is not included in your push
 request.
 
-如果您的推送请求中未包含Authorization header，你将会收到来自 Mozilla 自动推送的没有授权的错误信息。
+如果你的推送请求中未包含Authorization header，你将会收到来自 Mozilla 自动推送的没有授权的错误信息。
 
 ```
 {  
@@ -158,7 +158,7 @@ If the expiration in your JWT has expired, you'll also receive an
 `Unauthorized` error with a message that explains that the token has
 expired.
 
-如果JWT的已过期，您将会收到一条 `Unauthorized` 未授权的错误信息，该信息说明该令牌已过期。
+如果JWT的已过期，你将会收到一条 `Unauthorized` 未授权的错误信息，该信息说明该令牌已过期。
 
 ```
 {  
@@ -190,7 +190,7 @@ Lastly if you have an invalid value in your JWT (for example if the "alg" value
 is an unexpected value) you'll receive the following error from Mozilla
 AutoPush:
 
-最后，如果你的的JWT中有无效值（例如，“alg”值是一个异常的值），您将会从Mozilla 自动推送中收到以下错误信息：
+最后，如果你的的JWT中有无效值（例如，“alg”值是一个异常的值），你将会从Mozilla 自动推送中收到以下错误信息：
 
 ```
 {  
@@ -254,7 +254,7 @@ support is 4096 bytes (or 4kb). Anything larger can result in this error.</td>
 </tr>
 <tr>
 <td>429</td>
-<td>请求太多。 您的应用程序服务器已通过推送服务达到了费率限制。 服务的响应应包括“Retry-After” header，设置需要多长时间的间隔另一个请求才能开</td>
+<td>请求太多。 应用程序服务器已通过推送服务达到了费率限制。 服务的响应应包括“Retry-After” header，设置需要多长时间的间隔另一个请求才能开</td>
 </tr>
 <tr>
 <td>400</td>
@@ -297,7 +297,7 @@ decrypt the message it received.
 If this is the case, you should see an error message in Firefox's DevTools
 console like so:
 
-如果是这种情况，您应该可以在 Firefox 的 DevTools 控制台中看到一条错误消息，如下所示：
+如果是这种情况，可以在 Firefox 的 DevTools 控制台中看到一条错误消息，如下所示：
 
 ![Firefox DevTools with decryption message](./images/ff-devtools-decryption-msg.png)
 
@@ -321,7 +321,7 @@ If there was an issue with the decryption of the payload, you'll see an error
 similar to the one displayed above. (Notice the `AES-GCM decryption failed`
 message in the details column.)
 
-如果有效负载的解密存在问题，您将看到类似于上面显示的错误。 （请注意详细信息列中的`AES-GCM decryption failed`消息。）
+如果有效负载的解密存在问题，将看到类似于上面显示的错误。 （请注意详细信息列中的`AES-GCM decryption failed`消息。）
 
 There are a few tools which may help debug encryption if this is your issue:
 
@@ -348,14 +348,14 @@ a push service.
 In Chrome you can check whether the browser is receiving messages by examining
 the 'Receive Message Log' (sic) in `chrome://gcm-internals`.
 
-在Chrome中，您可以通过页面：chrome://gcm-internals 中的“接收消息日志”模块来检查浏览器是否正在接收消息。
+在Chrome中，可以通过页面：chrome://gcm-internals 中的“接收消息日志”模块来检查浏览器是否正在接收消息。
 
 ![GCM internals receive message log](./images/gcm-internals-receive-log.png)
 
 If you aren't seeing the message arrive in a timely fashion then make sure that
 the connection status of your browser is `CONNECTED`:
 
-如果您没有及时看到消息，请确保你的浏览器的连接状态为CONNECTED，如下图所示：
+如果没有及时看到消息，请确保你的浏览器的连接状态为CONNECTED，如下图所示：
 
 ![GCM internals connection state](./images/gcm-internals-connection-state.png)
 
@@ -363,7 +363,7 @@ If it's **not** 'CONNECTED', you may need to delete your current profile and
 [create a new one](https://support.google.com/chrome/answer/2364824). If that
 still doesn't solve the issue, please raise a bug report as suggested below.
 
-如果它不是“CONNECTED”，您可能需要删除当前的配置文件并创建一个新。 如果仍然无法解决问题，请按照下面章节的建议提出错误报告。
+如果它不是“CONNECTED”，可能需要删除当前的配置文件并创建一个新。 如果仍然无法解决问题，请按照下面章节的建议提出错误报告。
 
 ## Raising Bug Reports
 
