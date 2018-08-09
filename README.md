@@ -101,3 +101,5 @@
 - [译文排版规则](https://github.com/xitu/gold-miner/wiki/译文排版规则指北)
 - [校对规则](https://github.com/yued-fe/y-translation/blob/master/doc/校对规则.md)
 - [文章模版](https://github.com/yued-fe/y-translation/blob/master/doc/文章模版.md)
+- [专有名词中英文翻译对照表](https://github.com/yued-fe/y-translation/blob/master/doc/ETC.md)
+- [常用词汇中英文翻译对照表](https://github.com/yued-fe/y-translation/blob/master/doc/commonWords.md)
