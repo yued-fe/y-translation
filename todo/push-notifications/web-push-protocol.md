@@ -24,7 +24,7 @@ service.](./images/svgs/server-to-push-service.svg)
 
 当我们订阅一个用户时，我们会传入一个`applicationServerKey`。这个 key 会被传递给推送服务（push service），并被用于检查订阅用户的和推送消息的应用程序是不是同一个。
 
-当我们触发推送消息时，我们将会发送一组 headers 来用于让推送服务进行验证。（通过 [VAPID 规范](https://tools.ietf.org/html/draft-thomson-webpush-vapid)）
+当我们触发推送消息时，我们将会发送一组 headers 来用于让推送服务进行验证。（headers 在[ VAPID 规范](https://tools.ietf.org/html/draft-thomson-webpush-vapid)中进行了定义）
 
 这一切究竟意味着什么以及究竟发生了什么？ 下面是应用程序服务器身份验证所采取的步骤：
 
