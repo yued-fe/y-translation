@@ -16,9 +16,9 @@
 ![Diagram of sending a push message from your server to a push
 service.](./images/svgs/server-to-push-service.svg)
 
-这一部分大致会描述服务器如何使用应用程序服务器密钥（Application server keys）来识别自身，以及如何发送加密的负载（payload）和关联数据。
+这一部分大致会描述服务器如何使用应用程序服务器密钥（Application server keys）来识别自身，以及如何发送签名的有效负载（payload）和关联数据。
 
-这不是网络推送的一个方面，而我（作者）也不是加密专家，但还是让我们看看每一部分，因为它让我们更容易理解这些库的原理。
+这不是 Web 推送容易理解的一个方面，而我（作者）也不是加密专家，但还是让我们看看每一部分，因为它让我们更容易理解这些库的原理。
 
 ## 应用程序服务器密钥
 
@@ -28,23 +28,23 @@ service.](./images/svgs/server-to-push-service.svg)
 
 这一切究竟意味着什么以及究竟发生了什么？ 下面是应用程序服务器身份验证所采取的步骤：
 
-1. 应用程序服务器使用它的 **私有应用程序密钥（私钥）** 来加密一些 JSON 信息。
-2. 这些加密的信息作为 POST 请求中的 header 发送给推送服务。
-3. 推送服务使用从 `pushManager.subscribe()` 收到的存储下来的公钥来检查接收到的用私钥加密的信息是否由与公钥匹配。*注意*: 公钥是传递给subscribe 方法的 `applicationServerKey`。
-4. 如果加密的信息合法，则推送服务将推送消息发送给用户。
+1. 应用程序服务器使用它的 **私有应用程序密钥（私钥）** 来对一些 JSON 信息进行签名。
+2. 这些签名的信息作为 POST 请求中的 header 发送给推送服务。
+3. 推送服务将之前保存下来的公钥（用户在调用`pushManager.subscribe()`进行订阅推送服务时，推送服务会将传递的公钥进行保存）来校验接收到的消息是由与之匹配的私钥进行签名的。*注意*: 公钥是传递给subscribe 方法的 `applicationServerKey`。
+4. 如果签名的信息合法，则推送服务将推送消息发送给用户。
 
 下面是这种信息流的一个例子。（请注意左下角的图例表示公钥和私钥。）
 
 ![Illustration of how the private application server key is used when sending a
 message.](./images/svgs/application-server-key-send.svg)
 
-添加到请求头的“加密信息”是 JSON Web 令牌（JSON web token）。
+添加到请求头的“签名信息”是 JSON Web 令牌（JSON web token）。
 
 ### JSON Web 令牌
 
 [JSON Web 令牌](https://jwt.io/) (缩写为 JWT) 是一种向第三方发送消息的方式，接收方可以验证谁发送了它。
 
-当第三方收到消息时，他们需要获取发送者的公钥并使用它来验证 JWT 的签名。如果签名有效，则 JWT 必须使用匹配的私钥进行签名，因此必须来自预期的发送者。
+当第三方收到消息时，他们需要获取发送者的公钥并使用它来验证 JWT 的签名。如果签名有效的话，那 JWT 一定是使用了匹配的私钥进行签名，一定是来自预期的发送者。
 
 [https://jwt.io/](https://jwt.io/) 上有许多库可以用来签名，并且我（作者）也建议你使用这些库。但是为了完整起见，我们来看看如何手动创建签名的 JWT。
 
@@ -55,9 +55,9 @@ message.](./images/svgs/application-server-key-send.svg)
 ![A illustration of the strings in a JSON Web
 Token](./images/svgs/authorization-jwt-diagram-header.svg)
 
-第一个和第二个字符串（JWT Info 和 JWT Data）是已经 base64 编码的 JSON 片段，这意味着它是公开可读的。
+第一个和第二个字符串（JWT Info 和 JWT Data）是已经使用 base64 进行编码的 JSON 片段，这意味着它是公开可读的。
 
-第一个字符串是有关 JWT 本身的信息，说明用于创建签名的算法。
+第一个字符串是有关 JWT 本身的信息，指出使用了哪一种算法来创建签名。
 
 Web 推送的 JWT Info 必须包含以下信息：
 
@@ -81,7 +81,7 @@ Web 推送的 JWT Info 必须包含以下信息：
 
 `aud` 代表 “观众（audience）”，即JWT的用户。对于网络推送，“观众”是推送服务，因此我们将其设置为推送服务的源。
 
-`exp` 代表 JWT 的期限，这可以防止黑客在拦截它并重新使用 JWT。 到期时间是以秒为单位的时间戳，必须小于24小时。
+`exp` 代表 JWT 的期限，这可以防止黑客在拦截后重新使用 JWT。 到期时间是以秒为单位的时间戳，必须不大于24小时。
 
 在 Node.js 中，使用以下命令设置到期时间：
 
@@ -93,14 +93,14 @@ Web 推送的 JWT Info 必须包含以下信息：
 
 就像 JWT Info 一样，JWT Data 被编码为URL安全的 base64 字符串。
 
-第三个字符串签名，是取前两个字符串的结果（JWT Info和JWT Data）并用用点号连接（称为“未签名的令牌”），然后签名生成的。
+第三个字符串签名，是取前两个字符串的结果（JWT Info和JWT Data）并用点号连接（称为“未签名的令牌”），然后签名生成的。
 
 签名过程需要使用 ES256 加密 “未签名的令牌”。根据 [JWT 规范](https://tools.ietf.org/html/rfc7519)，ES256 是“椭圆曲线数字签名算法（ECDSA）使用 P-256 曲线和 SHA-256 哈希算法”的缩写。使用 web 加密技术，你可以像这样创建签名：
 
     // 将 UTF-8 编码的 string 转化为 ArrayBuffer 的工具库
     const utf8Encoder = new TextEncoder('utf-8');
 
-    // “未签名的令牌” 是 header 和 body 经过 base64 编码
+    // “未签名的令牌”是由 URL 安全的 base64 算法进行编码的 header 和 body 的组合。
     const unsignedToken = .....;
 
     // 使用 ES256 (SHA-256 over ECDSA) 签名 |unsignedToken|
@@ -133,25 +133,25 @@ Web 推送的 JWT Info 必须包含以下信息：
 
 推送服务可以使用公共应用程序服务器密钥验证 JWT 以解密签名，并确保解密的字符串与“未签名的令牌”（即JWT中的前两个字符串）相同。
 
-签名的 JWT（即通过点连接的所有三个字符串）将在前面拼接上 WebPush 作为 Authorization 消息头的值发送到 Web 推送服务，如下所示：
+签名的 JWT（即通过点连接的所有三个字符串）将在前面拼接上 WebPush 作为 header 中 Authorization 的值发送给 Web 推送服务，如下所示：
 
     Authorization: 'WebPush <JWT Info>.<JWT Data>.<Signature>'
 
-Web 推送协议还规定必须在 Crypto-Key 消息头中将公共应用程序服务器密钥作为一个 URL 安全的 base64 编码的字符串发送，并加上 `p256ecdsa=` 的前缀。
+Web 推送协议还规定公共应用程序服务器密钥必须在 header Crypto-key 中一起发送。密钥需要使用 URL 安全的 base64算法进行编码，并加上 `p256ecdsa=` 的前缀。
 
     Crypto-Key: p256ecdsa=<URL Safe Base64 Public Application Server Key>
 
-## 负载加密
+## 有效负载加密
 
-接下来让我们看一下如何使用推送消息发送负载，以便当我们的Web应用程序收到推送消息时，它可以访问接收的数据。
+接下来让我们看一下如何使用推送消息发送有效负载，以便当我们的Web应用程序收到推送消息时，它可以访问接收的数据。
 
-任何使用其他推送服务的人都会遇到一个常见问题，那就是为什么网络推送负载需要加密？使用原生应用，推送消息可以以纯文本形式发送数据。
+任何使用过其他推送服务的人都会提出一个相同的问题，那就是为什么网络推送有效负载需要加密？使用原生应用，推送消息可以以纯文本形式发送数据。
 
-Web推送的一部分优点在于，因为所有推送服务都使用相同的 API（ Web 推送协议），所以开发人员不必关心推送服务是谁。我们只要以正确的格式发出请求，就可以发送推送消息。这样做的缺点是，开发人员可能会将消息发送到不值得信任的推送服务。通过加密负载，推送服务无法读取发送的数据，只有浏览器才能解密信息，这可以保护用户的数据。
+Web推送的一部分优点在于，因为所有推送服务都使用相同的 API（Web 推送协议），所以开发人员不必关心推送服务是谁。我们只要以正确的格式发出请求，就可以发送推送消息。这样做的缺点是，开发人员可能会将消息发送到不值得信任的推送服务。通过加密有效负载，推送服务无法读取发送的数据，只有浏览器才能解密信息，这可以保护用户的数据。
 
-负载的加密在消息加密规范[Message Encryption spec](https://tools.ietf.org/html/draft-ietf-webpush-encryption)中定义。
+有效负载的加密在[消息加密规范](https://tools.ietf.org/html/draft-ietf-webpush-encryption)中进行了定义。
 
-在我们查看加密推送消息负载的具体步骤之前，我们应该先介绍一些在加密过程中将使用的技术。（感谢 Mat Scales 非常优秀的关于推送加密的文章）
+在我们查看加密推送消息有效负载的具体步骤之前，我们应该先介绍一些在加密过程中将使用的技术。（感谢 Mat Scales 非常优秀的关于推送加密的文章）
 
 ### ECDH 和 HKDF
 
@@ -161,9 +161,9 @@ ECDH 和 HKDF 都在整个加密过程中使用，为加密信息提供了很多
 
 想象一下，你有两个想要分享信息的人，Alice 和 Bob，他们都有自己的公钥和私钥，并且互相分享他们的公钥。
 
-使用 ECDH 生成的密钥的有用属性是，Alice 可以使用她的私钥和 Bob 的公钥来创建一个秘密值“X”，Bob 也可以这样做，利用他的私钥和 Alice 的公钥独立创建相同的值'X'，这使得'X'成为共享秘密。而 Alice 和 Bob 只需要共享他们的公钥，他们就可以使用'X'来加密和解密他们之间的消息。
+使用 ECDH 生成的密钥的有用之处是，Alice 可以使用她的私钥和 Bob 的公钥来创建一个秘密值“X”，Bob 也可以这样做，利用他的私钥和 Alice 的公钥独立创建相同的值'X'，这使得'X'成为共享秘密。而 Alice 和 Bob 只需要共享他们的公钥，他们就可以使用'X'来加密和解密他们之间的消息。
 
-据我所知，ECDH 定义了曲线的属性，这些属性构成了允许这个共同秘密“X”的“特征”。
+据我所知，ECDH 定义了曲线的属性，它保证了可以同时生成一个相同的共享秘密“X”。
 
 这是对 ECDH 的一个抽象的解释，如果想了解更多，我建议观看此[视频](https://www.youtube.com/watch?v=F3zzNa42-tQ)。
 
@@ -181,11 +181,11 @@ ECDH 和 HKDF 都在整个加密过程中使用，为加密信息提供了很多
 
 维基百科对 [HKDF](https://tools.ietf.org/html/rfc5869) 有一个简洁的描述：
 
-> HKDF 是一种基于 HMAC 的密钥派生功能，可将任何弱密钥内容转换为加密密钥内容。例如，它可以用于将 Diffie Hellman 交换的共享秘密转换为适用于加密，完整性检查或认证的密钥内容。
+> HKDF 是一种基于 HMAC 的密钥派生功能，可将任何弱密钥内容转换为强加密密钥内容。例如，它可以用于将 Diffie Hellman 交换的共享秘密转换为适用于加密，完整性检查或认证的密钥内容。
 >
 > -- [维基百科](https://en.wikipedia.org/wiki/HKDF)
 
-从本质上讲，HKDF 将使不是特别安全的输入变得更安全。
+从本质上讲，HKDF 将不是特别安全的输入变得更安全。
 
 定义此加密的规范要求使用 SHA-256 作为我们的哈希算法，并且 Web 推送中 HKDF 的结果密钥不应超过256位（32字节）。
 
@@ -211,21 +211,21 @@ ECDH 和 HKDF 都在整个加密过程中使用，为加密信息提供了很多
 
 对于此示例代码，请参阅 [Mat Scale 的文章](https://developers.google.com/web/updates/2016/03/web-push-encryption)。
 
-这一部分涵盖了 ECDH 和 HKDF。
+这一部分涵盖了 [ECDH](https://en.wikipedia.org/wiki/Elliptic_curve_Diffie%E2%80%93Hellman) 和 [HKDF](https://tools.ietf.org/html/rfc5869)。
 
 ECDH 是一种共享公钥并生成共享密钥的安全方式，HKDF是一种采用不安全的来源并使其安全的方法。
 
-这些将在加密我们的负载期间使用，接下来让我们看看我们采取什么作为输入以及如何加密。
+这些将在加密我们的有效负载期间使用，接下来让我们看看我们采取什么作为输入以及如何加密。
 
 ### 输入（Inputs）
 
-当我们想要通过负载向用户发送推送消息时，我们需要三个输入：
+当我们想要通过有效负载向用户发送推送消息时，我们需要三个输入：
 
-1. 负载自身。
+1. 有效负载自身。
 2. 来自 `PushSubscription` 的 `auth` secret。
-3. 来自 `PushSubscription` 的 `p256dh` 密匙。
+3. 来自 `PushSubscription` 的 `p256dh` 密钥。
 
-我们已经看到 `auth` 和 `p256dh` 值是从 `PushSubscription` 中返回的，但是再次提醒，我们需要给订阅这些值：
+我们已经看到 `auth` 和 `p256dh` 值是从 `PushSubscription` 中返回的，但是再次提醒，给定一个订阅，我们将从中获得这些值：
 
     subscription.joJSON().keys.auth
     subscription.joJSON().keys.p256dh
@@ -235,9 +235,9 @@ ECDH 是一种共享公钥并生成共享密钥的安全方式，HKDF是一种�
 
 `auth` 值应视为机密，不在应用程序外部共享。
 
-`p256dh` 密钥是公钥，有时也称为客户端公钥。这里我们将`p256dh`称为订阅公钥。订阅公钥由浏览器生成，浏览器将保密私钥并将其用于解密负载。
+`p256dh` 密钥是公钥，有时也称为客户端公钥。这里我们将`p256dh`称为订阅公钥。订阅公钥由浏览器生成，浏览器将保密私钥并将其用于解密有效负载。
 
-需要 `auth`，`p256dh` 和 `payload` 这三个值作为输入进行加密，其结果就是负载，而 salt 和公钥用于加密数据。
+需要 `auth`，`p256dh` 和 `payload` 这三个值作为输入进行加密，其结果就是有效负载，而 salt 和公钥仅用于加密数据。
 
 **盐（Salt）**
 
@@ -255,9 +255,9 @@ Salt 需要16字节的随机数据，在 NodeJS 中，我们将执行以下操�
     const localPublicKey = localKeysCurve.getPublicKey();
     const localPrivateKey = localKeysCurve.getPrivateKey();
 
-我们将这些密匙称为“本地密匙”，它们*仅*用于加密，与应用程序服务器密钥*无关*。
+我们将这些密钥称为“本地密钥”，它们*仅*用于加密，与应用程序服务器密钥*无关*。
 
-使用负载，auth secret 和订阅公钥作为输入以及新生成的 salt 和本地密钥，我们准备实际进行一些加密。
+使用有效负载，auth secret 和订阅公钥作为输入以及新生成的 salt 和本地密钥，我们准备好了来做一些真正的加密。。
 
 ### 共享的 secret
 
@@ -275,7 +275,7 @@ Salt 需要16字节的随机数据，在 NodeJS 中，我们将执行以下操�
     const authEncBuff = new Buffer('Content-Encoding: auth\0', 'utf8');
     const prk = hkdf(subscription.keys.auth, sharedSecret, authEncBuff, 32);
 
-你可能想知道 `Content-Encoding: auth\0` 的用途。简而言之，它没有明确的目的，即便如此浏览器可以解密传入的消息并寻找预期的内容编码。`\0`是在缓冲区的末尾添加一个值为0的字节，这是因为浏览器解密消息，期望内容编码需要这么多字节，后面跟着一个值为0的字节，然后是加密数据。
+你可能想知道 `Content-Encoding: auth\0` 的用途。简而言之，它没有明确的目的，即便如此浏览器可以解密传入的消息并寻找预期的内容编码。`\0`是在缓冲区的末尾添加一个值为0的字节，这是浏览器在解密消息时所期盼的，在内容编码的许多字节之后跟着一个值0，再跟着的是加密的数据。
 
 我们的伪随机密钥只是通过 HKDF 运行 auth，shared secret 和一段编码信息（即使其加密更强）。
 
@@ -306,13 +306,13 @@ Salt 需要16字节的随机数据，在 NodeJS 中，我们将执行以下操�
 
 最终的 context buffer 是一个数组，包括订阅公钥中的字节数及密钥本身，以及本地公钥的字节数和密钥本身。
 
-使用 context 的值，我们可以在创建随机数和内容加密密钥（CEK）时使用它。
+我们可以使用 context 值来创建随机数和内容加密密钥 (CEK)。
 
 ### 内容加密密钥和 nonce
 
 [Nonce](https://en.wikipedia.org/wiki/Cryptographic_nonce) 是一个可以防止重放攻击的值，因为它只能使用一次。
 
-内容加密密钥（CEK）是最终用于加密我们的负载的密钥。
+内容加密密钥（CEK）是最终用于加密我们的有效负载的密钥。
 
 首先，我们需要为 nonce 和 CEK 创建数据字节，这只是一个内容编码字符串，后跟我们刚刚计算的 context buffer：
 
@@ -334,7 +334,7 @@ Salt 需要16字节的随机数据，在 NodeJS 中，我们将执行以下操�
 
 ### 执行加密
 
-现在我们有了内容加密密钥，我们可以加密负载了。
+现在我们有了内容加密密钥，我们可以加密有效负载了。
 
 我们使用内容加密密钥作为密钥创建了 AES128 密码，nonce 是其初始化向量。
 
@@ -343,18 +343,18 @@ Salt 需要16字节的随机数据，在 NodeJS 中，我们将执行以下操�
     const cipher = crypto.createCipheriv(
       'id-aes128-GCM', contentEncryptionKey, nonce);
 
-在我们加密负载之前，我们需要定义我们希望添加到负载的填充量，之所以添加填充，是以为它可以防止窃听者根据负载的大小来确定消息“类型”。
+在我们加密有效负载之前，我们需要定义我们希望添加到有效负载的填充量，之所以添加填充，是以为它可以防止窃听者根据有效负载的大小来确定消息“类型”。
 
-必须添加两个填充字节以指示任何其他填充的长度。
+必须添加两个填充字节以指示任何额外的填充长度。
 
-例如，假如你没有添加填充，你也得有两个字节值为0，即没有填充存在，在这两个字节后将读取负载。 如果添加了5个字节的填充，前两个字节的值为5，那么消费者将再读取5个字节，然后再开始读取负载。
+例如，假如你没有添加填充，你也得有两个字节值为0，即没有填充存在，在这两个字节后将读取有效负载。 如果添加了5个字节的填充，前两个字节的值为5，那么消费者将再读取5个字节，然后再开始读取有效负载。
 
     const padding = new Buffer(2 + paddingLength);
     // 除长度外，Buffer 必须为0
     padding.fill(0);
     padding.writeUInt16BE(paddingLength, 0);
 
-后我们通过这个密码运行填充和负载。
+然后我们通过这个密码运行填充和有效负载。
 
     const result = cipher.update(Buffer.concat(padding, payload));
     cipher.final();
@@ -363,17 +363,17 @@ Salt 需要16字节的随机数据，在 NodeJS 中，我们将执行以下操�
     // https://nodejs.org/api/crypto.html#crypto_cipher_getauthtag
     const encryptedPayload = Buffer.concat([result, cipher.getAuthTag()]);
 
-我们现在有加密的负载了，️耶！
+我们现在有加密的有效负载了，️耶！
 
-剩下的就是确定如何将此负载发送到推送服务。
+剩下的就是确定如何将此有效负载发送到推送服务。
 
-### 加密负载的 headers 和 body
+### 加密有效负载的 headers 和 body
 
-要将此加密的负载发送到推送服务，我们需要在 POST 请求中定义几个不同的 header。
+要将此加密的有效负载发送到推送服务，我们需要在 POST 请求中定义几个不同的 header。
 
 #### Encryption header
 
-Encryption header 必须包含用于加密负载的 salt。
+Encryption header 必须包含用于加密有效负载的 salt。
 
 Salt 应该是16字节的，并且经过 base64 URL 安全编码后添加到 Encryption header 中，如下所示：
 
@@ -381,9 +381,9 @@ Salt 应该是16字节的，并且经过 base64 URL 安全编码后添加到 Enc
 
 #### Crypto-Key header
 
-我们已经看到 `Crypto-Key` header 在“应用程序服务器密钥”部分下使用，以包含公共应用程序服务器密钥。
+在“应用程序服务器密钥”章节中，我们已经知道如何使用 `Crypto-Key` header 来包含公共应用程序服务器密钥。
 
-此 header 还用作共享用于加密负载的本地公钥。
+此 header 还用作共享用于加密有效负载的本地公钥。
 
 header 的结果如下所示：
 
@@ -392,13 +392,13 @@ header 的结果如下所示：
 
 #### Content type, length & encoding headers
 
-`Content-Length` header 是加密负载中的字节数。 “Content-Type”和“Content-Encoding”标头是固定值，如下所示。
+`Content-Length` header 是加密有效负载中的字节数。 “Content-Type”和“Content-Encoding”标头是固定值，如下所示。
 
     Content-Length: <Number of Bytes in Encrypted Payload>
     Content-Type: 'application/octet-stream'
     Content-Encoding: 'aesgcm'
 
-设置这些 header 后，我们需要将加密的负载作为请求的 body 发送。 请注意将 `Content-Type` 设置为`application/octet-stream`，这是因为加密的负载必须作为字节流发送。
+设置这些 header 后，我们需要将加密的有效负载作为请求的 body 发送。 请注意将 `Content-Type` 设置为`application/octet-stream`，这是因为加密的有效负载必须作为字节流发送。
 
 在 NodeJS 中我们会这样做：
 
@@ -408,7 +408,7 @@ header 的结果如下所示：
 
 ## 更多的 header？
 
-我们已经介绍了用于 JWT / 应用程序服务器密钥的 headers（即如何使用推送服务认证应用程序），也介绍了用于发送加密负载的 headers。
+我们已经介绍了用于 JWT / 应用程序服务器密钥的 headers（即如何使用推送服务认证应用程序），也介绍了用于发送加密有效负载的 headers。
 
 推送服务还有其他的 headers 来用于改变发送消息的行为。其中一些 headers 是必需的，一些是可选的。
 
@@ -422,7 +422,7 @@ header 的结果如下所示：
 
 如果将 “TTL” 设置为 0，则推送服务将尝试立即传递消息，**但是**如果无法访问设备，则会立即从推送服务队列中删除该消息。
 
-从技术上讲，推送服务可以在需要时减少推送消息的 “TTL”。你可以通过检查推送服务的响应中的“TTL”标头来判断是否发生了这种情况。
+从技术上讲，推送服务可以在需要时减少推送消息的 “TTL”。你可以通过检查推送服务响应中的“TTL”标头来判断是否发生了这种情况。
 
 ##### 主题（Topic）
 
@@ -436,7 +436,7 @@ header 的结果如下所示：
 
 **可选**
 
-紧急度向推送服务说明消息对用户的重要性。推送服务可以使用此功能，通过仅在电池电量不足时唤醒重要消息来达到帮助节省用户设备的电池寿命的目的。
+紧急度向推送服务说明消息对用户的重要性。推送服务可以使用此字段来帮助节省用户设备的电量，当电池电量低的时候，只有当重要消息来临的时候才进行唤醒。
 
 Header 的值定义如下。 默认值是 `normal`.
 
@@ -446,7 +446,7 @@ Header 的值定义如下。 默认值是 `normal`.
 
 如果你对这一切的工作方式有进一步的疑问，可以随时在 [web-push-libs](https://github.com/web-push-libs) 上查看一些库如何触发推送消息。
 
-一旦你有了加密的负载和上面提到的 header，你只需要在 `PushSubscription` 中向 `endpoint` 发出POST请求。
+一旦你有了加密的有效负载和上面提到的 header，你只需要在 `PushSubscription` 中向 `endpoint` 发出POST请求。
 
 那么我们如何处理 POST 请求的响应呢？
 
@@ -482,7 +482,7 @@ Header 的值定义如下。 默认值是 `normal`.
   </tr>
   <tr>
     <td>413</td>
-    <td>负载过大。一个推送服务支持的最小的负载大小是 <a
+    <td>有效负载过大。一个推送服务支持的最小的有效负载大小是 <a
 href="https://tools.ietf.org/html/draft-ietf-webpush-protocol-10#section-7.2">4096 bytes</a>
 （或者 4kb）。</td>
   </tr>
