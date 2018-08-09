@@ -867,12 +867,16 @@ module.exports = {
 
 * Split the bundle into app code, vendor code and runtime
 
-* 将 bundle 拆分成 app（应用） 代码、vendor（第三方库 代码和运行时
+* 将 bundle 拆分成 app（应用） 代码、vendor（第三方库） 代码和运行时
 
 * Inline the runtime to save an HTTP request
 
-* 内联运行时来节省 HTTP 请求
+* 内联运行时可以节省 HTTP 请求
 
 * Lazy-load non-critical code with <code>import</code>
 
+* 使用 import 懒加载非关键代码
+
 * Split code by routes/pages to avoid loading unnecessary stuff
+
+* 按路由或页面拆分代码，从而避免加载不必要的文件
