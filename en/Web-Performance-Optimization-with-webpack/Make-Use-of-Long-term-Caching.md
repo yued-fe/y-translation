@@ -511,15 +511,26 @@ module.exports = {
 
 ## Lazy-load code that you don’t need right now
 
+## 懒加载
+
 Sometimes, a page has more and less important parts:
+
+通常，一个网页会有自身的侧重点：
 
 * If you load a video page on YouTube, you care more about the video than about
   comments. Here, the video is more important than comments.
+  
+* 假如你在 YouTube 上加载一个视频页面, 你更关心的肯定是视频而不是评论. 所以, 这里视频就比评论重要。
+  
 * If you open an article on a news site, you care more about the text of the
   article than about ads. Here, the text is more important than ads.
 
+* 又比如你在一个新闻网站看一篇文章, 你更关心的肯定是文章的文字而不是广告. 所以, 这里文字就比广告重要。
+
 In such cases, improve the initial loading performance by downloading only the most important stuff first, and lazy-loading the remaining parts later. Use [the `import()` function](https://webpack.js.org/api/module-methods/#import-) and
 [code-splitting](https://webpack.js.org/guides/code-splitting/) for this:
+
+上述的这些案例，都是通过优先下载最重要的部分，稍后懒加载剩余部分，从而来提升页面首次加载的性能。在webpack中，使用[`import()` 函数](https://webpack.js.org/api/module-methods/#import-) 和 [code-splitting](https://webpack.js.org/guides/code-splitting/)即可实现。
 
 ``` js
 // videoPlayer.js
@@ -541,6 +552,9 @@ onShowCommentsClick(() => {
 ```
 `import()` specifies that you want to load a specific module dynamically. When webpack sees `import('./module.js')`, it moves this module into a separate chunk:
 
+`import()`函数可以帮助你实现按需加载。webpack 在打包时遇到 `import('./module.js')`，就会把这个模块放到单独的 chunk 中：
+
+
 ``` js
 $ webpack
 Hash: 39b2a53cb4e73f0dc5b2
@@ -555,37 +569,69 @@ Time: 4273ms
 
 and downloads it only when execution reaches the `import()` function.
 
+只有当代码执行到 `import()` 函数时才会去下载。
+
 This will make the `main` bundle smaller, improving the initial loading time.
 Even more, it will improve caching – if you change the code in the main chunk,
 comments chunk won’t get affected.
 
+这样可以让 `入口` bundle 变得更小，从而减少首次加载时间。不仅如此，它还可以优化缓存 - 如果你修改了入口 chunk 的代码，注释 chunk 不会受到影响。
+
 > ⭐️ Note: If you compile this code with Babel, you’ll have a syntax error because Babel doesn’t understand `import()` out of the box. To avoid the error, add the [`syntax-dynamic-import`](https://www.npmjs.com/package/babel-plugin-syntax-dynamic-import) plugin.
 
-### Further reading {: .hide-from-toc }
+> ⭐️ 注意: 如果你使用 Babel 编译代码，会因为 Babel 无法识别 `import()` 而出现语法错误。为了避免这个错误，你可以添加[`syntax-dynamic-import`](https://www.npmjs.com/package/babel-plugin-syntax-dynamic-import)插件。
+
+### Further reading
+
+### 扩展阅读
 
 * Webpack docs [for the `import()` function](https://webpack.js.org/api/module-methods/#import-)
+
+* Webpack 文档 [`import()` 函数的使用](https://webpack.js.org/api/module-methods/#import-)
+
 * The JavaScript proposal [for implementing the `import()` syntax](https://github.com/tc39/proposal-dynamic-import)
+
+* JavaScript 提案  [实现`import()`语法](https://github.com/tc39/proposal-dynamic-import)
 
 ## Split the code into routes and pages
 
+## 将代码拆分为路由和页面
+
 If your app has multiple routes or pages, but there’s only a single JS file with the code (a single `main` chunk), it’s likely that you’re serving extra bytes on each request. For example, when a user visits a home page of your site:
+
+如果你的应用有多个路由或页面，但是代码中只有单独一个的 JS 文件（一个单独的`入口` chunk），这样似乎会让你的每次请求都附加了额外的流量。例如，当用户访问你网站的首页：
 
 ![](https://developers.google.com/web/fundamentals/performance/webpack/site-home-page.png)
 
 they don’t need to load the code for rendering an article that’s on a different page – but they will load it. Moreover, if the user always visits only the home page, and you make a change in the article code, webpack will invalidate the whole bundle – and the user will have to re-download the whole app.
 
+他们并不需要加载其它页面上用于渲染文章的代码 - 但他们却加载了。此外，如果这个用户经常只是访问首页，但如果你更改了其它页面的文章代码，webpack 会重新编译，使整个 bundle 失效 - 这样导致用户将重新下载整个应用的代码。
+
 If we split the app into pages (or routes, if it’s a single-page app), the user will download only the relevant code. Plus, the browser will cache the app code better: if you change the home page code, webpack will invalidate only the corresponding chunk.
+
+如果我们将代码拆分到页面中（或者单页面应用的路由里），用户就会只下载真正用到的那部分代码。此外，浏览器也会更好地缓存应用代码：当你改变首页的代码时，webpack 只会让相匹配的 chunk 失效。
 
 ### For single-page apps
 
+### 单页面应用
+
 To split single-page apps by routes, use `import()` (see the [“Lazy-load code that you don’t need right now”](#lazy-loading) section). If you use a framework, it might have an existing solution for this:
 
+要通过路由来拆分单页应用，可以使用 `import()`（参加上文[懒加载](#lazy-loading)部分）。如果你使用的是一个框架，目前也有现成的解决方案：
+
 * [“Code Splitting”](https://reacttraining.com/react-router/web/guides/code-splitting) in `react-router`'s docs (for React)
-* [“Lazy Loading Routes”](https://router.vuejs.org/en/advanced/lazy-loading.html) in `vue-router`'s docs (for Vue.js)
+
+* `react-router`文档中的[“Code Splitting”](https://reacttraining.com/react-router/web/guides/code-splitting)  (适用于React)
+
+* `vue-router`文档中的[“Lazy Loading Routes”](https://router.vuejs.org/en/advanced/lazy-loading.html)(适用于Vue.js)
 
 ### For traditional multi-page apps
 
+### 传统多页应用
+
 To split traditional apps by pages, use webpack’s [entry points](https://webpack.js.org/concepts/entry-points/). If your app has three kinds of pages: the home page, the article page and the user account page, – it should have three entries:
+
+要通过页面来拆分传统应用，可以使用 webpack 的 [entry points](https://webpack.js.org/concepts/entry-points/)。假设你的应用中有三类页面：主页、文章页、用户账户页，- 那么就应该有三个入口：
 ``` js
 // webpack.config.js
 module.exports = {
@@ -597,6 +643,8 @@ module.exports = {
 };
 ```
 For each entry file, webpack will build a separate dependency tree and generate a bundle that includes only modules that are used by that entry:
+
+对于每个入口文件，webpack 将构建一个单独的依赖树并生成一个 bundle，这个 bundle 里只有包含这个入口所使用到的模块：
 
 ``` js
 $ webpack
@@ -614,8 +662,11 @@ Time: 4273ms
 
 So, if only the article page uses Lodash, the `home` and the `profile` bundles won’t include it – and the user won’t have to download this library when visiting the home page.
 
+所以，如果你的文章页面使用到了 Lodash， `home` and `profile` bundle其实不会包含它 - 用户也不会在访问首页的时候下载到这个库。
+
 Separate dependency trees have their drawbacks though. If two entry points use Lodash, and you haven’t moved your dependencies into a vendor bundle, both entry points will include a copy of Lodash. To solve this, **in webpack 4,** add the `optimization.splitChunks.chunks: 'all'` option into your webpack config:
 
+但是，单独的依赖树有它们的缺点。如果两个入口都使用到了 Lodash，同时你没有将依赖移到 vendor bundle中，则两个入口都将包含 Lodash 的副本。为了解决这个问题，**在 webpack 4 中**，可以在你的 webpack 配置中加入`optimization.splitChunks.chunks: 'all'`选项：
 ``` js
 // webpack.config.js (for webpack 4)
 module.exports = {
@@ -629,7 +680,11 @@ module.exports = {
 
 This option enables smart code splitting. With this option, webpack would automatically look for common code and extract it into separate files.
 
+这个选项可以开启智能代码拆分。有了这个选项，webpack 将自动查找到公共代码，并且提取待单独的文件中。
+
 Or, **in webpack 3,** use the [`CommonsChunkPlugin`](https://webpack.js.org/plugins/commons-chunk-plugin/) – it will move common dependencies into a new specified file:
+
+**在 webpack 3中**，可以使用[`CommonsChunkPlugin`](https://webpack.js.org/plugins/commons-chunk-plugin/)插件，它会将公共的依赖项移动到一个新的指定文件中：
 
 ``` js
 // webpack.config.js (for webpack 3)
@@ -650,17 +705,35 @@ module.exports = {
 
 Feel free to play with the `minChunks` value to find the best one. Generally, you want to keep it small, but increase if the number of chunks grows. For example, for 3 chunks, `minChunks` might be 2, but for 30 chunks, it might be 8 – because if you keep it at 2, too many modules will get into the common file, inflating it too much.
 
-### Further reading {: .hide-from-toc }
+你可以尝试调整`minChunks`的值来找到最优的效果。通常情况下，你希望它是一个较小的值，但随着 chunk 数量的增加它会随之增大。例如，有3个 chunk 时，`minChunks` 的值可能是 2 ，但是有30个 chunk 时，它的值可能是8 - 因为如果你把它设置成 2，就会有很多模块要被打包进同一个通用文件中，这样文件就会变得臃肿。
+
+### Further reading 
+
+### 扩展阅读
 
 * Webpack docs [about the concept of entry points](https://webpack.js.org/concepts/entry-points/)
+
+* Webpack 文档 [关于 entry points 的概念](https://webpack.js.org/concepts/entry-points/)
+
 * Webpack docs [about the CommonsChunkPlugin](https://webpack.js.org/plugins/commons-chunk-plugin/)
+
+* Webpack 文档 [关于 CommonsChunkPlugin 插件](https://webpack.js.org/plugins/commons-chunk-plugin/)
+
 * [“Getting the most out of the CommonsChunkPlugin”](https://medium.com/webpack/webpack-bits-getting-the-most-out-of-the-commonschunkplugin-ab389e5f318)
+
+* [“CommonsChunkPlugin的最佳实践”](https://medium.com/webpack/webpack-bits-getting-the-most-out-of-the-commonschunkplugin-ab389e5f318)
+
 * [How `optimization.splitChunks` and `optimization.runtimeChunk` work](https://gist.github.com/sokra/1522d586b8e5c0f5072d7565c2bee693)
+
+* [`optimization.splitChunks` 和 `optimization.runtimeChunk` 的工作原理](https://gist.github.com/sokra/1522d586b8e5c0f5072d7565c2bee693)
 
 ## Make module ids more stable
 
+## 确保模块的 id 更加稳定
+
 When building the code, webpack assigns each module an ID. Later, these IDs are used in `require()`s inside the bundle. You usually see IDs in the build output right before the module paths:
 
+编译代码时，webpack 会为每个模块分配一个ID。随后，这些 ID 将在 bundle 里的 `require()` 函数中被使用到。你通常会在编译输出的模块路径前看到这些 ID：
 ``` bash
 $ webpack
 Hash: df3474e4f76528e3bbc9
@@ -673,7 +746,7 @@ Time: 2150ms
 ./runtime.79f17c27b335abc7aaf4.js  1.45 kB       3  [emitted]  runtime
 ```
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ Here
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ 看下面
 
 ``` bash
    [0] ./index.js 29 kB {1} [built]
@@ -685,6 +758,8 @@ Time: 2150ms
 ```
 
 By default, IDs are calculated using a counter (i.e. the first module has ID 0, the second one has ID 1, and so on). The problem with this is that when you add a new module, it might appear in the middle of the module list, changing all the next modules’ IDs:
+
+默认情况下，这些 ID 是使用计数器计算出来的（例如，第一个模块的 ID 是 0，第二个模块的 ID 就是 1，以此类推）。但这样做有个问题，当你新增一个模块时，它会可能出现在模块列表的中间，从而导致之后所有模块的 ID 都被改变：
 
 ``` js
 $ webpack
@@ -703,7 +778,7 @@ Time: 2150ms
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ We’ve added a new module...
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ 我们已经添加一个新的模块
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ 我们添加了一个新模块...
 
 ``` js
    [4] ./webPlayer.js 24 kB {1} [built]
@@ -711,11 +786,15 @@ Time: 2150ms
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ And look what it has done! `comments.js` now has ID 5 instead of 4
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ 看看下面做了什么！ `comments.js` 的 ID 由 4 变成了 5
+
 ``` js
    [5] ./comments.js 58 kB {0} [built]
 ```
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ `ads.js` now has ID 6 instead of 5
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ `ads.js` 的 ID 由 5 变成了 6
 
 ``` JS
    [6] ./ads.js 74 kB {1} [built]
@@ -724,7 +803,11 @@ Time: 2150ms
 
 This invalidates all chunks that include or depend on modules with changed IDs – even if their actual code hasn’t changed. In our case, the `0` chunk (the chunk with `comments.js`) and the `main` chunk (the chunk with the other app code) get invalidated – whereas only the `main` one should’ve been.
 
+这将使包含或依赖于这些被更改 ID 的模块的所有 chunks 都无效 - 即使它们实际代码没有更改。在我们的案例中，`0` chunk ( `comments.js` 的 chunk)  和 `main` chunk （其它应用代码的 chunk ）都将失效 - 但其实只有 `main` 应该失效。
+
 To solve this, change how module IDs are calculated using the [`HashedModuleIdsPlugin`](https://webpack.js.org/plugins/hashed-module-ids-plugin/). It replaces counter-based IDs with hashes of module paths:
+
+为了解决这个问题，可以使用[`HashedModuleIdsPlugin`](https://webpack.js.org/plugins/hashed-module-ids-plugin/)插件来改变模块 ID 的计算方式。这个插件用模块路径的哈希值代替了基于计数器的ID：
 
 ``` js
 $ webpack
@@ -738,7 +821,7 @@ Time: 2150ms
 ./runtime.25f5d0204e4f77fa57a1.js  1.45 kB       3  [emitted]  runtime
 ```
 
-&nbsp;&nbsp;&nbsp;↓ Here
+&nbsp;&nbsp;&nbsp;↓ 看下面
 
 ``` js
 [3IRH] ./index.js 29 kB {1} [built]
@@ -752,7 +835,11 @@ Time: 2150ms
 
 With this approach, the ID of a module only changes if you rename or move that module. New modules won’t affect other modules’ IDs.
 
+使用这个方法，只有当重命名或移动该模块时，模块的 ID 才会更改。新的模块也不会影响到其他模块的 ID。
+
 To enable the plugin, add it to the `plugins` section of the config:
+
+可以在配置中的 `plugins` 部分开启这个插件：
 
 ``` js
 // webpack.config.js
@@ -764,12 +851,28 @@ module.exports = {
 ```
 ### Further reading
 
+### 扩展阅读
+
 * Webpack docs [about the HashedModuleIdsPlugin](https://webpack.js.org/plugins/hashed-module-ids-plugin/)
+
+* Webpack 文档 [关于 HashedModuleIdsPlugin](https://webpack.js.org/plugins/hashed-module-ids-plugin/)
 
 ## Summing up
 
+## 总结
+
 * Cache the bundle and differentiate between versions by changing the bundle name
+
+* 缓存 bundle 并通过更改 bundle 名称来进行版本控制
+
 * Split the bundle into app code, vendor code and runtime
+
+* 将 bundle 拆分成 app（应用） 代码、vendor（第三方库 代码和运行时
+
 * Inline the runtime to save an HTTP request
+
+* 内联运行时来节省 HTTP 请求
+
 * Lazy-load non-critical code with <code>import</code>
+
 * Split code by routes/pages to avoid loading unnecessary stuff
