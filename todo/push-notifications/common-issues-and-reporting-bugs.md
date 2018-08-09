@@ -14,7 +14,7 @@ When you hit an issue with web push, it can be difficult to debug the issue or
 find help. This doc outlines some of the common issues and what you should
 do if you've found a bug in Chrome or Firefox.
 
-当你使用网络推送遇到问题时，可能很难去调试这个问题或寻求帮助。 本文将概述了一些常见问题以及如果你在Chrome或Firefox中发现错误，应该怎么去做。
+当你使用网络推送遇到问题时，可能很难去调试这个问题或寻求帮助。 本文将概述一些常见问题以及如果你在Chrome或Firefox中发现错误，应该怎么去做。
 
 Before we dive into debugging push, you may be hitting issues with debugging
 service workers themselves, the file not updating, failing to register or
@@ -28,7 +28,7 @@ service worker development.
 There are two distinct stages to check off when developing and testing web push,
 each with their own set of common issues / problems.
 
-在开发和测试Web推送时，我们会遇到是两个截然不同的阶段，每个阶段都有自己的常见问题。
+在开发和测试Web推送两个阶段中，每个阶段都有自己的常见问题。
 
 - **Sending a Message:** Make sure that sending messages is successful.
    You should be getting a 201 HTTP code. If you aren't :
