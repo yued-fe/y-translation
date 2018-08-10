@@ -1,4 +1,4 @@
-# Monitor and analyze the app
+# 监控和分析应用
 
 > - **原文地址：** https://developers.google.com/web/fundamentals/performance/webpack/monitor-and-analyze
 > - **原文作者：** [Ivan Akulov](https://developers.google.com/web/resources/contributors/iamakulov)
@@ -6,9 +6,9 @@
 > - **译者：** 泥坤
 > - **校对者：**
 
-即使你可以通过配置webpack使得应用尽可能小，追踪它并且知道它包含什么仍然是很重要的。否则，你可以安装一个让应用大两倍的依赖并且毫无感知。
+即使你可以通过配置webpack使得应用尽可能小，追踪它并且知道它包含什么仍然是很重要的。否则，你可能安装了一个依赖让应用大了两倍却浑然不觉。
 
-这一小节讲一下那些帮助你理解你的bundle的工具
+这一小节讲几个可以帮助你深入分析你的bundle的工具
 
 ## 追踪bundle的大小
 
@@ -20,15 +20,15 @@
 
 ![](https://developers.google.com/web/fundamentals/performance/webpack/webpack-dashboard.png)
 
-这个看板帮助追踪大的依赖——如果你增加了一个依赖，你会理解在Modules区域里看到它
+这个看板帮助追踪大的依赖——如果你增加了一个依赖，你会立即在Modules里看到它
 
-为了使用它，需要安装依赖包 `webpack-dashboard` :
+要想使用它，需要安装依赖包 `webpack-dashboard` :
 
 ```js
 npm install webpack-dashboard --save-dev
 ```
 
-然后在config的`plugins`字段里增加这个plugin:
+然后在`webpack.config.js`的`plugins`字段里增加这个plugin:
 
 ```js
 // webpack.config.js
@@ -51,16 +51,16 @@ compiler.apply(new DashboardPlugin());
 
 ### bundlesize
 
-[bundlesize](https://github.com/siddharthkp/bundlesize) 校验webpack资源的没有超过指定的大小。集成到CI（命令行？）中，当应用过大的时候可以收到提醒。
+[bundlesize](https://github.com/siddharthkp/bundlesize) 校验webpack的资源没有超过指定的大小。将它集成到CI中，当应用过大的时候可以收到提醒。
 
 ![](https://developers.google.com/web/fundamentals/performance/webpack/bundlesize.jpg)
 
-配置它:
+配置:
 
-**找出最大尺寸**
+**确定大小上限**
 
-1. 优化引用，让它尽可能小。运行prodocution build
-2. 向`package.json`的<code>bundlesize<code>字段中增加以下内容
+1. 先优化引用，让它尽可能小，然后运行prodocution build；
+2. 向`package.json`的<code>bundlesize</code>字段中增加以下内容：
 
     ``` js
     // package.json
@@ -88,11 +88,11 @@ compiler.apply(new DashboardPlugin());
     PASS  ./dist/vendor.ff9f7ea865884e6a84c8.js: 31.49KB
     ```
 
-4. 给每个文件增加10-20%, 就可以得到最大大小。这10%-20%的buffer可以让你像平常一样开发，并且当它的大小增长的过大的时候向你告警
+4. 在每个文件大小的基础上增加10-20%, 就可以得到大小上限。这10%-20%的buffer可以保证既不妨碍你日常开发，又可以在它的大小增长的过大的时候向你告警
 
 **启用 `bundlesize`**
 
-5. 以开发依赖的方式安装<code>bunlesize</code>包:
+5. 安装<code>bunlesize</code>包:
 
     ``` js
     npm install bundlesize --save-dev
@@ -149,7 +149,7 @@ target](https://infrequently.org/2017/10/can-you-afford-it-real-world-web-perfor
 
 ## 分析bundle为什么这么大
 
-你可能想要深究bundle来看看什么模块在占用空间。请看 [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer):
+你可能想要深究bundle中什么模块在占用空间。请看 [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer):
 
 <figure>
   <video src="https://developers.google.com/web/fundamentals/performance/webpack/webpack-bundle-analyzer.mp4" alt="A screen recording of the webpack bundle analyzer
@@ -161,7 +161,7 @@ href="https://github.com/webpack-contrib/webpack-bundle-analyzer">github.com/web
 
 webpack-bundle-analyzer 扫描bundle并且建立一个可视化的结果展示它包括什么。
 
-	要使用analyzer,安装`webpack-bundle-analyzer`包
+要使用analyzer,安装`webpack-bundle-analyzer`包
 
 ``` js
 npm install webpack-bundle-analyzer --save-dev
@@ -181,20 +181,19 @@ module.exports = {
 ```
 然后运行production build，插件会在浏览器里打开一个统计的页面。
 
-默认情况下，统计页面展示的是解析过后的文件大小。（即出现在bundle里的文件），你可能想要比较gzip大小，因为这会更接近真实用户的体验。可以在侧边栏切换大小类型。
+默认情况下，统计页面展示的是解析过后的文件大小。（即出现在bundle里的文件），你可能想要比较gzip后的大小，因为这会更接近真实用户的体验。可以在侧边栏切换大小类型。
 
-> ⭐️ Note: If you use the [ModuleConcatenationPlugin](https://webpack.js.org/plugins/module-concatenation-plugin/), it might merge a part of modules in the webpack-bundle-analyzer output, making the report less detailed. If
-you use this plugin, disable it during the analysis.
+> ⭐️注意 : 如果你使用 [ModuleConcatenationPlugin](https://webpack.js.org/plugins/module-concatenation-plugin/), 一部分在webpack-bundle-analyzer输出的模块可能会被合并，使得报告的信息量减少。所以如果你在用这个插件，在分析的过程中需要将它禁用掉。
 
 以下希望从报告中得到的信息：
 
-- **大的依赖** 为什么他们那么大？是否有更小的替代品？（例如Preact 代替React）你是否需要其中的全部代码？（例如，Moment.js包含很多并不需要其实可以扔掉的部分）[that are often not used and could be dropped](https://github.com/GoogleChromeLabs/webpack-libs-optimizations#moment))?
+- **大的依赖** 为什么他们那么大？是否有更小的替代品（例如Preact 代替React）？你是否需要其中的全部代码？（例如，Moment.js包含很多并不需要其实可以扔掉的部分）
 
 - **重复的依赖** 你是否在多个文件里看到相同的依赖？（使用像webpack4中的`optimization.splitChunks.chunks`选项或者`webpack3中的CommonsChunkPlugin`来将他们移到一个公共文件里）或者bundle是否在包含了同一个库的多个版本？
 
 - **相似的依赖.** 是否有相似的库做着差不多的事情？（例如`comment` 和`date-fns`或者`lodash`和`lodash-es`）.试着统一成单一的工具
 
-Also, check out Sean Larkin’s [great analysis of webpack
+同时,建议看一下 Larkin’的 [great analysis of webpack
 bundles](https://medium.com/webpack/webpack-bits-getting-the-most-out-of-the-commonschunkplugin-ab389e5f318).
 
 ## 总结
