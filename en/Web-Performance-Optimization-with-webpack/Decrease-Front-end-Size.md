@@ -1,5 +1,5 @@
 
-# Decrease Front-end Size
+# 减小前端大小
 
 > - **原文地址：** https://developers.google.com/web/fundamentals/performance/webpack/decrease-frontend-size
 > - **原文作者：** [Ivan Akulov](https://developers.google.com/web/resources/contributors/iamakulov)
@@ -7,11 +7,11 @@
 > - **译者：** 
 > - **校对者：**
 
-One of the first things to do when you’re optimizing an application is to make it as small as possible. Here’s how to do this with webpack.
+当你正在优化一个应用时，第一件事就是尽可能地减少它的大小。这里介绍如何利用webpack来实现。
 
-## Use the production mode (webpack 4 only)
+## 使用生产模式(只在webpack 4)
 
-Webpack 4 introduced [the new `mode` flag](https://webpack.js.org/concepts/mode/). You could set this flag to `'development'` or `'production'` to hint webpack that you’re building the application for a specific environment:
+Webpack 4 介绍了 [新的 `mode` 标志](https://webpack.js.org/concepts/mode/). 你可以将这个标志设置为 `'development'` 或者 `'production'` 来指示 webpack 你正在为特定环境构建应用：
 
 ```js
 // webpack.config.js
@@ -20,20 +20,20 @@ module.exports = {
 };
 ```
 
-Make sure to enable the `production` mode when you’re building your app for production. This will make webpack apply optimizations like minification, removal of development-only code in libraries, [and more](https://medium.com/webpack/webpack-4-mode-and-optimization-5423a6bc597a).
+当在生产环境构建应用时，请确保你设置的模式是 `production` 。 这将让 webpack 应用例如缩小尺寸、移除代码库中只在开发者模式才有的代码以及[更多](https://medium.com/webpack/webpack-4-mode-and-optimization-5423a6bc597a)的一些优化。
 
-### Further reading
+### 扩展阅读
 
 * [What specific things the `mode` flag configures](https://medium.com/webpack/webpack-4-mode-and-optimization-5423a6bc597a)
 
-## Enable minification
+## 启用缩减尺寸
 
-> ⭐️ **Note:** most of this is webpack 3 only. If you use [webpack 4 with the production mode](#enable-the-production-mode), the bundle-level minification is already enabled – you’ll only need to enable [loader-specific options](#loader-specific-options).
+> ⭐️ **注意:** most of this is webpack 3 only. 如果你使用 [production 模式下的webpack 4](#enable-the-production-mode), bundle-level 缩减已经启用 – 你只需要启用 [特定加载选项](#loader-specific-options).
 
-Minification is when you compress the code by removing extra spaces, shortening variable names and so on. Like this:
+缩减尺寸是在你通过移除额外的空间、缩短变量的命名等方式压缩代码的时候。例如这样：
 
 ``` js
-// Original code
+// 原来的代码
 function map(array, iteratee) {
   let index = -1;
   const length = array == null ? 0 : array.length;
@@ -49,17 +49,17 @@ function map(array, iteratee) {
 ↓
 
 ``` js
-// Minified code
+// 缩减后的代码
 function map(n,r){let t=-1;for(const a=null==n?0:n.length,l=Array(a);++t<a;)l[t]=r(n[t],t,n);return l} 
 ```
 
-Webpack supports two ways to minify the code: **the bundle-level minification** and **loader-specific options**. They should be used simultaneously.
+Webpack 支持两种方式缩减代码： **bundle-level 缩减** and **loader-specific 选项**. 它们应该同步使用。
 
-### Bundle-level minification
+### Bundle-level 缩减
 
-The bundle-level minification compresses the whole bundle after compilation. Here’s how it works:
+当编辑完成后，bundle-level 缩减会压缩整个的 bundle 。这里展示了它是如何工作的： 
 
-1.  You write code like this:
+1.  你是这样写代码的:
     ``` js
     // comments.js
     import './comments.css';
@@ -67,7 +67,7 @@ The bundle-level minification compresses the whole bundle after compilation. Her
       console.log('Rendered!');
     }
     ```
-2.  Webpack compiles it into approximately the following:
+2.  Webpack 大约会将其编译成如下内容:
     
     ``` js
     // bundle.js (part of)
@@ -90,9 +90,9 @@ The bundle-level minification compresses the whole bundle after compilation. Her
     Object.defineProperty(n,"__esModule",{value:!0}),n.render=t;var o=r(1);r.n(o)
     ```   
 
-**In webpack 4,** the bundle-level minification is enabled automatically – both in the production mode and without one. It uses [the UglifyJS minifier](https://github.com/mishoo/UglifyJS2) under the hood. (If you ever need to disable minification, just use the development mode or pass `false` to the `optimization.minimize` option.)
+**在 webpack 4,** the bundle-level 自动启用缩减 – both in the production mode and without one. 它使用 [the UglifyJS minifier](https://github.com/mishoo/UglifyJS2) under the hood. (If you ever need to disable minification, just use the development mode or pass `false` to the `optimization.minimize` option.)
 
-**In webpack 3,** you need to use [the UglifyJS plugin](https://github.com/webpack-contrib/uglifyjs-webpack-plugin) directly. The plugin comes bundled with webpack; to enable it, add it to the `plugins` section of the config:
+**在 webpack 3,** 你需要直接使用 [UglifyJS 插件](https://github.com/webpack-contrib/uglifyjs-webpack-plugin) . The plugin comes bundled with webpack; to enable it, add it to the `plugins` section of the config:
 
 ``` js
 // webpack.config.js
@@ -105,9 +105,9 @@ module.exports = {
 };  
 ```
 
-> ⭐️ **Note:** In webpack 3, the UglifyJS plugin can’t compile the ES2015+ (ES6+) code. This means that if your code uses classes, arrow functions or other new language features, and you don’t compile them into ES5, the plugin will throw an error.  
+> ⭐️ **注意:** 在 webpack 3, UglifyJS 插件 不能编译版本超过 ES2015 (即ES6) 的代码. 这意味着如果你的代码使用了类、箭头函数或者语言的其它特性，你不能将它们编译成 ES5 版本的代码, 插件将抛出一个错误.  
   
-> If you need to compile the new syntax, use the [uglifyjs-webpack-plugin](https://github.com/webpack-contrib/uglifyjs-webpack-plugin) package. This is the same plugin that’s bundled with webpack, but newer, and it’s able to compile the ES2015+ code.
+> 如果你需要编译包含新的语法（的代码），使用[uglifyjs-webpack-plugin](https://github.com/webpack-contrib/uglifyjs-webpack-plugin) package. This is the same plugin that’s bundled with webpack, but newer, and it’s able to compile the ES2015+ code.
 
 ### Loader-specific options
 
