@@ -59,7 +59,7 @@ Webpack 支持两种方式缩减代码： **bundle-level 缩减** and **loader-s
 
 当编辑完成后，bundle-level 缩减会压缩整个的 bundle 。这里展示了它是如何工作的： 
 
-1.  你是这样写代码的:
+1.  你的代码是这样的:
     ``` js
     // comments.js
     import './comments.css';
@@ -82,7 +82,7 @@ Webpack 支持两种方式缩减代码： **bundle-level 缩减** and **loader-s
       console.log('Rendered!');
     }
     ```   
-3.  A minifier compresses it into approximately the following:
+3.  A minifier 大约会压缩成下面那样：
     
     ```js
     // minified bundle.js (part of)
@@ -105,13 +105,13 @@ module.exports = {
 };  
 ```
 
-> ⭐️ **注意:** 在 webpack 3, UglifyJS 插件 不能编译版本超过 ES2015 (即ES6) 的代码. 这意味着如果你的代码使用了类、箭头函数或者语言的其它特性，你不能将它们编译成 ES5 版本的代码, 插件将抛出一个错误.  
+> ⭐️ **注意:** 在 webpack 3, UglifyJS 插件不能编译版本超过 ES2015 (即ES6) 的代码. 这意味着如果你的代码使用了类、箭头函数或者语言的其它特性，你不能将它们编译成 ES5 版本的代码, 插件将抛出一个错误.  
   
-> 如果你需要编译包含新的语法（的代码），使用[uglifyjs-webpack-plugin](https://github.com/webpack-contrib/uglifyjs-webpack-plugin) package. This is the same plugin that’s bundled with webpack, but newer, and it’s able to compile the ES2015+ code.
+> 如果你需要编译包含新的语法（的代码），使用[uglifyjs-webpack-plugin](https://github.com/webpack-contrib/uglifyjs-webpack-plugin) 包. This is the same plugin that’s bundled with webpack, but newer, and it’s able to compile the ES2015+ code.
 
-### Loader-specific options
+### Loader-specific 选项
 
-The second way to minify the code is loader-specific options ([what a loader is](https://webpack.js.org/concepts/loaders/)). With loader options, you can compress things that the minifier can’t minify. For example, when you import a CSS file with [`css-loader`](https://github.com/webpack-contrib/css-loader), the file is compiled into a string:
+缩减代码的第二种方法是 loader-specific 选项 ([加载器是什么](https://webpack.js.org/concepts/loaders/)). 利用加载器选项，你可以压缩 minifier 不能缩减的东西。例如，当你利用[`css-loader`](https://github.com/webpack-contrib/css-loader)导入一个CSS文件时，该文件会被编译成一个字符串：
 
 ``` css
 /* comments.css */  
@@ -123,12 +123,12 @@ The second way to minify the code is loader-specific options ([what a loader is]
 ↓
 
 ``` js
-// minified bundle.js (part of)
+// 缩减后的 bundle.js (部分代码)
 exports=module.exports=__webpack_require__(1)(),
 exports.push([module.i,".comment {\r\n  color: black;\r\n}",""]);
 ```
 
-The minifier can’t compress this code because it’s a string. To minify the file content, we need to configure the loader to do this:
+The minifier 不能压缩该代码，因为它是一个字符串。 为了缩减文件内容，我们需要像这样配置加载器：
 
 ``` js
 // webpack.config.js
@@ -147,18 +147,18 @@ module.exports = {
 };
 ```
 
-### Further reading
+### 扩展阅读
 
-* [The UglifyJsPlugin docs](https://github.com/webpack-contrib/uglifyjs-webpack-plugin)
-* Other popular minifiers: [Babel Minify](https://github.com/webpack-contrib/babel-minify-webpack-plugin), [Google Closure Compiler](https://github.com/roman01la/webpack-closure-compiler) 
+* [UglifyJsPlugin 文档](https://github.com/webpack-contrib/uglifyjs-webpack-plugin)
+* 其它流行的 minifiers: [Babel Minify](https://github.com/webpack-contrib/babel-minify-webpack-plugin), [Google Closure Compiler](https://github.com/roman01la/webpack-closure-compiler) 
 
-## Specify **NODE_ENV=production**
+## 指定 **NODE_ENV=production**
 
-> ⭐️ **Note:** this is webpack 3 only. If you use [webpack 4 with the production mode](#enable-the-production-mode), the `NODE_ENV=production` optimization is already enabled – feel free to skip the section.
+> ⭐️ **注意:** 这只适用于 webpack 3. 如果你在[production 模式下使用 webpack 4](#enable-the-production-mode),  `NODE_ENV=production` 优化已启用 – 自在地跳过该部分.
 
-Another way to decrease the front-end size is to set the `NODE_ENV` [environmental variable](https://superuser.com/questions/284342/what-are-path-and-other-environment-variables-and-how-can-i-set-or-use-them) in your code to the value `production`.
+减少前端大小的另一种方法在你的代码中将 `NODE_ENV` [环境变量](https://superuser.com/questions/284342/what-are-path-and-other-environment-variables-and-how-can-i-set-or-use-them) 设置为 `production`.
 
-Libraries read the `NODE_ENV` variable to detect in which mode they should work – in the development or the production one. Some libraries behave differently based on this variable. For example, when `NODE_ENV` is not set to `production`, Vue.js does additional checks and prints warnings:
+库会读取 `NODE_ENV` 变量以检测它们应该在哪个模式下工作 – 在开发或生产中。 有些库基于该变量而有不同的表现。例如，当 `NODE_ENV` 没有设置为 `production`, Vue.js 会做额外的检查并打印警告：
 
 ``` js
 // vue/dist/vue.runtime.esm.js
@@ -169,7 +169,7 @@ if (process.env.NODE_ENV !== 'production') {
 // … 
 ```
 
-React works similarly – it loads a development build that includes the warnings:
+React 表现类似 – 它加载包含警告的开发环境构建：
 
 ``` js
 // react/index.js
@@ -189,7 +189,7 @@ warning$3(
 // … 
 ```
 
-Such checks and warnings are usually unnecessary in production, but they remain in the code and increase the library size. **In webpack 4,** remove them by adding the `optimization.nodeEnv: 'production'` option:
+生产中通常不需要这些检查和警告，但是它们还是存在于代码中并增加了库的大小。 **在 webpack 4,** 通过添加`optimization.nodeEnv: 'production'` 选项以移除它们:
 
 ``` js
 // webpack.config.js (for webpack 4)
@@ -201,7 +201,7 @@ module.exports = {
 }; 
 ```
 
-**In webpack 3,** use the [`DefinePlugin`](https://webpack.js.org/plugins/define-plugin/) instead:
+**在 webpack 3,** 使用 [`DefinePlugin`](https://webpack.js.org/plugins/define-plugin/) 替代:
 
 ```
 // webpack.config.js (for webpack 3)
@@ -217,7 +217,7 @@ module.exports = {
 }; 
 ```
 
-Both the `optimization.nodeEnv` option and the `DefinePlugin` work the same way – they replace all occurrences of `process.env.NODE_ENV` with the specified value. With the config from above:
+`optimization.nodeEnv` 选项和 `DefinePlugin` 工作方式相同 – 它们取代所有they replace all occurrences of `process.env.NODE_ENV` with the specified value. 使用上面的配置：
 
 1.  Webpack will replace all occurrences of `process.env.NODE_ENV` with `"production"`:
     ``` js
@@ -239,7 +239,7 @@ Both the `optimization.nodeEnv` option and the `DefinePlugin` work the same way 
       warn('props must be strings when using array syntax.');
     }
     ```
-2.  And then [the minifier](#enable-minification) will remove all such `if` branches – because `"production" !== 'production'` is always false, and the plugin understands that the code inside these branches will never execute:
+2.  然后 [minifier](#enable-minification) 将会移除所有这些 `if` 分支 – 因为 `"production" !== 'production'` 总是错误的，插件明白这些分支中的代码永远不会执行：
     
     ``` js
     // vue/dist/vue.runtime.esm.js
@@ -259,18 +259,18 @@ Both the `optimization.nodeEnv` option and the `DefinePlugin` work the same way 
     }
     ```
     
-### Further reading
+### 扩展阅读
 
-* [What “environment variables” are](https://superuser.com/questions/284342/what-are-path-and-other-environment-variables-and-how-can-i-set-or-use-them)
-* Webpack docs about: [`DefinePlugin`](https://webpack.js.org/plugins/define-plugin/), [`EnvironmentPlugin`](https://webpack.js.org/plugins/environment-plugin/)  
+* [“环境变量”是什么](https://superuser.com/questions/284342/what-are-path-and-other-environment-variables-and-how-can-i-set-or-use-them)
+* 关于: [`DefinePlugin`](https://webpack.js.org/plugins/define-plugin/), [`EnvironmentPlugin`](https://webpack.js.org/plugins/environment-plugin/) 的 Webpack 文档
 
-## Use ES modules
+## 使用 ES 模块
 
-The next way to decrease the front-end size is to use [ES modules](https://ponyfoo.com/articles/es6-modules-in-depth).
+降低前端尺寸的另一种方法是使用 [ES 模块](https://ponyfoo.com/articles/es6-modules-in-depth).
 
-When you use ES modules, webpack becomes able to do tree-shaking. Tree-shaking is when a bundler traverses the whole dependency tree, checks what dependencies are used, and removes unused ones. So, if you use the ES module syntax, webpack can eliminate the unused code:
+当你使用 ES 模块, webpack 就可以进行 tree-shaking. Tree-shaking 是当 bundler 遍历整个依赖树时，检查使用了什么依赖，并移除没有用到的。所以，如果你使用了 ES 模块语法， webpack 可以去掉未使用的代码：
 
-1.  You write a file with multiple exports, but the app uses only one of them:
+1.  你写了一个带有多个导出的文件，但是应用只使用它们其中的一个：
     
     ``` js
     // comments.js
@@ -281,7 +281,7 @@ When you use ES modules, webpack becomes able to do tree-shaking. Tree-shaking i
     import { render } from './comments.js';
     render();
     ```
-2.  Webpack understands that `commentRestEndpoint` is not used and doesn’t generate a separate export point in the bundle:
+2.  Webpack 明白 `commentRestEndpoint` 没有用到并且不会在bundle中生成单独的导出点： 
     
     ``` js
     // bundle.js (part that corresponds to comments.js)
@@ -295,7 +295,7 @@ When you use ES modules, webpack becomes able to do tree-shaking. Tree-shaking i
     })
     ```
     
-3.  [The minifier](#enable-minification) removes the unused variable:
+3.  [minifier](#enable-minification) 移除未使用的变量：
      ``` js
     // bundle.js (part that corresponds to comments.js)
     (function(n,e){"use strict";var r=function(){return"Rendered!"};e.b=r})
@@ -303,24 +303,24 @@ When you use ES modules, webpack becomes able to do tree-shaking. Tree-shaking i
 
 This works even with libraries if they are written with ES modules.
 
-> ⭐️ **Note:** In webpack, tree-shaking doesn’t work without a minifier. Webpack just removes export statements for exports that aren’t used; it’s the minifier that removes unused code. Therefore, if you compile the bundle without the minifier, it won’t get smaller.  
+> ⭐️ **注意:** 在 webpack 中, tree-shaking 没有 minifier 是不会起作用的。Webpack 仅移除导出语句中没有使用到的；是 minifier 移除未使用的代码的。所以，如果你在没有 minifier 的情况下编译 bundle，是不会减小的。
   
-> You aren’t required to use precisely webpack’s built-in minifier (`UglifyJsPlugin`) though. Any minifier that supports dead code removal (e.g. [Babel Minify plugin](https://github.com/webpack-contrib/babel-minify-webpack-plugin) or [Google Closure Compiler plugin](https://github.com/roman01la/webpack-closure-compiler)) will do the trick.
+> 然而，你不需要特定使用 webpack 内置的 minifier (`UglifyJsPlugin`). 任意的支持移除无用代码的 minifier (例如 [Babel Minify plugin](https://github.com/webpack-contrib/babel-minify-webpack-plugin) 或 [Google Closure Compiler plugin](https://github.com/roman01la/webpack-closure-compiler)) 都可以奏效.
 
-> ❗ **Warning:** Don’t accidentally compile ES modules into CommonJS ones.  
+> ❗ **警告:** 不要意外地将将 ES 模块编译为 CommonJS 模块。
   
-> If you use Babel with `babel-preset-env` or `babel-preset-es2015`, check the settings of these presets. By default, they transpile ES’ `import` and `export` to CommonJS’ `require` and `module.exports`. [Pass the `{ modules: false }` option](https://github.com/babel/babel/tree/master/packages/babel-preset-env) to disable this.  
+> 如果你使用 Babel 的 `babel-preset-env` 或 `babel-preset-es2015`， 检查它们预先的设置。默认情况下， 它们将 ES 的 `import` 和 `export` 转译为 CommonJS 的 `require` 和 `module.exports`. [通过 `{ modules: false }` 选项](https://github.com/babel/babel/tree/master/packages/babel-preset-env) 来禁用它.  
   
-> The same with TypeScript: remember to set `{ "compilerOptions": { "module": "es2015" } }` in your `tsconfig.json`.
+> 与 TypeScript 相同：记得在你的 `tsconfig.json` 中设置 `{ "compilerOptions": { "module": "es2015" } }`。
 
-### Further reading
+### 扩展阅读
 
-* [“ES6 Modules in depth”](https://ponyfoo.com/articles/es6-modules-in-depth) 
-* Webpack docs [about tree shaking](https://webpack.js.org/guides/tree-shaking/)  
+* [“深入 ES6 模块”](https://ponyfoo.com/articles/es6-modules-in-depth) 
+* Webpack 文档 [关于 tree shaking](https://webpack.js.org/guides/tree-shaking/)  
 
-## Optimize images
+## 优化图片
 
-Images account for [more than a half](http://httparchive.org/interesting.php?a=All&l=Oct%2016%202017) of the page size. While they are not as critical as JavaScript (e.g., they don’t block rendering), they still eat a large part of the bandwidth. Use `url-loader`, `svg-url-loader` and `image-webpack-loader` to optimize them in webpack.
+图片占页面大小的 [一半以上](http://httparchive.org/interesting.php?a=All&l=Oct%2016%202017)。 While they are not as critical as JavaScript (e.g., they don’t block rendering), they still eat a large part of the bandwidth. Use `url-loader`, `svg-url-loader` and `image-webpack-loader` to optimize them in webpack.
 
 [`url-loader`](https://github.com/webpack-contrib/url-loader) inlines small static files into the app. Without configuration, it takes a passed file, puts it next to the compiled bundle and returns an url of that file. However, if we specify the `limit` option, it will encode files smaller than this limit as [a Base64 data url](https://css-tricks.com/data-uris/) and return this url. This inlines the image into the JavaScript code and saves an HTTP request:
 
