@@ -20,17 +20,17 @@ module.exports = {
 };
 ```
 
-当在生产环境构建应用时，请确保你设置的模式是 `production` 。 这将让 webpack 应用例如缩小尺寸、移除代码库中只在开发者模式才有的代码以及[更多](https://medium.com/webpack/webpack-4-mode-and-optimization-5423a6bc597a)的一些优化。
+当在生产环境构建应用时，请确保你设置的模式是 `production` 。 这将让 webpack 应用例如缩小尺寸、移除库中只在开发者模式才有的代码以及[更多](https://medium.com/webpack/webpack-4-mode-and-optimization-5423a6bc597a)的一些优化。
 
 ### 扩展阅读
 
-* [What specific things the `mode` flag configures](https://medium.com/webpack/webpack-4-mode-and-optimization-5423a6bc597a)
+* [`mode` 标志配置的特定东西是什么](https://medium.com/webpack/webpack-4-mode-and-optimization-5423a6bc597a)
 
 ## 启用缩减尺寸
 
-> ⭐️ **注意：** most of this is webpack 3 only. 如果你使用 [production 模式下的webpack 4](#enable-the-production-mode), bundle-level 缩减已经启用 – 你只需要启用 [特定加载选项](#loader-specific-options).
+> ⭐️ **注意：** 大部分仅限于 webpack 3. 如果你使用 [production 模式下的 webpack 4](#enable-the-production-mode), bundle-level 缩减已经启用 – 你只需要启用 [loader-specific 选项](#loader-specific-options).
 
-缩减尺寸是在你通过移除额外的空间、缩短变量的命名等方式压缩代码的时候。例如这样：
+缩减尺寸是在你通过移除额外的空格、缩短变量的命名等方式压缩代码的时候。例如这样：
 
 ``` js
 // 原来的代码
@@ -82,7 +82,7 @@ Webpack 支持两种方式缩减代码： **bundle-level 缩减** and **loader-s
       console.log('Rendered!');
     }
     ```   
-3.  A minifier 大约会压缩成下面那样：
+3.  minifier 大约会压缩成下面那样：
     
     ```js
     // minified bundle.js (part of)
@@ -90,9 +90,9 @@ Webpack 支持两种方式缩减代码： **bundle-level 缩减** and **loader-s
     Object.defineProperty(n,"__esModule",{value:!0}),n.render=t;var o=r(1);r.n(o)
     ```   
 
-**在 webpack 4,** the bundle-level 自动启用缩减 – both in the production mode and without one. 它使用 [the UglifyJS minifier](https://github.com/mishoo/UglifyJS2) under the hood. (If you ever need to disable minification, just use the development mode or pass `false` to the `optimization.minimize` option.)
+**在 webpack 4,** bundle-level 自动启用缩减 – 无论是否在生产模式。它在后台使用 [UglifyJS minifier](https://github.com/mishoo/UglifyJS2)。（如果你需要禁用缩减，只要使用开发模式或者应用 `false` 到 `optimization.minimize` 选项.）
 
-**在 webpack 3,** 你需要直接使用 [UglifyJS 插件](https://github.com/webpack-contrib/uglifyjs-webpack-plugin) . The plugin comes bundled with webpack; to enable it, add it to the `plugins` section of the config:
+**在 webpack 3,** 你需要直接使用 [UglifyJS 插件](https://github.com/webpack-contrib/uglifyjs-webpack-plugin)。此插件捆绑了 webpack；为启用它，请将它添加到配置的 `plugins` 部分：
 
 ``` js
 // webpack.config.js
@@ -105,9 +105,9 @@ module.exports = {
 };  
 ```
 
-> ⭐️ **注意:** 在 webpack 3, UglifyJS 插件不能编译版本超过 ES2015 (即ES6) 的代码. 这意味着如果你的代码使用了类、箭头函数或者语言的其它特性，你不能将它们编译成 ES5 版本的代码, 插件将抛出一个错误.  
+> ⭐️ **注意：** 在 webpack 3 中, UglifyJS 插件不能编译版本超过 ES2015 (即ES6) 的代码. 这意味着如果你的代码使用了类、箭头函数或者语言的其它特性，你不能将它们编译成 ES5 版本的代码, 插件将抛出一个错误.  
   
-> 如果你需要编译包含新的语法（的代码），使用[uglifyjs-webpack-plugin](https://github.com/webpack-contrib/uglifyjs-webpack-plugin) 包. This is the same plugin that’s bundled with webpack, but newer, and it’s able to compile the ES2015+ code.
+> 如果你需要编译包含新的语法（的代码），使用[uglifyjs-webpack-plugin](https://github.com/webpack-contrib/uglifyjs-webpack-plugin) 包. 这是捆绑了 webpack 的相同插件，但是更新，并且可以编译 ES2015+ 的代码。
 
 ### Loader-specific 选项
 
@@ -128,7 +128,7 @@ exports=module.exports=__webpack_require__(1)(),
 exports.push([module.i,".comment {\r\n  color: black;\r\n}",""]);
 ```
 
-The minifier 不能压缩该代码，因为它是一个字符串。 为了缩减文件内容，我们需要像这样配置加载器：
+Minifier 不能压缩该代码，因为它是一个字符串。为了缩减文件内容，我们需要像这样配置加载器：
 
 ``` js
 // webpack.config.js
@@ -150,7 +150,7 @@ module.exports = {
 ### 扩展阅读
 
 * [UglifyJsPlugin 文档](https://github.com/webpack-contrib/uglifyjs-webpack-plugin)
-* 其它流行的 minifiers: [Babel Minify](https://github.com/webpack-contrib/babel-minify-webpack-plugin), [Google Closure Compiler](https://github.com/roman01la/webpack-closure-compiler) 
+* 其它流行的 minifier: [Babel Minify](https://github.com/webpack-contrib/babel-minify-webpack-plugin), [Google Closure Compiler](https://github.com/roman01la/webpack-closure-compiler) 
 
 ## 指定 **NODE_ENV=production**
 
@@ -219,7 +219,7 @@ module.exports = {
 
 `optimization.nodeEnv` 选项和 `DefinePlugin` 工作方式相同 – 它们取代所有they replace all occurrences of `process.env.NODE_ENV` with the specified value. 使用上面的配置：
 
-1.  Webpack will replace all occurrences of `process.env.NODE_ENV` with `"production"`:
+1.  Webpack 会将所有存在的 `process.env.NODE_ENV` 替换成 `"production"`:
     ``` js
     // vue/dist/vue.runtime.esm.js
     if (typeof val === 'string') {
@@ -322,7 +322,7 @@ This works even with libraries if they are written with ES modules.
 
 图片占页面大小的[一半以上](http://httparchive.org/interesting.php?a=All&l=Oct%2016%202017)。 尽管它们不如JavaScript关键，(例如，它们不会阻塞渲染)，它们仍然消耗了带宽的一大部分。在 webpack 中使用 `url-loader`, `svg-url-loader` 和 `image-webpack-loader` 来优化它们。
 
-[`url-loader`](https://github.com/webpack-contrib/url-loader) 将小的静态文件内联进应用。 Without configuration, it takes a passed file, puts it next to the compiled bundle and returns an url of that file. 然而，如果我们指定了 `limit` 选项，它会将文件编码成比该限制更小的 [Base64 的数据 url](https://css-tricks.com/data-uris/) 并将该 url 返回。这样可以将图片内联进JavaScript代码中，并节省一次HTTP请求：
+[`url-loader`](https://github.com/webpack-contrib/url-loader) 将小的静态文件内联进应用。在没有配置下， 它接受一个传递的文件，将它放在编译的 bundle 旁边并返回那个文件的 url。然而，如果我们指定了 `limit` 选项，它会将文件编码成比该限制更小的 [Base64 的数据 url](https://css-tricks.com/data-uris/) 并将该 url 返回。这样可以将图片内联进JavaScript代码中，并节省一次HTTP请求：
 
 ``` js
 // webpack.config.js
