@@ -28,7 +28,7 @@ module.exports = {
 
 ## 启用缩减尺寸
 
-> ⭐️ **注意:** most of this is webpack 3 only. 如果你使用 [production 模式下的webpack 4](#enable-the-production-mode), bundle-level 缩减已经启用 – 你只需要启用 [特定加载选项](#loader-specific-options).
+> ⭐️ **注意：** most of this is webpack 3 only. 如果你使用 [production 模式下的webpack 4](#enable-the-production-mode), bundle-level 缩减已经启用 – 你只需要启用 [特定加载选项](#loader-specific-options).
 
 缩减尺寸是在你通过移除额外的空间、缩短变量的命名等方式压缩代码的时候。例如这样：
 
@@ -154,7 +154,7 @@ module.exports = {
 
 ## 指定 **NODE_ENV=production**
 
-> ⭐️ **注意:** 这只适用于 webpack 3. 如果你在[production 模式下使用 webpack 4](#enable-the-production-mode),  `NODE_ENV=production` 优化已启用 – 自在地跳过该部分.
+> ⭐️ **注意：** 这只适用于 webpack 3. 如果你在[production 模式下使用 webpack 4](#enable-the-production-mode),  `NODE_ENV=production` 优化已启用 – 自在地跳过该部分.
 
 减少前端大小的另一种方法在你的代码中将 `NODE_ENV` [环境变量](https://superuser.com/questions/284342/what-are-path-and-other-environment-variables-and-how-can-i-set-or-use-them) 设置为 `production`.
 
@@ -351,7 +351,7 @@ import imageUrl from './image.png';
 // and `imageUrl` will include its url: `/2fcd56a1920be.png`
 ```
 
-> ⭐️ **注意:** 内联图片减少了单独请求的数量，这是好的([即使通过HTTP/2](https://blog.octo.com/en/http2-arrives-but-sprite-sets-aint-no-dead/))，但是增加了 bundle 和内存消耗的下载/解析时间。确保不要嵌入大的或者很多的图片，否则增加的 bundle 时间可能超过内联带来的好处。
+> ⭐️ **注意：** 内联图片减少了单独请求的数量，这是好的([即使通过HTTP/2](https://blog.octo.com/en/http2-arrives-but-sprite-sets-aint-no-dead/))，但是增加了 bundle 和内存消耗的下载/解析时间。确保不要嵌入大的或者很多的图片，否则增加的 bundle 时间可能超过内联带来的好处。
 
 [`svg-url-loader`](https://github.com/bhovhannes/svg-url-loader)的作用类似于 `url-loader` – 除了它利用 [URL encoding](https://developer.mozilla.org/en-US/docs/Glossary/percent-encoding) 而不是 Base64 对文件编码。对于 SVG 图片这是有效的 – 因为 SVG 文件恰好是纯文本，这种编码规模效应更加明显：
 
@@ -380,7 +380,7 @@ module.exports = {
 
 [`image-webpack-loader`](https://github.com/tcoopman/image-webpack-loader) 会压缩经过它的图片。它支持 JPG、 PNG、GIF 和 SVG 格式的图片，所以我们会为所有这些类型的图片使用它。
 
-此加载器不能将图片嵌入应用，所以它必须和 `url-loader` 以及 `svg-url-loader` 一起使用。为了避免同时将它复制粘贴到规则中（一个针对 JPG/PNG/GIF 图片， 另一个针对 SVG ），我们将通过特殊的 [`enforce: 'pre'`](https://webpack.js.org/configuration/module/#rule-enforce) 规则包含这个加载器：
+此加载器不能将图片嵌入应用，所以它必须和 `url-loader` 以及 `svg-url-loader` 一起使用。为了避免同时将它复制粘贴到两个规则中（一个针对 JPG/PNG/GIF 图片， 另一个针对 SVG ），我们将通过特殊的 [`enforce: 'pre'`](https://webpack.js.org/configuration/module/#rule-enforce) 规则包含这个加载器：
 
 ``` js
  // webpack.config.js
@@ -398,28 +398,28 @@ module.exports = {
 };
 ```
 
-The default settings of the loader are already good to go – but if you want to configure it further, see [the plugin options](https://github.com/tcoopman/image-webpack-loader#options). To choose what options to specify, check out Addy Osmani’s excellent [guide on image optimization](https://images.guide/).
+加载器的默认设置已经很好了 - 但是如果你想更进一步去配置它，参考[插件选项](https://github.com/tcoopman/image-webpack-loader#options). 要选择指定选项，请查看 Addy Osmani 的优秀的[图像优化指南](https://images.guide/).
 
-### Further reading
+### 扩展阅读
 
-* ["What is base64 encoding used for?"](https://stackoverflow.com/questions/201479/what-is-base-64-encoding-used-for)   
-* Addy Osmani’s [guide on image optimization](https://images.guide/)
+* ["base64 编码用于什么？"](https://stackoverflow.com/questions/201479/what-is-base-64-encoding-used-for)   
+* Addy Osmani 的[图像优化指南](https://images.guide/)
     
-## Optimize dependencies
+## 优化依赖
 
-More than a half of average JavaScript size comes from dependencies, and a part of that size might be just unnecessary.
+超过一半的平均JavaScript大小来自于依赖，该大小的一部分可能不是必要的。
 
-For example, Lodash (as of v4.17.4) adds 72 KB of minified code to the bundle. But if you use only, like, 20 of its methods, then approximately 65 KB of minified code does just nothing.
+例如，Lodash (自 v4.17.4 版本起) 向 bundle 增加了 72KB 的缩小代码。但是如果你仅使用它差不多20种的方法，那么大约 65KB 的缩小代码什么都不做。
 
-Another example is Moment.js. Its 2.19.1 version takes 223 KB of minified code, which is huge – the average size of JavaScript on a page [was 452 KB in October 2017](http://httparchive.org/interesting.php?a=All&l=Oct%2016%202017). However, 170 KB of that size is [localization files](https://github.com/moment/moment/tree/4caa268356434f3ae9b5041985d62a0e8c246c78/locale). If you don’t use Moment.js with multiple languages, these files will bloat the bundle without a purpose.
+另一个例子是 Moment.js。它的 2.19.1 版本占据了 223KB 的缩减代码，这是巨大的 - 2017 年 10 月，页面的JavaScript平均大小是 [452 KB] (http://httparchive.org/interesting.php?a=All&l=Oct%2016%202017)。然而，其中的 170KB 是[本地化文件](https://github.com/moment/moment/tree/4caa268356434f3ae9b5041985d62a0e8c246c78/locale)。如果你不是通过多种语言使用 Moment.js，这些文件将毫无目的地膨胀 bundle。
 
-All these dependencies can be easily optimized. We’ve collected optimization approaches in a GitHub repo – [check it out](https://github.com/GoogleChromeLabs/webpack-libs-optimizations)!
+所有的这些依赖都可以轻易地优化。我们已经在 GitHub 仓库中收集了优化方法 - [检查出来](https://github.com/GoogleChromeLabs/webpack-libs-optimizations)!
 
-## Enable module concatenation for ES modules (aka scope hoisting)
+## 为 ES 模块启用模块串联（又称作用域提升）
 
-> ⭐️ **Note:** if you’re using [webpack 4 with the production mode](#enable-the-production-mode), module concatenation is already enabled. Feel free to skip this section.
+> ⭐️ **注意：** 如果在生产模式下使用 [webpack 4](#启用生产模式),模块串联已经启用。自由地跳过该部分。
 
-When you are building a bundle, webpack is wrapping each module into a function:
+当你构建 bundle 时，webpack 将每个模块包装进一个函数中：
 
 ``` js
 // index.js
@@ -457,9 +457,9 @@ export function render(data, target) {
 })
 ```
 
-In the past, this was required to isolate CommonJS/AMD modules from each other. However, this added a size and performance overhead for each module.
+过去，需要将 CommonJS/AMD 模块相互隔离。然而，这增加了每个模块的大小和性能开支。
 
-Webpack 2 introduced support for ES modules which, unlike CommonJS and AMD modules, can be bundled without wrapping each with a function. And webpack 3 made such bundling possible – with [module concatenation](https://webpack.js.org/plugins/module-concatenation-plugin/). Here’s what module concatenation does:
+Webpack 2 引入了对 ES 模块的支持，不同于 CommonJS 和 AMD 模块，可以不需要通过一个方法包装而捆绑在一起。并且 webpack 3 使这样的捆绑变得可能 -  通过 [模块连接](https://webpack.js.org/plugins/module-concatenation-plugin/)。这是模块连接的作用：
 
 ``` js
 // index.js
@@ -496,9 +496,9 @@ export function render(data, target) {
 })
 ```
 
-See the difference? In the plain bundle, module 0 was requiring `render` from module 1. With module concatenation, `require` is simply replaced with required function, and module 1 is removed. The bundle has fewer modules – and less module overhead!
+看到不同了吗？在普通绑定中，模块 0 需要模块 1 的  `render`。使用模块连接， `require` 只需用所需要的功能替换，模块 1 就被移除了。 bundle 拥有更小的模块 – 以及更少的模块开支!
 
-To turn on this behavior, **in webpack 4**, enable the `optimization.concatenateModules` option:
+要在 **webpack 4** 中启用此行为，启用 `optimization.concatenateModules` 选项：
 
 ``` js
 // webpack.config.js (for webpack 4)
@@ -509,7 +509,7 @@ module.exports = {
 };
 ```
 
-**In webpack 3,** use the `ModuleConcatenationPlugin`:
+在**webpack 3** 中，使用 `ModuleConcatenationPlugin`:
 
 ``` js
 // webpack.config.js (for webpack 3)
@@ -522,27 +522,27 @@ module.exports = {
 };
 ```
 
-> ⭐️ **Note:** Wonder why this behavior is not enabled by default? Concatenating modules is cool, [but it comes with increased build time and breaks hot module replacement](https://twitter.com/TheLarkInn/status/925800563144454144). That’s why it should only be enabled in production.
+> ⭐️ **注意：** 想知道为什么默认不启用这个行为吗？连接模块是很棒， [但是它增加了构建时间并破坏了模块热替换](https://twitter.com/TheLarkInn/status/925800563144454144)。这是为什么它只在生产下启用。
 
-### Further reading
+### 扩展阅读
 
-* Webpack docs [for the ModuleConcatenationPlugin](https://webpack.js.org/plugins/module-concatenation-plugin/)   
-* [“Brief introduction to scope hoisting”](https://medium.com/webpack/brief-introduction-to-scope-hoisting-in-webpack-8435084c171f)  
-* Detailed description of [what this plugin does](https://medium.com/webpack/webpack-freelancing-log-book-week-5-7-4764be3266f5)   
+* Webpack 文档 [用于 ModuleConcatenationPlugin](https://webpack.js.org/plugins/module-concatenation-plugin/)   
+* [”作用域提升简介“](https://medium.com/webpack/brief-introduction-to-scope-hoisting-in-webpack-8435084c171f)  
+* [此插件作用的](https://medium.com/webpack/webpack-freelancing-log-book-week-5-7-4764be3266f5) 详细描述
 
-## Use `externals` if you have both webpack and non-webpack code
+## 使用 `externals` ，如果你同时含有 webpack 和 non-webpack 代码
 
-You might have a large project where some code is compiled with webpack, and some code is not. Like a video hosting site, where the player widget might be built with webpack, and the surrounding page might be not:
+你可能有一个大的项目，其中有些代码是用 webpack 编译的，有些不是。类似于视频托管网站，播放器小部件可能是 webpack 构建的，而周围的页面不是：
 
-![A screenshot of a video hosting site](https://developers.google.com/web/fundamentals/performance/webpack/video-hosting.png)
+![视频托管网站屏幕快照](https://developers.google.com/web/fundamentals/performance/webpack/video-hosting.png)
 
-(A completely random video hosting site)
+(完全随机的视频托管网站)
 
-If both pieces of code have common dependencies, you can share them to avoid downloading their code multiple times. This is done with [the webpack’s `externals` option](https://webpack.js.org/configuration/externals/) – it replaces modules with variables or other external imports.
+如果代码块有公共的依赖，你可以共享它们以避免多次下载其代码。这是通过 [webpack 的 `externals` 选项]完成的(https://webpack.js.org/configuration/externals/) – 它通过变量或其它的额外导入来替换模块。
 
-### If dependencies are available in `window`
+### 如果依赖在 `window` 中可获得
 
-If your non-webpack code relies on dependencies that are available as variables in `window`, alias dependency names to variable names:
+如果你的 non-webpack 代码依赖于某些依赖，这些依赖在 `window` 中可以作为变量获得，将依赖名别名为变量名：
 
 ``` js
 // webpack.config.js
@@ -554,7 +554,7 @@ module.exports = {
 };
 ```
 
-With this config, webpack won’t bundle `react` and `react-dom` packages. Instead, they will be replaced with something like this:
+通过这个配置， webpack 不会捆绑 `react` 和 `react-dom` 包。相反，它们将被替换成下面这样的东西：
 
 ``` js
 // bundle.js (part of)
@@ -570,11 +570,11 @@ With this config, webpack won’t bundle `react` and `react-dom` packages. Inste
 })
 ```
 
-### If dependencies are loaded as AMD packages
+### 如果依赖作为 AMD 包加载
 
-If your non-webpack code doesn’t expose dependencies into `window`, things are more complicated. However, you can still avoid loading the same code twice if the non-webpack code consumes these dependencies as [AMD packages](http://requirejs.org/docs/whyamd.html#amd).
+如果你的 non-webpack 代码没有将依赖暴露于 `window`，事情就变得更加复杂。然而，你仍然可以避免相同的代码加载两次，如果这些 non-webpack 代码将这些依赖作为 [AMD 包](http://requirejs.org/docs/whyamd.html#amd)。
 
-To do this, compile the webpack code as an AMD bundle and alias modules to library URLs:
+为此，将 webpack 代码作为 AMD bundle 编译，并将模块别名为库 URLs：
 
 ``` js
 // webpack.config.js
@@ -588,28 +588,28 @@ module.exports = {
 };
 ```
 
-Webpack will wrap the bundle into `define()` and make it depend on these URLs:
+Webpack 将把 bundle 包装进 `define()` 并让其依赖于这些 URLs：
 
 ``` js
 // bundle.js (beginning)
 define(["/libraries/react.min.js", "/libraries/react-dom.min.js"], function () { … });
 ```
 
-If non-webpack code uses the same URLs to load its dependencies, then these files will be loaded only once – additional requests will use the loader cache.
+如果 non-webpack 代码使用了相同的 URLs 来加载它的依赖，那么这些文件只会加载一次 - 额外的请求将使用加载器缓存。
 
-> ⭐️ **Note:** Webpack replaces only those imports that exactly match keys of the `externals` object. This means that if you write `import React from 'react/umd/react.production.min.js'`, this library won’t be excluded from the bundle. This is reasonable – webpack doesn’t know if `import 'react'` and `import 'react/umd/react.production.min.js'` are the same things – so stay careful.
+> ⭐️ **注意：** Webpack 仅替换哪些明确匹配 `externals` 对象的键的导入。这意味着如果你编写 `import React from 'react/umd/react.production.min.js'`，这个库不会从 bundle 中排除。这是合理的 - webpack 不知道 `import 'react'` 和 `import 'react/umd/react.production.min.js'` 是否是同一个东西 - 所以保持小心。
 
-### Further reading
+### 扩展阅读
 
-* Webpack docs [on `externals`](https://webpack.js.org/configuration/externals/)
+* Webpack 文档 [on `externals`](https://webpack.js.org/configuration/externals/)
 
-## Summing up
+## 总结
 
-* Enable the production mode if you use webpack 4
-* Minimize your code with the bundle-level minifier and loader options
-* Remove the development-only code by replacing `NODE_ENV` with `production`
-* Use ES modules to enable tree shaking
-* Compress images
-* Apply dependency-specific optimizations
-* Enable module concatenation
-* Use `externals` if this makes sense for you
+* 如果使用 webpack 4，请启用生产模式
+* 缩减你的代码，通过 bundle-level minifier 和 loader 选项
+* 移除仅在开发环境使用的代码，通过将 `NODE_ENV` 替换成 `production`
+* 使用 ES 模块以确保 tree shaking
+* 压缩图像
+* 应用特定依赖优化
+* 启用模块连接
+* 使用 `externals`，如果这对你有意义
