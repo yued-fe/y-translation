@@ -320,9 +320,9 @@ This works even with libraries if they are written with ES modules.
 
 ## 优化图片
 
-图片占页面大小的 [一半以上](http://httparchive.org/interesting.php?a=All&l=Oct%2016%202017)。 While they are not as critical as JavaScript (e.g., they don’t block rendering), they still eat a large part of the bandwidth. Use `url-loader`, `svg-url-loader` and `image-webpack-loader` to optimize them in webpack.
+图片占页面大小的[一半以上](http://httparchive.org/interesting.php?a=All&l=Oct%2016%202017)。 尽管它们不如JavaScript关键，(例如，它们不会阻塞渲染)，它们仍然消耗了带宽的一大部分。在 webpack 中使用 `url-loader`, `svg-url-loader` 和 `image-webpack-loader` 来优化它们。
 
-[`url-loader`](https://github.com/webpack-contrib/url-loader) inlines small static files into the app. Without configuration, it takes a passed file, puts it next to the compiled bundle and returns an url of that file. However, if we specify the `limit` option, it will encode files smaller than this limit as [a Base64 data url](https://css-tricks.com/data-uris/) and return this url. This inlines the image into the JavaScript code and saves an HTTP request:
+[`url-loader`](https://github.com/webpack-contrib/url-loader) 将小的静态文件内联进应用。 Without configuration, it takes a passed file, puts it next to the compiled bundle and returns an url of that file. 然而，如果我们指定了 `limit` 选项，它会将文件编码成比该限制更小的 [Base64 的数据 url](https://css-tricks.com/data-uris/) 并将该 url 返回。这样可以将图片内联进JavaScript代码中，并节省一次HTTP请求：
 
 ``` js
 // webpack.config.js
@@ -351,9 +351,9 @@ import imageUrl from './image.png';
 // and `imageUrl` will include its url: `/2fcd56a1920be.png`
 ```
 
-> ⭐️ **Note:** Inlined images reduce the number of separate requests, which is good ([even with HTTP/2](https://blog.octo.com/en/http2-arrives-but-sprite-sets-aint-no-dead/)), but increase the download/parse time of your bundle and memory consumption. Make sure to not embed large images or a lot of them – or increased bundle time would outweigh the benefit of inlining.
+> ⭐️ **注意:** 内联图片减少了单独请求的数量，这是好的([即使通过HTTP/2](https://blog.octo.com/en/http2-arrives-but-sprite-sets-aint-no-dead/))，但是增加了 bundle 和内存消耗的下载/解析时间。确保不要嵌入大的或者很多的图片，否则增加的 bundle 时间可能超过内联带来的好处。
 
-[`svg-url-loader`](https://github.com/bhovhannes/svg-url-loader) works just like `url-loader` – except that it encodes files with the [URL encoding](https://developer.mozilla.org/en-US/docs/Glossary/percent-encoding) instead of the Base64 one. This is useful for SVG images – because SVG files are just a plain text, this encoding is more size-effective:
+[`svg-url-loader`](https://github.com/bhovhannes/svg-url-loader)的作用类似于 `url-loader` – 除了它利用 [URL encoding](https://developer.mozilla.org/en-US/docs/Glossary/percent-encoding) 而不是 Base64 对文件编码。对于 SVG 图片这是有效的 – 因为 SVG 文件恰好是纯文本，这种编码规模效应更加明显：
 
 ``` js
 // webpack.config.js
@@ -376,11 +376,11 @@ module.exports = {
 };
 ```
 
-> ⭐️ **Note:** svg-url-loader has options that improve Internet Explorer support, but worsen inlining for other browsers. If you need to support this browser, [apply the `iesafe: true` option](https://github.com/bhovhannes/svg-url-loader#iesafe).
+> ⭐️ **注意:** svg-url-loader 包含提高IE支持的选项，但是对其它浏览器的内联更差。如果你需要支持IE浏览器，[应用 `iesafe: true` 选项](https://github.com/bhovhannes/svg-url-loader#iesafe).
 
-[`image-webpack-loader`](https://github.com/tcoopman/image-webpack-loader) compresses images that go through it. It supports JPG, PNG, GIF and SVG images, so we’re going to use it for all these types.
+[`image-webpack-loader`](https://github.com/tcoopman/image-webpack-loader) 会压缩经过它的图片。它支持 JPG、 PNG、GIF 和 SVG 格式的图片，所以我们会为所有这些类型的图片使用它。
 
-This loader doesn’t embed images into the app, so it must work in pair with `url-loader` and `svg-url-loader`. To avoid copy-pasting it into both rules (one for JPG/PNG/GIF images, and another one for SVG ones), we’ll include this loader as a separate rule with [`enforce: 'pre'`](https://webpack.js.org/configuration/module/#rule-enforce):
+此加载器不能将图片嵌入应用，所以它必须和 `url-loader` 以及 `svg-url-loader` 一起使用。为了避免同时将它复制粘贴到规则中（一个针对 JPG/PNG/GIF 图片， 另一个针对 SVG ），我们将通过特殊的 [`enforce: 'pre'`](https://webpack.js.org/configuration/module/#rule-enforce) 规则包含这个加载器：
 
 ``` js
  // webpack.config.js
