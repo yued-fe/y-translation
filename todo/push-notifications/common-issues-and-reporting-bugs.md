@@ -28,7 +28,7 @@ service worker development.
 There are two distinct stages to check off when developing and testing web push,
 each with their own set of common issues / problems.
 
-在开发和测试Web推送两个阶段中，每个阶段都有自己的常见问题。
+在开发和测试Web推送两个阶段中，每个阶段都遇到独有的常见问题。
 
 - **Sending a Message:** Make sure that sending messages is successful.
    You should be getting a 201 HTTP code. If you aren't :
@@ -47,13 +47,12 @@ each with their own set of common issues / problems.
        for more info.
        
        
-- **发送消息：**确保发送消息成功。 
-	你应该获得201 HTTP状态码。 如果不是：
-	- **检查授权错误：**如果你收到授权错误消息，请参阅下面 “授权相关问题部分"。
+- **发送消息：**首先确保发送消息成功。正确返回的 HTTP 状态码应该是201。 如果不是：
+	- **检查授权错误：**如果收到授权错误消息，请参阅下面 “授权相关问题部分"。
 	- **其他API错误：**如果收到非201状态代码，请参阅下面的 “HTTP状态代码部分“ 以获取有关问题原因的指导。
 - **接收消息：**如果你能够成功发送消息，但在浏览器上未收到消息：
 	- **检查加密问题：**请参下面的 “有效负载加密问题部分“。
-	- **检查连接问题：**如果问题出在Chrome上，可能是连接。 可参阅下面的 “连接问题部分”。
+	- **检查连接问题：**如果是在 Chrome 上出的问题，可能与连接有关。 可参阅下面的“连接问题”部分。
 
 If you aren't able to send and receive a push message and the relevant sections
 in this doc aren't helping debug the problem then you may have found a
@@ -62,14 +61,14 @@ bug in the push mechanism itself. In this case, refer to the
 section to file a good bug report with all the necessary information to expedite
 the bug fixing process.
 
-如果无法发送和接收推送消息，并且本文档中的相关部分不能帮助你调试问题，那么你可能发现了推送机制本身的一个 bug。在这种情况下，请参阅 “如何提交错误报告 部分”，提交一份包含所有重要信息的错误报告，以加快错误修复过程。
+如果无法发送和接收推送消息，并且本文档中的相关部分不能帮助你调试问题，那么你可能发现了推送机制本身的一个 bug。在这种情况下，请参阅 “如何提交错误报告”部分，提交一份包含所有重要信息的错误报告，以加快错误修复过程。
 
 One thing I'd like to call out before we start is that **Firefox and the
 Mozilla AutoPush Service have great errors messages.** If you get stuck and
 are not sure what the problem is, then test in Firefox and see if you
 get a more helpful error message.
 
-在开始之前我想说的一件事：**Firefox和Mozilla 自动推送服务给了很多有用的错误信息**。 如果你遇到问题并且不确定是什么问题的时候，那么请在Firefox中进行测试，看看是否可以收到了更有用的错误消息。
+在提交错误报告之前我想说的一件事是：**Firefox 和 Mozilla 自动推送服务给了很多有用的错误信息**。 如果你遇到问题并且不确定是什么问题的时候，那么请在Firefox中进行测试，看看是否可以收到了更有用的错误消息。
 
 
 ## Authorization Issues
@@ -112,10 +111,10 @@ situations:
   the JWT has expired.
 * The JWT is malformed or has invalid values.
 
-* 如果你没有对FCM的请求中定义Authorization header。
-* 用于订阅用户的应用程序密钥与用于签署Authorization header的密钥不匹配。
-* 你的JWT【Json web token】到期无效，即超过24小时或JWT已过期。
-* JWT异常或值无效。
+* 没有在 FCM 的请求中定义 `Authorization` header。
+* 用于订阅用户的应用程序密钥与用于签署 Authorization header 的密钥不匹配。
+* 你的 JWT【Json web token】到期无效，即超过24小时或JWT已过期。
+* JWT 异常或值无效。
 
 The full error response looks like this:
 
@@ -127,7 +126,7 @@ The full error response looks like this:
 If you receive this error message in Chrome, consider testing in Firefox to see
 if it'll provide more insight to the problem.
 
-如果你在Chrome中收到此错误消息，可以考虑在Firefox中进行测试，可能能够提供有关此问题的更多信息的话。
+如果你在Chrome中收到此错误消息，可以考虑在Firefox中进行测试，可能能够获得有关此问题的更多信息的话。
 
 ### Firefox and Mozilla AutoPush
 
@@ -136,13 +135,13 @@ if it'll provide more insight to the problem.
 Firefox and Mozilla AutoPush provides a friendly set of error messages for
 `Authorization` issues.
 
-Firefox和Mozilla 自动推送为授权问题提供了一组友好的错误提示。
+Firefox和Mozilla 自动推送 为 `Authorization` 授权问题提供了一组非常友好的错误提示。
 
 You'll also receive an `Unauthorized` error response from
 Mozilla AutoPush if the `Authorization` header is not included in your push
 request.
 
-如果你的推送请求中未包含Authorization header，你将会收到来自 Mozilla 自动推送的没有授权的错误信息。
+如果你的推送请求中未包含 `Authorization` header，你将会收到来自 Mozilla 自动推送的 `Unauthorized` 未授权的错误信息。
 
 ```
 {  
@@ -210,7 +209,7 @@ There are a range of issues that can result in a non-201 response code from a
 push service. Below is a list of HTTP status codes and what they mean in relation
 to web push.
 
-有一系列的问题可能导致推送服务的非201响应代码。 下面是相关HTTP状态码列表及其与Web推送相关的问题描述。
+有一系列的问题可能导致推送服务返回非201响应代码。 下面是相关HTTP状态码列表及其与Web推送相关的问题描述。
 
 <table>
 <tr>
@@ -254,7 +253,7 @@ support is 4096 bytes (or 4kb). Anything larger can result in this error.</td>
 </tr>
 <tr>
 <td>429</td>
-<td>请求太多。 应用程序服务器已通过推送服务达到了费率限制。 服务的响应应包括“Retry-After” header，设置需要多长时间的间隔另一个请求才能开</td>
+<td>请求太多。 应用程序服务器推送服务达到了速率限制。 推送服务应该包括 “Retry-After” 标头，来指示在下一个请求发出之前需要等多长时间。</td>
 </tr>
 <tr>
 <td>400</td>
@@ -262,15 +261,15 @@ support is 4096 bytes (or 4kb). Anything larger can result in this error.</td>
 </tr>
 <tr>
 <td>404</td>
-<td>没有找到。订阅已过期。在这种情况下,你应该删除 PushSubscription 从你的后台，并且等待一个时机再次给用户订阅。/td>
+<td>没有找到。订阅已过期。在这种情况下,你应该从你的后台删除 PushSubscription，并且等待一个时机再次给用户订阅。/td>
 </tr>
 <tr>
 <td>410</td>
-<td>失效. 订阅不再有效,应该从你的后台移除。这可以在 “PushSubscription” 上 通过调用 “unsubscribe()” 方法来移除。</td>
+<td>失效. 订阅不再有效,应该从你的后台移除。这可以在 `PushSubscription` 上 通过调用 `unsubscribe()` 方法来移除。</td>
 </tr>
 <tr>
 <td>413</td>
-<td>有效载荷大小太大。 推送服务必须支持的最小大小有效负载是4096字节（或4kb）。 任何更大的大小都可能导致此错误。?</td>
+<td>有效载荷大小太大。 推送服务必须支持的最小大小有效负载是4096字节（或4kb）。 任何更大的大小都可能导致此错误。</td>
 </tr>
 </table>
 
@@ -280,19 +279,19 @@ spec](https://tools.ietf.org/html/draft-ietf-webpush-protocol) to see if the
 status code is referenced along with a scenario of when that status code can
 be used.
 
-如果http状态码不在此列表中且错误消息无效，在状态码当前状态可以被使用的情况下，可以查看下 [Web Push Protocol
-spec](https://tools.ietf.org/html/draft-ietf-webpush-protocol)规范 【Web推送协议规范】。
+如果http状态码不在此列表中且错误信息没有给到帮助，并且状态码当前状态可以被使用的情况下，可以查看下 [Web Push Protocol
+spec (Web推送协议)](https://tools.ietf.org/html/draft-ietf-webpush-protocol)规范。
 
 ## Payload Encryption Issue
 
-## 有效载荷加密问题
+## 有效负载加密问题
 
 If you can successfully trigger a push message (i.e. send a message to a web
 push service and receive a 201 response code) but the push event never fires in
 your service worker, this normally indicates that the browser failed to
 decrypt the message it received.
 
-如果你可以成功触发推送消息（即向Web推送服务发送消息并接收到201响应码），但推送事件不会在 service worker 中触发，这通常表示浏览器无法解密其接收到的消息。
+如果可以成功触发推送消息（即向Web推送服务发送消息并接收到201响应码），但推送事件不会在 service worker 中触发，这通常表示浏览器无法解密其接收到的消息。
 
 If this is the case, you should see an error message in Firefox's DevTools
 console like so:
@@ -325,7 +324,7 @@ message in the details column.)
 
 There are a few tools which may help debug encryption if this is your issue:
 
-如果这是这个问题，有一些工具可以帮助你调试加密：
+如果是这个问题，有一些工具可以帮助你调试加密：
 
 * [Push Encryption Verifier tool by Peter
   Beverloo](https://tests.peter.sh/push-encryption-verifier/).
@@ -355,7 +354,7 @@ the 'Receive Message Log' (sic) in `chrome://gcm-internals`.
 If you aren't seeing the message arrive in a timely fashion then make sure that
 the connection status of your browser is `CONNECTED`:
 
-如果没有及时看到消息，请确保你的浏览器的连接状态为CONNECTED，如下图所示：
+如果没有及时看到消息，请确保你的浏览器的连接状态为 `CONNECTED`，如下图所示：
 
 ![GCM internals connection state](./images/gcm-internals-connection-state.png)
 
@@ -363,7 +362,7 @@ If it's **not** 'CONNECTED', you may need to delete your current profile and
 [create a new one](https://support.google.com/chrome/answer/2364824). If that
 still doesn't solve the issue, please raise a bug report as suggested below.
 
-如果它不是“CONNECTED”，可能需要删除当前的配置文件并创建一个新。 如果仍然无法解决问题，请按照下面章节的建议提出错误报告。
+如果链接状态**不是** “CONNECTED”，可能需要删除当前的配置文件并创建一个新。 如果仍然无法解决问题，请按照下面章节的建议提出错误报告。
 
 ## Raising Bug Reports
 
