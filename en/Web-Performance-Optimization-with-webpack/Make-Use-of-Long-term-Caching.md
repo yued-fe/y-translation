@@ -5,12 +5,12 @@
 > - **原文地址：** https://developers.google.com/web/fundamentals/performance/webpack/use-long-term-caching
 > - **原文作者：** [Ivan Akulov](https://developers.google.com/web/resources/contributors/iamakulov)
 > - **译文地址：** https://github.com/yued-fe/y-translation/blob/master/en/Web-Performance-Optimization-with-webpack/Make-Use-of-Long-term-Caching.md
-> - **译者：** 周文康
+> - **译者：** [周文康](https://github.com/wenkangzhou)
 > - **校对者：**
 
 The next thing (after [optimizing the app size](./decrease-frontend-size)) that improves the app loading time is caching. Use it to keep parts of the app on the client and avoid re-downloading them every time.
 
-在[优化应用体积](https://developers.google.com/web/fundamentals/performance/webpack/decrease-frontend-size)之后,下一个提升应用加载时间的策略就是缓存。在客户端中使用缓存作为应用的一部分，可以避免之后每次的重复下载。
+在[优化应用体积](https://developers.google.com/web/fundamentals/performance/webpack/decrease-frontend-size)之后,下一个提升应用加载时间的策略就是缓存。将资源缓存在客户端中，可以避免之后每次都重新下载。
 
 ## Use bundle versioning and cache headers
 
@@ -32,11 +32,11 @@ The common approach of doing caching is to:
     Note: If you aren’t familiar what `Cache-Control` does, see Jake Archibald’s excellent post [on caching best
     practices](https://jakearchibald.com/2016/caching-best-practices/).
     
-    注意：如果你不熟悉 `Cache-Control` 的原理，请参阅 Jake Archibald 的文章: [关于缓存的最佳实践](https://jakearchibald.com/2016/caching-best-practices/)
+    注意：如果你不熟悉 `Cache-Control` 的原理，请参阅 Jake Archibald 的优秀文章: [关于缓存的最佳实践](https://jakearchibald.com/2016/caching-best-practices/)
     
 2. and rename the file when it’s changed to force the re-download:
 
-2. 可以通过修改文件名强制去执行重新下载
+2. 当文件改变时，文件会被重命名，这样就迫使浏览器重新下载：
 
     ``` js
     <!-- 修改前 -->
@@ -49,12 +49,12 @@ The common approach of doing caching is to:
 
 This approach tells the browser to download the JS file, cache it and use the cached copy. The browser will only hit the network only if the file name changes (or if a year passes).
 
-这个方法可以告诉浏览器去下载 JS 文件，并将它缓存，之后使用的都是它的缓存副本。浏览器只会在文件名发生改变时才会请求网络（或者一年之后缓存失效）。
+这个方法可以告诉浏览器去下载 JS 文件，并将它缓存，之后使用的都是它的缓存副本。浏览器只会在文件名发生改变（或者一年之后缓存失效）时才会请求网络。。
 
 With webpack, you do the same, but instead of a version number, you specify the file hash. To include the hash into the file name, use
 [`[chunkhash]`](https://webpack.js.org/configuration/output/#output-filename):
 
-使用 webpack，也可以同样做到，但使用的不是版本号，而是指定文件的哈希值。使用 [`[chunkhash]`](https://webpack.js.org/configuration/output/#output-filename) 可以将哈希值写入文件名中：
+使用 webpack，同样可以做到，但使用的不是版本号，而是指定文件的哈希值。使用 [`[chunkhash]`](https://webpack.js.org/configuration/output/#output-filename) 可以将哈希值写入文件名中：
 ``` js
 // webpack.config.js
 module.exports = {
@@ -68,7 +68,7 @@ module.exports = {
 
 > ⭐️ Note: Webpack could generate a different hash even if the bundle stays the same – e.g. if you rename a file or compile the bundle under a different OS. This is a bug, and there’s no clear solution yet. [See the discussion on GitHub](https://github.com/webpack/webpack/issues/1479)
 
-> ⭐️ 注意: 即使 bundle 不变，webpack 也可能生成不同的哈希值 – 例如，你重命名了一个文件或者在不同的操作系统下编译了 bundle。 当然这其实是一个 bug.目前还没有明确的解决方案。[具体可参阅GitHub上的讨论](https://github.com/webpack/webpack/issues/1479)
+> ⭐️ 注意: 即使 bundle 不变，webpack 也可能生成不同的哈希值 – 例如，你重命名了一个文件或者在不同的操作系统下编译了 bundle。 当然，这其实是一个  bug.目前还没有明确的解决方案。[具体可参阅 GitHub 上的讨论](https://github.com/webpack/webpack/issues/1479)
 
 If you need the file name to send it to the client, use either the `HtmlWebpackPlugin` or the `WebpackManifestPlugin`.
 
@@ -76,7 +76,7 @@ If you need the file name to send it to the client, use either the `HtmlWebpackP
 
 The [`HtmlWebpackPlugin`](https://github.com/jantimon/html-webpack-plugin) is a simple, but less flexible approach. During compilation, this plugin generates an HTML file which includes all compiled resources. If your server logic isn’t complex, then it should be enough for you:
 
-[`HtmlWebpackPlugin`](https://github.com/jantimon/html-webpack-plugin)是一个简单但扩展性不强的插件。在编译期间，它会生成一个包含所有已编译资源的 HTML 文件。如果你的服务端逻辑不是很复杂，那么它应该能满足你：
+[`HtmlWebpackPlugin`](https://github.com/jantimon/html-webpack-plugin)是一个简单但扩展性不强的插件。在编译期间，它会生成一个 HTML 文件，文件包含了所有已经被编译的资源。如果你的服务端逻辑不是很复杂，那么它应该能满足你：
 
 ```js
 <!-- index.html -->
@@ -87,7 +87,7 @@ The [`HtmlWebpackPlugin`](https://github.com/jantimon/html-webpack-plugin) is a 
 
 The [`WebpackManifestPlugin`](https://github.com/danethurber/webpack-manifest-plugin) is a more flexible approach which is useful if you have a complex server part. During the build, it generates a JSON file with a mapping between file names without hash and file names with hash. Use this JSON on the server to find out which file to work with:
 
-[`WebpackManifestPlugin`](https://github.com/danethurber/webpack-manifest-plugin)是一个扩展性更佳的插件，它可以帮助你解决服务端逻辑比较复杂的那部分。在编译阶段，它会生成一个 JSON 文件，里面包含了原文件名和带哈希文件名的映射。在服务端，通过这个JSON就能方便的找到我们真正要执行的文件：
+[`WebpackManifestPlugin`](https://github.com/danethurber/webpack-manifest-plugin)是一个扩展性更佳的插件，它可以帮助你解决服务端逻辑比较复杂的那部分。在打包时，它会生成一个 JSON 文件，里面包含了原文件名和带哈希文件名的映射。在服务端，通过这个JSON就能方便的找到我们真正要执行的文件：
 ``` js
 // manifest.json
 {
@@ -105,15 +105,15 @@ The [`WebpackManifestPlugin`](https://github.com/danethurber/webpack-manifest-pl
 
 ## Extract dependencies and runtime into a separate file
 
-## 将依赖项和运行时提取到单独的文件中
+## 将依赖和运行时提取到单独的文件中
 
 ### Dependencies
 
-### 依赖项
+### 依赖
 
 App dependencies tend to change less often than the actual app code. If you move them into a separate file, the browser will be able to cache them separately – and won’t re-download them each time the app code changes.
 
-应用的依赖项通常比实际应用内的代码变更频率低。如果你将它们移到一个独立的文件中，浏览器可以把它们独立的缓存起来 – 同时每次应用代码变更也不会去重新下载。
+应用的依赖通常比实际应用内的代码变更频率低。如果将它们移到单独的文件中，浏览器就可以独立缓存它们 – 这样每次应用中的代码变更也不会去重新下载它们。
 
 > Key Term: In webpack terminology, separate files with the app code are called *chunks*. We’ll use this name later.
 
@@ -121,7 +121,7 @@ App dependencies tend to change less often than the actual app code. If you move
 
 To extract dependencies into a separate chunk, perform three steps:
 
-要将依赖项提取到独立的块中，需要执行下面三个步骤：
+要将依赖项提取到独立的 chunk 中，需要执行下面三个步骤：
 
 1. Replace the output filename with `[name].[chunkname].js`:
 
@@ -141,11 +141,11 @@ To extract dependencies into a separate chunk, perform three steps:
     
     When webpack builds the app, it replaces [`[name]`](https://webpack.js.org/configuration/output/#output-filename) with a name of a chunk. If we don’t add the `[name]` part, we’ll have to differentiate between chunks by their hash – which is pretty hard!
 
-  当 webpack 编译应用时，它会将[`[name]`](https://webpack.js.org/configuration/output/#output-filename) 作为 chunk 的名称。如果我们没有添加 `[name]`的部分，我们将不得不通过哈希值来区分 chunk - 这样就变得非常困难！
+  当 webpack 编译应用时，它会将[`[name]`](https://webpack.js.org/configuration/output/#output-filename) 作为 chunk 的名称。如果我们没有添加 `[name]` 的部分，我们将不得不通过哈希值来区分 chunk - 这样就变得非常困难！
   
 2. Convert the `entry` field into an object:
 
-2. 将`entry`的值改为对象：
+2. 将 `entry` 的值改为对象：
     ``` js
     // webpack.config.js
     module.exports = {
@@ -160,15 +160,15 @@ To extract dependencies into a separate chunk, perform three steps:
 
     In this snippet, “main” is a name of a chunk. This name will be substituted in place of `[name]` from step 1.
     
-    在上面这段代码中，“main” 是 chunk 的名称。这个名称会在第一步时被`[name]`所替代。
+    在上面这段代码中，“main” 是 chunk 的名称。这个名称会在第一步时被 `[name]` 所替代。
     
     By now, if you build the app, this chunk will include the whole app code – just like we haven’t done these steps. But this will change in a sec.
     
-    到目前为止，如果你编译应用，这个 chunk 还是包含了整个应用的代码 - 就像我们没有做过上述这些步骤一样。但接下来很快就将产生变化。
+    到目前为止，如果你构建应用，这个 chunk 还是包含了整个应用的代码 - 就像我们没有做过上述这些步骤一样。但接下来很快就将产生变化。
     
 3. **In webpack 4,** add the `optimization.splitChunks.chunks: 'all'` option into your webpack config:
 
-3. **在 webpack 4 中,** ，可以将`optimization.splitChunks.chunks: 'all'` 选项添加到 webpack 的配置中:
+3. **在 webpack 4 中 ** ，可以将`optimization.splitChunks.chunks: 'all'` 选项添加到 webpack 的配置中:
 
     ``` js
     // webpack.config.js (for webpack 4)
@@ -183,21 +183,21 @@ To extract dependencies into a separate chunk, perform three steps:
 
     This option enables smart code splitting. With it, webpack would extract the vendor code if it gets larger than 30 kB (before minification and gzip). It would also extract the common code – this is useful if your build produces several bundles (e.g. [if you split your app into routes](https://developers.google.com/web/fundamentals/performance/webpack/use-long-term-caching#split-the-code-into-routes-and-pages))
     
-    这个选项可以开启智能代码拆分。使用了这个功能，webpack 将会把大于 30KB（压缩和gzip之后） 的代码提取到 vendor (公共库)代码中。它同时也可以提取 公共代码 - 如果你需要编译生成多个 bundle 时这将非常有用。（例如：[假如你通过路由来拆分应用](https://developers.google.com/web/fundamentals/performance/webpack/use-long-term-caching#split-the-code-into-routes-and-pages)）。
+    这个选项可以开启智能代码拆分。使用了这个功能，webpack 将会提取大于 30KB（压缩和 gzip 之前）的第三方库代码。它同时也可以提取公共代码 - 如果你的构建结果会生成多个 bundle 时这将非常有用。（例如：[假如你通过路由来拆分应用](https://developers.google.com/web/fundamentals/performance/webpack/use-long-term-caching#split-the-code-into-routes-and-pages)）。
     
     **In webpack 3 ** add the [CommonsChunkPlugin](https://webpack.js.org/plugins/commons-chunk-plugin/):
      
-    **在 webpack 3 中** 可以添加 [CommonsChunkPlugin](https://webpack.js.org/plugins/commons-chunk-plugin/)插件:
+    **在 webpack 3 中** 添加 [CommonsChunkPlugin](https://webpack.js.org/plugins/commons-chunk-plugin/)插件:
     ``` js
     // webpack.config.js (for webpack 3)
     module.exports = {
       plugins: [
         new webpack.optimize.CommonsChunkPlugin({
-          // A name of the chunk that will include the dependencies.
-          // This name is substituted in place of [name] from step 1
+          // chunk 的名称将会包含依赖
+          // 这个名称会在第一步时被 [name] 所替代
           name: 'vendor',
     
-          // A function that determines which modules to include into this chunk
+          // 这个函数决定哪个模块会被打入 chunk
           minChunks: module => module.context &&
             module.context.includes('node_modules'),
         }),
@@ -206,12 +206,12 @@ To extract dependencies into a separate chunk, perform three steps:
     ```
     
     This plugin takes all modules which paths include `node_modules` and moves them into a separate file called `vendor.[chunkhash].js`.
-    这个插件会将`node_modules`下的所有模块移到一个名为 vendor.[chunkhash].js 的独立文件中。
+    这个插件会将路径包含 `node_modules` 的所有模块移到一个名为 vendor.[chunkhash].js 的独立文件中。
 
 
 After these changes, each build will generate two files instead of one: `main.[chunkhash].js` and `vendor.[chunkhash].js` (`vendors~main.[chunkhash].js` for webpack 4). In case of webpack 4, the vendor bundle might not be generated if dependencies are small – and that’s fine:
 
-完成这些更改后，每次编译从原生生成一个文件变为生成了两个文件：`main.[chunkhash].js` 和`vendor.[chunkhash].js` (`vendors~main.[chunkhash].js` 只有在 webpack 4 才有)。在 webpack 4 中，如果依赖项不多，则可能不会生成 vendor bundle - 这点做的不错：
+完成这些更改后，每次打包都将从原来的生成一个文件变为生成两个文件：`main.[chunkhash].js` 和`vendor.[chunkhash].js` (`vendors~main.[chunkhash].js` 只有在 webpack 4 才有)。在 webpack 4 中，如果依赖项很小，则可能不会生成 vendor bundle - 这点做的不错：
 
 ``` js
 $ webpack
@@ -233,7 +233,7 @@ The browser would cache these files separately – and redownload only code that
 
 Unfortunately, extracting just the vendor code is not enough. If you try to change something in the app code:
 
-当然，仅仅提取 vendor 代码还是不够的。如果你项尝试在应用代码中修改一些东西：
+遗憾的是，仅仅提取第三方库代码还是不够的。如果你想尝试在应用代码中修改一些东西：
 ``` js
 // index.js
 …
@@ -245,7 +245,7 @@ console.log('Wat');
 
 you’ll notice that the `vendor` hash also changes:
 
-你会发现`vendor`的哈希值也会被改变：
+你会发现 `vendor` 的哈希值也会被改变：
 
 ``` js
                            Asset   Size  Chunks             Chunk Names
@@ -261,7 +261,7 @@ you’ll notice that the `vendor` hash also changes:
 
 This happens because the webpack bundle, apart from the code of modules, has *[a runtime](https://webpack.js.org/concepts/manifest/)* – a small piece of code that manages the module execution. When you split the code into multiple files, this piece of code starts including a mapping between chunk ids and corresponding files:
 
-这是由于 webpack 打包时，一部分模块的代码拥有*[一个运行时](https://webpack.js.org/concepts/manifest/)*  - 一小段可以管理模块执行的代码。当你将代码拆分成多个文件时，这小部分代码在 chunk ids 和 匹配的文件之间会生成一个映射：
+这是由于 webpack 打包时，除了模块代码之外，webpack 的 bundle 中还包含了 *[runtime](https://webpack.js.org/concepts/manifest/)*  - 一小段可以管理模块执行的代码。当你将代码拆分成多个文件时，这小部分代码在 chunk id 和 匹配的文件之间会生成一个映射：
 
 ``` js
 // vendor.e6ea4504d61a1cc1c60b.js
@@ -271,11 +271,11 @@ script.src = __webpack_require__.p + chunkId + "." + {
 ```
 Webpack includes this runtime into the last generated chunk, which is `vendor` in our case. And every time any chunk changes, this piece of code changes too, causing the whole `vendor` chunk to change.
 
-Webpack 将运行时包含在了最新生成的 chunk 中，这个 chunk 就是我们代码中的 `vendor`。每次 chunk 有任何变更，这一小部分代码也会随之更改，同时也会导致整个 `vendor` chunk 发生改变。
+Webpack 将 runtime 包含在了最新生成的 chunk 中，这个 chunk 就是我们代码中的 `vendor`。每次 chunk 有任何变更，这一小部分代码也会随之更改，同时也会导致整个 `vendor` chunk 发生改变。
 
 To solve this, let’s move the runtime into a separate file. **In webpack 4,** this is achieved by enabling the `optimization.runtimeChunk` option:
 
-为了解决这个问题，我们可以将运行时移动到一个独立的文件中。**在 webpack 4 中**，可以通过开启 `optimization.runtimeChunk` 选项来实现：
+为了解决这个问题，我们可以将 runtime 移动到一个独立的文件中。**在 webpack 4 中**，可以通过开启 `optimization.runtimeChunk` 选项来实现：
 
 ``` js
 // webpack.config.js (for webpack 4)
@@ -317,7 +317,7 @@ module.exports = {
 ```
 After these changes, each build will be generating three files:
 
-完成这些变更后，每次编译将生成三个文件：
+完成这些变更后，每次构建将生成三个文件：
 
 ``` js
 $ webpack
@@ -352,12 +352,12 @@ Include them into `index.html` in the reverse order – and you’re done:
 * Webpack docs [about webpack runtime and
   manifest](https://webpack.js.org/concepts/manifest/)
   
-* Webpack 文档 [关于webpack的运行时和manifest文件](https://webpack.js.org/concepts/manifest/)
+* Webpack 文档 [关于webpack的 runtime 和 manifest 文件](https://webpack.js.org/concepts/manifest/)
   
 * [“Getting the most out of the
   CommonsChunkPlugin”](https://medium.com/webpack/webpack-bits-getting-the-most-out-of-the-commonschunkplugin-ab389e5f318)
 
-* [“CommonsChunkPlugin的最佳实践”](https://medium.com/webpack/webpack-bits-getting-the-most-out-of-the-commonschunkplugin-ab389e5f318)
+* [“CommonsChunkPlugin 的最佳实践”](https://medium.com/webpack/webpack-bits-getting-the-most-out-of-the-commonschunkplugin-ab389e5f318)
   
 * [How `optimization.splitChunks` and `optimization.runtimeChunk` work](https://gist.github.com/sokra/1522d586b8e5c0f5072d7565c2bee693)
 
@@ -365,11 +365,11 @@ Include them into `index.html` in the reverse order – and you’re done:
 
 ## Inline webpack runtime to save an extra HTTP request
 
-## 内联 webpack 的运行时可以节省额外的 HTTP 请求
+## 内联 webpack 的 runtime 可以节省额外的 HTTP 请求
 
 To make things even better, try inlining the webpack runtime into the HTML response. I.e., instead of this:
 
-为了达到更好的体验，我们可以尝试把 webpack 的运行时内联到 HTML 中。例如，我们不要这么做：
+为了达到更好的体验，我们可以尝试把 webpack 的 runtime 内联到 HTML 中。例如，我们不要这么做：
 
 ``` js
 <!-- index.html -->
@@ -387,19 +387,19 @@ To make things even better, try inlining the webpack runtime into the HTML respo
 
 The runtime is small, and inlining it will help you save an HTTP request (pretty important with HTTP/1; less important with HTTP/2 but might still play an effect).
 
-运行时的代码不多，内联到 Html 中可以帮助我们节省 HTTP 请求（在 HTTP/1 中尤为重要；在 HTTP/2 中虽然没那么重要，但仍然能起到一定作用）
+Runtime 的代码不多，内联到 HTML 中可以帮助我们节省 HTTP 请求（在 HTTP/1 中尤为重要；在 HTTP/2 中虽然没那么重要，但仍然能起到一定作用）
 
 Here’s how to do it.
 
-下面就来看看要如何做呢。
+下面就来看看要如何做。
 
 ### If you generate HTML with the HtmlWebpackPlugin
 
-### 如果你使用 HtmlWebpackPlugin 插件来生成 HTML
+### 如果你使用 HtmlWebpackPlugin 来生成 HTML
 
 If you use the [HtmlWebpackPlugin](https://github.com/jantimon/html-webpack-plugin) to generate an HTML file, the [InlineSourcePlugin](https://github.com/DustinJackson/html-webpack-inline-source-plugin) is all you need:
 
-如果你使用 [HtmlWebpackPlugin](https://github.com/jantimon/html-webpack-plugin) 插件来生成 HTML 文件，那么 [InlineSourcePlugin](https://github.com/DustinJackson/html-webpack-inline-source-plugin) 插件就能帮你完成：
+如果你使用 [HtmlWebpackPlugin](https://github.com/jantimon/html-webpack-plugin) 来生成 HTML 文件，那么你一定需要 [InlineSourcePlugin](https://github.com/DustinJackson/html-webpack-inline-source-plugin) ：
 
 ``` js
 // webpack.config.js
@@ -420,7 +420,7 @@ module.exports = {
 ```
 ### If you generate HTML using a custom server logic
 
-### 如果你使用的是自定义的服务端逻辑来生成 HTML
+### 如果你通过自定义服务端逻辑来生成 HTML
 
 **With webpack 4:**
 
@@ -428,7 +428,7 @@ module.exports = {
 
 1. Add the [WebpackManifestPlugin](https://github.com/danethurber/webpack-manifest-plugin) to know the generated name of the runtume chunk:
 
-1. 添加[WebpackManifestPlugin](https://github.com/danethurber/webpack-manifest-plugin)插件可以获取运行时 chunk 的生成名称：
+1. 添加 [WebpackManifestPlugin](https://github.com/danethurber/webpack-manifest-plugin) 插件可以获取生成的 runtume chunk 的名称：
 
     ``` js
     // webpack.config.js (for webpack 4)
@@ -443,7 +443,7 @@ module.exports = {
 
     A build with this plugin would create a file that looks like this:
     
-    使用这个插件编译会生成像下面这样的文件：
+    使用这个插件构建会生成像下面这样的文件：
     
     ``` js
     // manifest.json
@@ -454,7 +454,7 @@ module.exports = {
 
 2. Inline the content of the runtime chunk in a convenient way. E.g. with Node.js and Express:
 
-2. 可以用一个便利的方式内联运行时 chunk 的内容。例如，使用 Node.js 和 Express：
+2. 可以用一个便利的方式内联 runtime chunk 的内容。例如，使用 Node.js 和 Express：
 
     ``` js
     // server.js
@@ -478,7 +478,7 @@ module.exports = {
 
 1. Make the runtime name static by specifying `filename`:
 
-1. 指定运行时的名称为`filename`:
+1. 通过指定 `filename` ，可以使 runtime 的名称不发生改变 :
 
     ``` js
     // webpack.config.js (for webpack 3)
@@ -497,7 +497,7 @@ module.exports = {
 
 2. Inline the <code>runtime.js</code> content in a convenient way. E.g. with Node.js and Express:
 
-2. 可以用一个便利的方式内联<code>runtime.js</code>的内容。例如，使用 Node.js 和 Express：
+2. 可以用一个便利的方式内联 <code>runtime.js</code> 的内容。例如，使用 Node.js 和 Express：
 
     ``` js
     // server.js
@@ -534,7 +534,7 @@ Sometimes, a page has more and less important parts:
 In such cases, improve the initial loading performance by downloading only the most important stuff first, and lazy-loading the remaining parts later. Use [the `import()` function](https://webpack.js.org/api/module-methods/#import-) and
 [code-splitting](https://webpack.js.org/guides/code-splitting/) for this:
 
-上述的这些案例，都是通过优先下载最重要的部分，稍后懒加载剩余部分，从而来提升页面首次加载的性能。在 webpack 中，使用[`import()` 函数](https://webpack.js.org/api/module-methods/#import-) 和 [代码拆分](https://webpack.js.org/guides/code-splitting/)即可实现。
+上面的这些情况，都可以通过优先下载最重要的部分，稍后懒加载剩余部分，从而来提升页面首次加载的性能。在 webpack 中，使用[`import()` 函数](https://webpack.js.org/api/module-methods/#import-) 和 [代码拆分](https://webpack.js.org/guides/code-splitting/)即可实现。
 
 ``` js
 // videoPlayer.js
@@ -556,7 +556,7 @@ onShowCommentsClick(() => {
 ```
 `import()` specifies that you want to load a specific module dynamically. When webpack sees `import('./module.js')`, it moves this module into a separate chunk:
 
-`import()`函数可以帮助你实现按需加载。Webpack 在打包时遇到 `import('./module.js')`，就会把这个模块放到单独的 chunk 中：
+`import()` 函数可以帮助你实现按需加载。Webpack 在打包时遇到 `import('./module.js')`，就会把这个模块放到单独的 chunk 中：
 
 
 ``` js
@@ -609,7 +609,7 @@ If your app has multiple routes or pages, but there’s only a single JS file wi
 
 they don’t need to load the code for rendering an article that’s on a different page – but they will load it. Moreover, if the user always visits only the home page, and you make a change in the article code, webpack will invalidate the whole bundle – and the user will have to re-download the whole app.
 
-他们并不需要加载其它页面上用于渲染文章的代码 - 但他们却加载了。此外，如果这个用户经常只是访问首页，但如果你更改了其它页面的文章代码，webpack 会重新编译，使整个 bundle 失效 - 这样导致用户将重新下载整个应用的代码。
+他们并不需要加载其它页面上用于渲染文章的代码 - 但他们却加载了。此外，如果这个用户经常只是访问首页，但你更改了其它页面的文章代码，webpack 将会重新编译，使整个 bundle 失效 - 这样将导致用户重新下载整个应用的代码。
 
 If we split the app into pages (or routes, if it’s a single-page app), the user will download only the relevant code. Plus, the browser will cache the app code better: if you change the home page code, webpack will invalidate only the corresponding chunk.
 
@@ -625,7 +625,7 @@ To split single-page apps by routes, use `import()` (see the [“Lazy-load code 
 
 * [“Code Splitting”](https://reacttraining.com/react-router/web/guides/code-splitting) in `react-router`'s docs (for React)
 
-* `react-router`文档中的[代码拆分”](https://reacttraining.com/react-router/web/guides/code-splitting)  (适用于React)
+* `react-router`文档中的["代码分离”](https://reacttraining.com/react-router/web/guides/code-splitting)  (适用于React)
 
 * `vue-router`文档中的[“路由的懒加载”](https://router.vuejs.org/en/advanced/lazy-loading.html)(适用于Vue.js)
 
@@ -635,7 +635,7 @@ To split single-page apps by routes, use `import()` (see the [“Lazy-load code 
 
 To split traditional apps by pages, use webpack’s [entry points](https://webpack.js.org/concepts/entry-points/). If your app has three kinds of pages: the home page, the article page and the user account page, – it should have three entries:
 
-要通过页面来拆分传统应用，可以使用 webpack 的 [entry points](https://webpack.js.org/concepts/entry-points/)。假设你的应用中有三类页面：主页、文章页、用户账户页，- 那么就应该有三个入口：
+要通过页面来拆分传统应用，可以使用 webpack 的 [entry points](https://webpack.js.org/concepts/entry-points/)。假设你的应用中有三类页面：主页、文章页和用户账户页，- 那么就应该有三个入口：
 
 ``` js
 // webpack.config.js
@@ -667,7 +667,7 @@ Time: 4273ms
 
 So, if only the article page uses Lodash, the `home` and the `profile` bundles won’t include it – and the user won’t have to download this library when visiting the home page.
 
-所以，如果你的文章页面使用到了 Lodash， `home` 和 `profile` bundle 其实不会包含它 - 用户也不会在访问首页的时候下载到这个库。
+所以，如果只有 article 页面使用到了 Lodash，那么 home 和 profile bundle 就不会包含它 - 用户也不会在访问首页的时候下载到这个库。
 
 Separate dependency trees have their drawbacks though. If two entry points use Lodash, and you haven’t moved your dependencies into a vendor bundle, both entry points will include a copy of Lodash. To solve this, **in webpack 4,** add the `optimization.splitChunks.chunks: 'all'` option into your webpack config:
 
@@ -686,7 +686,7 @@ module.exports = {
 
 This option enables smart code splitting. With this option, webpack would automatically look for common code and extract it into separate files.
 
-这个选项可以开启智能代码拆分。有了这个选项，webpack 将自动查找到公共代码，并且提取待单独的文件中。
+这个选项可以开启智能代码拆分。有了这个选项，webpack 将自动查找到公共代码，并且提取到单独的文件中。
 
 Or, **in webpack 3,** use the [`CommonsChunkPlugin`](https://webpack.js.org/plugins/commons-chunk-plugin/) – it will move common dependencies into a new specified file:
 
@@ -697,12 +697,11 @@ Or, **in webpack 3,** use the [`CommonsChunkPlugin`](https://webpack.js.org/plug
 module.exports = {
   plugins: [
     new webpack.optimize.CommonsChunkPlugin({
-      // A name of the chunk that will include the common dependencies
+      // chunk 的名称将会包含公共依赖
       name: 'common',
 
-      // The plugin will move a module into a common file
-      // only if it’s included into `minChunks` chunks
-      // (Note that the plugin analyzes all chunks, not only entries)
+      // minChunks表示要将一个模块打入公共文件时必须包含的 `minChunks` chunks 数量
+      // (注意，插件会分析所有 chunks 和 entries)
       minChunks: 2,    // 2 is the default value
     }),
   ],
@@ -711,7 +710,7 @@ module.exports = {
 
 Feel free to play with the `minChunks` value to find the best one. Generally, you want to keep it small, but increase if the number of chunks grows. For example, for 3 chunks, `minChunks` might be 2, but for 30 chunks, it might be 8 – because if you keep it at 2, too many modules will get into the common file, inflating it too much.
 
-你可以尝试调整 `minChunks` 的值来找到最优的效果。通常情况下，你希望它是一个较小的值，但随着 chunk 数量的增加它会随之增大。例如，有3个 chunk 时，`minChunks` 的值可能是 2 ，但是有30个 chunk 时，它的值可能是8 - 因为如果你把它设置成 2，就会有很多模块要被打包进同一个通用文件中，这样文件就会变得臃肿。
+你可以尝试调整 `minChunks` 的值来找到最优的方案。通常情况下，你希望它是一个较小的值，但随着 chunk 数量的增加它会随之增大。例如，有3个 chunk 时，`minChunks` 的值可能是 2 ，但是有30个 chunk 时，它的值可能是8 - 因为如果你把它设置成 2，就会有很多模块要被打包进同一个公共文件中，这样文件就会变得臃肿。
 
 ### Further reading 
 
@@ -739,7 +738,7 @@ Feel free to play with the `minChunks` value to find the best one. Generally, yo
 
 When building the code, webpack assigns each module an ID. Later, these IDs are used in `require()`s inside the bundle. You usually see IDs in the build output right before the module paths:
 
-编译代码时，webpack 会为每个模块分配一个ID。随后，这些 ID 将在 bundle 里的 `require()` 函数中被使用到。你通常会在编译输出的模块路径前看到这些 ID：
+构建代码时，webpack 会为每个模块分配一个ID。随后，这些 ID 将在 bundle 里的 `require()` 函数中被使用到。你通常会在编译输出的模块路径前看到这些 ID：
 
 ``` bash
 $ webpack
@@ -810,7 +809,7 @@ Time: 2150ms
 
 This invalidates all chunks that include or depend on modules with changed IDs – even if their actual code hasn’t changed. In our case, the `0` chunk (the chunk with `comments.js`) and the `main` chunk (the chunk with the other app code) get invalidated – whereas only the `main` one should’ve been.
 
-这将使包含或依赖于这些被更改 ID 的模块的所有 chunks 都无效 - 即使它们实际代码没有更改。在我们的案例中，`0` chunk ( `comments.js` 的 chunk)  和 `main` chunk （其它应用代码的 chunk ）都将失效 - 但其实只有 `main` 应该失效。
+这将使包含或依赖于这些被更改 ID 的模块的所有 chunk 都无效 - 即使它们实际代码没有更改。在我们的案例中，ID为 `0` 的chunk ( `comments.js` 的 chunk)  和 `main` chunk （其它应用代码的 chunk ）都将失效 - 但其实只有 `main` 应该失效。
 
 To solve this, change how module IDs are calculated using the [`HashedModuleIdsPlugin`](https://webpack.js.org/plugins/hashed-module-ids-plugin/). It replaces counter-based IDs with hashes of module paths:
 
@@ -842,7 +841,7 @@ Time: 2150ms
 
 With this approach, the ID of a module only changes if you rename or move that module. New modules won’t affect other modules’ IDs.
 
-使用这个方法，只有当重命名或移动该模块时，模块的 ID 才会更改。新的模块也不会影响到其他模块的 ID。
+使用了这个方法，只有当重命名或移动该模块时，模块的 ID 才会更改。新的模块也不会影响到其他模块的 ID。
 
 To enable the plugin, add it to the `plugins` section of the config:
 
@@ -878,11 +877,11 @@ module.exports = {
 
 * Inline the runtime to save an HTTP request
 
-* 内联运行时可以节省 HTTP 请求
+* 内联 runtime 可以节省 HTTP 请求
 
 * Lazy-load non-critical code with <code>import</code>
 
-* 使用 import 懒加载非关键代码
+* 使用 <code>import</code> 懒加载非关键代码
 
 * Split code by routes/pages to avoid loading unnecessary stuff
 
