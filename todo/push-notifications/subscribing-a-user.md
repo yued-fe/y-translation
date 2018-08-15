@@ -139,13 +139,13 @@ if (!('PushManager' in window)) {
 这是考虑到开发者可能会做一些让人讨厌的事情，比如说持续不断地追踪用户的位置，而不让用户知道。
 
 为了避免这个场景以及让规范编写者有时间来考虑如何更好地支持这个特性，他们添加了 **userVisibleOnly** 选项，并且和浏览器达成了一个象征性的协议，给此选项传入一个 **true** 值，这样的话
-每次收到一个推送，web 应用都会展示出一个通知 (也就是说没有静默推送）。
+每次收到一个推送，Web 应用都会展示出一个通知 (也就是说没有静默推送）。
 
 所以说当前，你**必须**传入一个为 **true** 的值。如果你没有传入一个 **userVisibleOnly** 的键值或者传入的是 **false** 值，你会得到如下的错误：
 
 > Chrome 当前仅支持能够产生让用户可见消息的推送 API 的订阅。你可以调用 `pushManager.subscribe({useVisibleOnly: true})。查看 [https://goo.gl/yqv4Q4](https://goo.gl/yqv4Q4) 获取更多详情。
 
-当前看起来，在 Chrome 当中，完全的静默推送永远不会实现。规范编写者正在探索一个预算 API 的概念，它会基于用户对 web app 的使用而给开发者们一定量的静默推送消息次数。
+当前看起来，在 Chrome 当中，完全的静默推送永远不会实现。规范编写者正在探索一个预算 API 的概念，它会基于用户对 Web App 的使用而给开发者们一定量的静默推送消息次数。
 
 ### applicationServerKey 选项
 
@@ -157,7 +157,7 @@ if (!('PushManager' in window)) {
 
 下面的图描述了这些步骤。
 
-1. 浏览器加载了你的 web app，然后你调用 `subscribe()`，传入你的 **application server key** 中的公钥。
+1. 浏览器加载了你的 Web App，然后你调用 `subscribe()`，传入你的 **application server key** 中的公钥。
 2. 然后浏览器发出一个网络请求到推送服务，推送服务会生成一个和 **applications public key** 联系在一起的 **endpoint**，并把该 **endpoint** 返回给浏览器。
 3. 浏览器将这个值添加到第1步调用 `subscribe()` 返回的 Promise 对象 **PubSubscription** 当中。
 
@@ -189,7 +189,7 @@ method.](./images/svgs/application-server-key-subscribe.svg)
 
 ## 授权和订阅
 
-在调用 `subscribe()` 时有一个副作用。就是你在调用它的时候，如果 web 应用没有获得弹出通知的许可，浏览器会为你请求许可。
+在调用 `subscribe()` 时有一个副作用。就是你在调用它的时候，如果 Web 应用没有获得弹出通知的许可，浏览器会为你请求许可。
 如果你的 UI 和这个流程是匹配的，这会很有用。但是如果你需要更多的控制（我认为绝大多数开发者都是这样想的），请使用我们之前用过的 `Notification.requestPermission()`。
 
 ## 什么是推送订阅
@@ -245,7 +245,7 @@ method.](./images/svgs/application-server-key-subscribe.svg)
     // 上面和下面的输出是一样的
     const subscriptionObjectToo = JSON.stringify(pushSubscription);
 
-在 web 页面当中，像下面一样完成一个订阅的发送：
+在 Web 页面当中，像下面一样完成一个订阅的发送：
 
     function sendSubscriptionToBackEnd(subscription) {
       return fetch('/api/save-subscription/', {
