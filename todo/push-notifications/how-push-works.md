@@ -76,7 +76,7 @@
 ### 这个 API 是什么样的?
 
 我前面提到每个 Web 推送服务需要的是相同的 API 调用。这个 API 就是 [**Web Push Protocol**](https://tools.ietf.org/html/draft-ietf-webpush-protocol)。
-它是一个 IETF 标准，它定义了如何向一个推送服务执行一个 API 调用。
+它是一个 IETF 标准，定义了如何向一个推送服务执行一个 API 调用。
 
 这个 API 调用需要设置一些头部，并且需要以字节流的方式发送数据。我们将看一下如何用库来执行这个 API，以及我们自己如何来实现这个 API。
 
