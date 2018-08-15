@@ -68,7 +68,7 @@
 	  }
 	}
 	
-这个示例当中的 **endpoint** 是 **https://random-push-service.com/some-kind-of-unique-id-1234/v2/**。推送服务应该是 "random-push-service.com"，如 "some-kind-of-unique-id-1234" 所示，每个 endpoint 对用户来说都是独一无二的。
+这个示例当中的 **endpoint** 是 "https://random-push-service.com/some-kind-of-unique-id-1234/v2/"。推送服务应该是 "random-push-service.com"，如 "some-kind-of-unique-id-1234" 所示，每个 endpoint 对用户来说都是独一无二的。
 当你开始着手于推送之后，你会注意到这个模式。
 
 关于上述示例当中的 **key** 这个字段，我们后续会讲到，这里就先不解释了。
