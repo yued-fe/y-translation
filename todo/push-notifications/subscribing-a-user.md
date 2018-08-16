@@ -15,7 +15,7 @@
 
 ## 特征检测
 
-第一步，我们需要检查用户当前的浏览器是否支持推送消息。可以通过下面两个简单的方法来检查是否支持推送。
+首先，我们需要检查用户当前的浏览器是否支持推送消息。可以通过下面两个简单的方法来检测。
 
 1. 检查 **navigator** 上是否有 **serviceWorker** 属性。
 2. 检查 **window** 上是否有 **PushManager** 属性。
@@ -55,15 +55,15 @@ if (!('PushManager' in window)) {
     }
 
 上面的代码告诉浏览器，我们有一个 service worker 文件，以及它存放的地址。在这个示例中，service worker 文件地址是 **/service-worker.js**。
-在调用完 `register()` 之后，后台浏览器会进行下面几个步骤。
+在调用完 `register()` 之后，后台浏览器会进行下面几个步骤：
 
 1. 下载 service worker 文件。
 
 2. 运行 JavaScript 代码。
 
-3. 如果一切都运行正常并且没有发生错误，调用 `register()` 之后返回的 promise 将会调用 resolve 方法。如果有任何错误发生，promise 会 reject。
+3. 如果一切都运行正常并且没有发生错误，调用 `register()` 之后返回的 promise 对象将会调用 resolve 方法。如果有任何错误发生，promise对象 会调用 reject方法。
 
-> 如果 `register()` reject了，请在 Chrome 的开发者工具当中再检查一遍你的 JavaScript 代码中的拼写错误或逻辑错误。
+> 如果 `register()` reject 了，请在 Chrome 的开发者工具当中再检查一遍你的 JavaScript 代码中的拼写错误或逻辑错误。
 
 如果 `register()` 确实 resolve 了， 它会返回一个 **ServiceWorkerRegistration** 的方法。我们将使用它来访问[推送管理 API](https://developer.mozilla.org/en-US/docs/Web/API/PushManager)
 
@@ -155,24 +155,21 @@ if (!('PushManager' in window)) {
 
 传入到 `subscribe()` 方法的 **applicationServerKey** 选项应该是公钥。当订阅一个用户的时候，浏览器会将这个值传递给推送服务，这意味着推送服务可以将你应用的公钥和用户的推送订阅绑定起来。
 
-下面的图描述了这些步骤。
+下面的图描述了这些步骤：
 
 1. 浏览器加载了你的 Web App，然后你调用 `subscribe()`，传入你的 **application server key** 中的公钥。
 2. 然后浏览器发出一个网络请求到推送服务，推送服务会生成一个和 **applications public key** 联系在一起的 **endpoint**，并把该 **endpoint** 返回给浏览器。
 3. 浏览器将这个值添加到第1步调用 `subscribe()` 返回的 Promise 对象 **PubSubscription** 当中。
 
-![Illustration of the public application server key is used in subscribe
-method.](./images/svgs/application-server-key-subscribe.svg)
-
 ![描述如何在订阅方法中使用应用公钥](./images/svgs/application-server-key-subscribe.svg)
 
-当你后续想要发送一个推送消息，你需要创建一个 **Authorization** 的 header 头，这个 header 头将包含使用应用服务器的私钥签名的信息。
+当你后续想要发送一个推送消息，需要创建一个 **Authorization** 的 header 头，这个 header 头将包含使用应用服务器的私钥签名之后的信息。
 当推送服务接收到一个要求发送推送消息的请求，它通过查询关联到该请求的 endpoint 值的公钥，来验证该请求中签名过的 **Authorization** 的 header 头。如果签名是合法的，
-推送服务知道它一定来自于拥有匹配的私钥的应用服务器。总的来说，它是用来防止其他人发送消息给应用用户的一个安全措施。
+推送服务知道它一定来自于拥有匹配的私钥的应用服务器。总的来说，它是用来防止其他人伪造身份发送消息给应用用户的一个安全措施。
 
 ![如何使用私有应用服务器密钥来发送消息](./images/svgs/application-server-key-send.svg)
 
-从技术上来说，`applicationSecretKey` 是一个可选项。然而，在Chrome浏览器上最容易的实现方案是需要它的，其他浏览器在以后也可能需要它。在Firefox中当前是可选项。
+从技术上来说，`applicationSecretKey` 是一个可选项。然而，在 Chrome 浏览器上最容易的实现方案是需要它的，其他浏览器在以后也可能需要它。在 Firefox 中当前是可选项。
 
 在 [VAPID spec](https://tools.ietf.org/html/draft-thomson-webpush-vapid) 中定义了 application server key 的规范。
 记住 application server key 和 VAPID keys 是同一个概念。
@@ -185,7 +182,7 @@ method.](./images/svgs/application-server-key-subscribe.svg)
     $ npm install -g web-push
     $ web-push generate-vapid-keys
 
-你只需要为你的应用生成一次密钥，并且确保你把私钥保管好。（是的，我刚才提到过）。
+你只需要为你的应用生成一次密钥，并且确保你把私钥保管好（是的，我刚才提到过）。
 
 ## 授权和订阅
 
@@ -227,7 +224,7 @@ method.](./images/svgs/application-server-key-subscribe.svg)
 
 `endpoint` 值就是推送服务的 URL。如果要触发一个推送消息的话，可以向这个 URL 发送一个 POST 请求。
 
-`keys` 对象包含用于加密推送消息数据的值。
+`keys` 对象用于加密推送消息数据。
 
 ## 发送订阅到你的服务器
 
