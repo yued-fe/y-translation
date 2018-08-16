@@ -78,7 +78,7 @@
 我前面提到每个 Web 推送服务需要的是相同的 API 调用。这个 API 就是 [**Web Push Protocol**](https://tools.ietf.org/html/draft-ietf-webpush-protocol)。
 它是一个 IETF 标准，定义了如何向一个推送服务执行一个 API 调用。
 
-这个 API 调用需要设置一些头部，并且需要以字节流的方式发送数据。我们将看一下如何用库来执行这个 API，以及我们自己如何来实现这个 API。
+这个 API 调用需要设置一些头部，并且需要以字节流的方式发送数据。我们将看一下如何用库来执行这个 API，以及自己如何来实现这个 API。
 
 ### 这个 API 能做什么？
 
@@ -92,7 +92,7 @@
 
 这些指示包含如下：
 
-- 推送消息的 TTL（生存时间）。这个定义了一条消息在没有发送并移除前，能在队列当中排多久。
+- 推送消息的 TTL（生存时间）。这个定义了一条消息在没有发送并移除前，能在队列当中排多长时间。
 
 - 设置消息的紧急度。这在推送服务为了保持用户的电量情况下，只推送高优先级的消息时很有用。
 
@@ -110,13 +110,10 @@
 
 当推送服务确实发送了一条消息，浏览器会接收到这条消息，解密数据，并且会在你的 **service worker** 中触发一个**推送**事件。
 
-[service worker](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API)是一个特殊的 JavaScript 文件。
+[service worker](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) 是一个特殊的 JavaScript 文件。
 即使浏览器没有打开，浏览器依然可以执行这个 JavaScript。**service worker** 也拥有它自己的 API，比如**推送**，这些 API 在 Web 页面是不存在的（也就是说这些 API 在 service worker 脚本之外无法被使用）。
 
 秘密就是位于 **service worker** 的推送事件当中，它能让你能执行任何后台任务。你可以执行分析调用，缓存离线页面和弹出通知等。
-
-![When a push message is sent from a push service to a user's device, your service worker
-receives a push event.](./images/svgs/push-service-to-sw-event.svg)
 
 ![当推送服务发送一条推送消息给用户的设备，设备的 service worker 将收到一个推送事件](./images/svgs/push-service-to-sw-event.svg)
 
