@@ -11,7 +11,7 @@
 
 ## 使用生产模式(只在webpack 4)
 
-Webpack 4 介绍了 [新的 `mode` 标志](https://webpack.js.org/concepts/mode/). 你可以将这个标志设置为 `'development'` 或者 `'production'` 来指示 webpack 你正在为特定环境构建应用：
+Webpack 4 引入了 [新的 `mode` 标志](https://webpack.js.org/concepts/mode/). 你可以将这个标志设置为 `'development'` 或者 `'production'` 来指示 webpack 你正在为特定环境构建应用：
 
 ```js
 // webpack.config.js
@@ -20,15 +20,15 @@ module.exports = {
 };
 ```
 
-当在生产环境构建应用时，请确保你设置的模式是 `production` 。 这将让 webpack 应用例如缩小尺寸、移除库中只在开发者模式才有的代码以及[更多](https://medium.com/webpack/webpack-4-mode-and-optimization-5423a6bc597a)的一些优化。
+当为生产环境构建应用时，请确保你设置的模式是 `production` 。 这将让 webpack 应用例如缩小尺寸、移除库中只在开发者模式才有的代码以及[更多](https://medium.com/webpack/webpack-4-mode-and-optimization-5423a6bc597a)的一些优化。
 
 ### 扩展阅读
 
-* [`mode` 标志配置的特定东西是什么](https://medium.com/webpack/webpack-4-mode-and-optimization-5423a6bc597a)
+* [`mode` 标志具体在配置些什么](https://medium.com/webpack/webpack-4-mode-and-optimization-5423a6bc597a)
 
-## 启用缩减尺寸
+## 启用缩减
 
-> ⭐️ **注意：** 大部分仅限于 webpack 3. 如果你使用 [production 模式下的 webpack 4](#enable-the-production-mode), bundle-level 缩减已经启用 – 你只需要启用 [loader-specific 选项](#loader-specific-options).
+> ⭐️ **注意：** 这些大部分只适用于 webpack 3. 如果你使用 [production 模式下的 webpack 4](#enable-the-production-mode), bundle-level 缩减已经启用 – 你只需要启用 [loader-specific 选项](#loader-specific-options).
 
 缩减尺寸是在你通过移除额外的空格、缩短变量的命名等方式压缩代码的时候。例如这样：
 
@@ -608,8 +608,8 @@ define(["/libraries/react.min.js", "/libraries/react-dom.min.js"], function () {
 * 如果使用 webpack 4，请启用生产模式
 * 缩减你的代码，通过 bundle-level minifier 和 loader 选项
 * 移除仅在开发环境使用的代码，通过将 `NODE_ENV` 替换成 `production`
-* 使用 ES 模块以确保 tree shaking
-* 压缩图像
-* 应用特定依赖优化
+* 使用 ES 模块以启用 tree shaking
+* 压缩图片
+* 启用特定依赖优化
 * 启用模块连接
 * 使用 `externals`，如果这对你有意义
