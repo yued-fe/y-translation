@@ -16,7 +16,7 @@ are also options that alter the behaviour of notifications.
 
 Be default, calling `showNotification()` with just visual options will have
 the following behaviours:
-默认情况下，在设置好视觉相关选项时，调用"showNotification()" 会出现以下行为：
+默认情况下，在设置好视觉相关选项时，调用`showNotification()`会出现以下行为：
 
 - Clicking on the notification does nothing.
 - 点击通知不会触发任何事件。
@@ -31,11 +31,11 @@ notifications in any way.
 - On some platforms the notification will disappear after a short
 period of time while others will show the notification unless the user interacts with it.
 (For example, compare your notifications on Android and Desktop.)
-- 在某些系统上，短时间后通知会自动消失，而其他系统则会一直展示通知直到用户对其进行操作。（可以对比安卓和电脑的通知行为）
+- 在某些系统上，通知会在短时间展示后消失，而其他系统则会一直展示通知直到用户对其进行操作。（可以对比安卓和电脑的通知行为）
 
 In this section we are going to look at how we can alter these default behaviours using options
 alone. These are relatively easy to implement and take advantage of.
-在这一节中，我们会探讨下单独使用一些选项会如何改变默认的通知行为，这相对来说都比较容易实施并且都具有各自的优势。
+在这一节中，我们会探讨如何单独使用一些选项改变默认的通知行为，这相对来说比较容易实施、且具有各自的优势。
 
 ### Notification Click Event
 ### 通知的点击事件
@@ -46,11 +46,11 @@ to happen. It doesn't even close or remove the notification.
 
 The common practice for a notification click is for it to close and perform some other logic
 (i.e. open a window or make some API call to the application).
-通知点击事件的常见用法是调用它来关闭通知、同时展示一些其他的逻辑（例如，打开一个窗口或调用一些可用的API）
+通知点击事件的常见用法是调用它来关闭通知、同时执行一些其他的逻辑（例如，打开一个窗口或对应用程序进行一些API调用）
 
 To achieve this we need to add a 'notificationclick' event listener to our service worker. This
 will be called when ever a notification is clicked.
-要实现以上所说的，我们需要让service worker来监听'notificationclick'事件。这个事件在每次点击通知时都会被调用。
+为此，我们需要在service worker中添加一个 'notificationclick' 事件监听器。 这个事件将在点击通知时被调用。
 
     self.addEventListener('notificationclick', function(event) {
       const clickedNotification = event.notification;
@@ -66,7 +66,7 @@ accessed via the `event.notification` parameter. From this we can access
 the notifications properties and methods. In this case we call its
 `close()` method and perform additional work.
 
-从以上demo代码可以知道，被点击的通知可以通过event.notification参数来访问。通过这个参数我们可以获得通知的属性和方法，因此我们能够调用通知的'close()'方法
+正如你在此示例中所看到的，被点击的通知可以通过event.notification参数来访问。通过这个参数我们可以获得通知的属性和方法，因此我们能够调用通知的`close()`方法
 ，同时执行一些额外的操作。
 
 
@@ -79,11 +79,11 @@ while your code is busy.
 
 Actions allow you to give users another level of interaction with your users
 over just clicking the notification.
-行为的使用可以提供给用户另一个水准的交互体验，相比于之前的普通点击行为。
+actions的使用可以提供给用户另一个级别的交互体验，相比于之前的普通点击行为。
 
 In the previous section you saw how to define actions when calling
 `showNotification()`:
-在上一节中，我们get到了如何调用showNotification()来定义行为：
+在上一节中，我们get到了如何调用`showNotification()`来定义行为：
 
         const title = 'Actions Notification';
         const options = {
@@ -171,7 +171,7 @@ With this we would detect notification clicks or action clicks like so:
 The *tag* option is essentially a string ID that "groups" notifications together, providing
 an easy way to determine how multiple notifications are displayed to the user. This is easiest
 to explain with an example.
-标签选项本质上可以理解为：使用一个字符串类型的ID将通知"组织"到一起，同时提供了一个简单的方式来抉择多个通知的展示方式，这里可能用示例来解释最为简单：
+标签选项的本质是一个字符串类型的ID，以此将通知"分组"在一起，并提供了一种简单的方法来向用户显示多个通知，这里可能用示例来解释最为简单：
 
 Let's display a notification and give it a tag, of
 'message-group-1'. We'd display the notification with this code:
@@ -216,31 +216,31 @@ will close the first notification and replace it with our new notification.
             registration.showNotification(title, options);
 
 Now we have two notifications even though `showNotification()` was called three times.
-现在即使我们3次调用'showNotification()'也只会展示2个通知。
+现在即使我们3次调用`showNotification()`也只会展示2个通知。
 
 ![Two notifications where the first notification is replaced by a third notification.](./images/notification-screenshots/desktop/chrome-third-tag.png)
 The `tag` option is simply a way of grouping messages so that any old notifications that
 are currently displayed will be closed if they have the same tag as a new notification.
-标签这个选项简单来看就是一个用于分类信息的方式，因此在新通知与已有通知标记为同一个标签时，当前被展示的所有旧通知将会被关闭。
+`tag`这个选项简单来看就是一个用于分类信息的方式，因此在新通知与已有通知标记为同一个标签时，当前被展示的所有旧通知将会被关闭。
 
 A subtlety to using `tag` is that when it replaces a notification, it
 will do so *without* a sound and vibration.
-使用标签有一个容易被忽略的小细节：当它替换了一个通知时，是没有音效和震动提醒的。
+使用`tag`有一个容易被忽略的小细节：当它替换了一个通知时，是*没有*音效和震动提醒的。
 
 This is where the `renotify` option comes in.
-此时'Renotify'选项就有了用武之地。
+此时`Renotify`选项就有了用武之地。
 
 ### Renotify
 ### 是否替换之前的通知
 
 This largely applies to mobile devices at the time of writing. Setting this option makes new
 notifications vibrate and play a system sound.
-这个选项大多数情况应用于写作时间。通过设置它，接收到新的通知时，系统会震动并播放系统音效。
+这个选项主要适用于写作时间的移动设备。通过设置它，接收到新的通知时，系统会震动并播放系统音效。
 
 There are scenarios where you might want a replacing notification to
 notify the user rather than silently update. Chat applications are a good
 example. In this case you should set `tag` and `renotify` to true.
-某些场景下，你可能更希望替换通知时能够提醒到用户，而不是默默地进行。聊天应用则是一个很好的例子。这种情况你需要同时使用'标签'和'是否替换之前的通知(Renotify)'选项。
+某些场景下，你可能更希望替换通知时能够提醒到用户，而不是默默地进行。聊天应用则是一个很好的例子。这种情况你需要同时使用`tag`和`Renotify`选项。
 
             const title = 'Notification 2 of 2';
             const options = {
@@ -255,7 +255,7 @@ error:
     TypeError: Failed to execute 'showNotification' on 'ServiceWorkerRegistration':
     Notifications which set the renotify flag must specify a non-empty tag
 
-**注意：** 如果你设置了'是否替换之前的通知'(Renotify)为true但却没有设置标签，会出现以下报错信息：
+**注意：** 如果你设置了`Renotify为true`但却没有设置标签，会出现以下报错信息：
     类型错误：不能够在'ServiceWorkerRegistration'上执行'showNotification'方法：设置了renotify标识的通知必须声明一个不为空的标签。
 
 ### Silent
@@ -263,11 +263,11 @@ error:
 
 This option allows you to show a new notification but prevents the default
 behavior of vibration, sound and turning on the device's display.
-这一选项可以阻止默认的震动及音效来展示新的提示，同时会亮起设备的屏幕。
+这一选项可以阻止默认的震动及音效来展示新的通知，同时会亮起设备的屏幕。
 
 This is ideal if your notifications don't require immediate attention
 from the user.
-如果你的通知不需要立马让用户注意到，这个选项就是最合适的方法。
+如果你的通知不需要立马让用户注意到，这个选项是最合适的。
 
         const title = 'Silent Notification';
         const options = {
@@ -276,7 +276,7 @@ from the user.
         registration.showNotification(title, options);
 
 **Note:** If you define both *silent* and *renotify*, silent will take precedence.
-**注意** 如果同时设置了*静音(silent)*和*是否替换之前的通知(Renotify)*，静音(silent)选项会取得更高的优先级。
+**注意：** 如果同时设置了*silent*和*Renotify*，silent()选项会取得更高的优先级。
 
 ### Requires Interaction
 ### 与通知进行交互
@@ -284,12 +284,12 @@ from the user.
 Chrome on desktop will show notifications for a set time period before hiding them. Chrome on
 Android doesn't have this behaviour. Notifications are displayed until
 the user interacts with them.
-桌面的chrome浏览器会在通知消失前展示一段时间，而安卓设备的chrome浏览器不会有这种行为，通知会一直展示，直到用户对其进行操作。
+桌面chrome浏览器会展示通知一段时间后将其隐藏，而安卓设备的chrome浏览器不会有这种行为，通知会一直展示，直到用户对其进行操作。
 
 To force a notification to stay visible until the user interacts with it
 add the `requireInteraction` option. This will show the notification
 until the user dismisses or clicks your notification.
-如果要强制让通知持续展示直到用户对其操作，需要添加'requireInteraction'选项，此选项会展示通知直到用户划走（驳回）或点击它。
+如果要强制让通知持续展示直到用户对其操作，需要添加`requireInteraction`选项，此选项会展示通知直到用户划走（驳回）或点击它。
 
         const title = 'Require Interaction Notification';
         const options = {
