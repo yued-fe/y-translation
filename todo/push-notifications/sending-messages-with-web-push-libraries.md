@@ -13,8 +13,8 @@
 
 
 
-实现 Web 推送的痛点之一就是触发一个推送消息是极其"繁琐"的，应用程序需要按照[ Web 推送协议](https://tools.ietf.org/html/draft-ietf-webpush-protocol)向推送服务发送 POST 请求。为了使推送能够跨浏览器使用，你还需要使用 [VAPID](https://tools.ietf.org/html/draft-thomson-webpush-vapid)
-(即应用服务器密钥)——需要在 header 中设置一个值来证明你的应用能够向用户发送消息。发送推送消息数据时，需要对数据进行[加密](https://tools.ietf.org/html/draft-ietf-webpush-encryption)并添加特定的headers，以便浏览器正确地解密消息。
+实现 Web 推送的痛点之一就是触发一个推送消息是极其"繁琐"的，应用程序需要按照[Web 推送协议](https://tools.ietf.org/html/draft-ietf-webpush-protocol)向推送服务发送 POST 请求。为了使推送能够跨浏览器使用，你还需要使用 [VAPID](https://tools.ietf.org/html/draft-thomson-webpush-vapid)
+(即应用服务器密钥)——需要在 header 中设置一个值来证明你的应用能够向用户发送消息。发送推送消息数据时，需要对数据进行[加密](https://tools.ietf.org/html/draft-ietf-webpush-encryption)并添加特定的headers，以便浏览器能够正确地解密消息。
 
 触发推送的主要问题是，如果遇到问题，很难进行诊断。随着时间的推移和更多浏览器的支持，这一点正在得到改善，但仍然不容易。因此，我强烈推荐使用库来处理推送的加密、格式化、触发这一系列流程。
 
@@ -33,7 +33,7 @@ on Github](https://github.com/web-push-libs/).
 
 ## 保存订阅
 
-实现从数据库中保存并检索 `PushSubscriptions` 的操作区别于你的服务端语言和数据库，不过查看如何完成这一步的示例应该有些用处。
+实现从数据库中保存并检索 `PushSubscriptions` 的操作取决于你的服务端语言和数据库选择，不过查看如何实现这一步的示例应该是有些帮助的。
 
 在 demo 页面中，通过发送简单的 POST 请求，`PushSubscription` 被发送到我们的后端:
 
@@ -82,7 +82,7 @@ demo 中的[Express](http://expressjs.com/)服务器会监听 `/api/save-subscri
       return true;
     };
 
-> 注：在这个路由中，我们只检查 endpoint，如果你需要检验**必需**载荷，确保你也检查了 auth 和 p256dh 密钥。
+> 注：在这个路由中，我们只检查 endpoint，如果你**需要**载荷支持，确保你也检查了 auth 和 p256dh 密钥。
 
 如果这个订阅是有效的，我们需要将其保存并返回一个合适的 JSON 响应:
 
@@ -121,7 +121,7 @@ demo 中的[Express](http://expressjs.com/)服务器会监听 `/api/save-subscri
 
 当发送推送消息时，我们最终需要一些事件来触发推送消息的流程。常用的方法是创建一个管理员页面，让你配置并触发消息推送。你也可以创建一个跑在本地的程序或者其他任何方法来访问 `PushSubscriptions` 列表、触发消息推送。
 
-我们的 demo 有一个"类管理系统"的页面能够触发一个推送，因为是演示版本，所以这个页面是公开的。
+我们的演示 demo 有一个"类管理系统"的页面能够触发一个推送，因为是演示版本，所以这个页面是公开的。
 
 我将演示开发这个 demo 所涉及的每个步骤，这些步骤对所有人来说都很容易跟上，包括那些刚接触 Node 的人。
 
