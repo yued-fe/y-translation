@@ -124,7 +124,7 @@ In the previous section you saw how to define actions when calling
 
 If the user clicks an action button, check the `event.action` value in
 the `noticationclick` event to tell which action button was clicked.
-如果用户点击了可以触发行为的按钮，通过'notificationclick'回调中返回的'event.action'就可以知道被点击的按钮是哪个。
+如果用户点击了可以触发行为的按钮，通过`notificationclick`回调中返回的`event.action`就可以知道被点击的按钮是哪个。
 
 `event.action` will contain the `action` value set in the options. In the example above the
 `event.action` values would be one of the following: 'coffee-action', 'doughnut-action',
