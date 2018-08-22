@@ -9,11 +9,8 @@
 # Common Notification Patterns
 # 常用的通知模式
 
-We're going to look at some common implementation patterns for web push.
-此篇我们将会探索web消息推送的一些常用模式。
-
-This will involve using a few different API's that are available in the service worker.
-包括使用一些service worker提供的API。
+We're going to look at some common implementation patterns for web push.This will involve using a few different API's that are available in the service worker.
+此篇我们将会探索web消息推送的一些常用模式，包括使用一些service worker提供的API。
 
 ## Notification close event
 ## 通知的关闭事件
@@ -24,8 +21,8 @@ In the last section we saw how we can listen for `notificationclick` events.
 There is also a `notificationclose` event that is called if the user dismisses one of your
 notifications (i.e. rather than clicking the notification, the user clicks the cross or swipes the
 notification away).
-除了`notificationclick`事件，我们还可以监听`notificationclose`事件，它会在用户驳回其中一个通知
-（例如，用户点击了关闭按钮或划掉了通知，而不是用户点击了通知）时被调用。
+除了`notificationclick`事件，我们还可以监听`notificationclose`事件，它会在用户忽略其中一个通知
+（例如，用户点击了关闭按钮或划掉了通知，而不是点击了通知）时被调用。
 
 This event is normally used for analytics to track user engagement with notifications.
 这个事件通常被用作数据分析，以此追踪用户与通知的互动情况。
@@ -80,8 +77,8 @@ One of the most common responses to a notification is to open a
 window / tab to a specific URL. We can do this with the
 [clients.openWindow()](https://developer.mozilla.org/en-US/docs/Web/API/Clients/openWindow)
 API.
-对一个通知来说，打开指定地址的窗口／标签页可以作为一种最常见的反馈，这个我们可以通过[clients.openWindow()]API来实现。
-（https://developer.mozilla.org/en-US/docs/Web/API/Clients/openWindow）
+对一个通知来说，打开指定地址的窗口／标签页可以作为一种最常见的反馈，这个我们可以通过[clients.openWindow()]（https://developer.mozilla.org/en-US/docs/Web/API/Clients/openWindow）来实现。
+
 
 In our `notificationclick` event we'd run some kind like this:
 在`notificationclick`事件中，我们会运行类似下面的代码来实现以上需求：
@@ -208,8 +205,8 @@ If we can't find a matching client, we open a new window, same as in the previou
 **Note:** We are returning the promise for `matchingClient.focus()` and
 `clients.openWindow()` so that the promises are accounted for in our promise
 chain.
-**注意：** 我们会返回`matchingClient.focus()`、`clients.openWindow()`方法执行后返回的'promise'对象，
-因此这些promise对象就可以组成我们的promise调用链了。
+**注意：** 我们会返回`matchingClient.focus()`、`clients.openWindow()`方法执行后返回的promise对象，
+这样promise对象就可以组成我们的promise调用链了。
 
 ## Merging notifications
 ## 合并通知
@@ -222,7 +219,7 @@ You can however get more sophisticated with the collapsing of notifications usin
 Notifications API. Consider a chat app, where the developer might want a new notification to
 show a message similar to "You have two messages from Matt" rather than just showing the latest
 message.
-但通过使用通知相关的API，你可以变得更灵活地覆盖展示通知。比如一个聊天应用，
+但通过使用通知相关的API，你可以更灵活地覆盖展示通知。比如一个聊天应用，
 开发者可能更希望用新的通知来展示"你有2条未读信息"等类似信息，而不是只展示最新接收到的信息。
 
 You can do this, or manipulate current notifications in other ways, using the
@@ -241,8 +238,7 @@ In our chat app, let's assume each notification has as some data which includes 
 The first thing we'll want to do is find any open notifications for a user with a specific
 username. We'll get `registration.getNotifications()` and loop over them and check the
 `notification.data` for a specific username:
-我们要做的第一件事就是在已打开的通知中，通过'registration.getNotifications()'方法，找到所有带有具体用户名为标识的通知，
-遍历这些通知，获取某个具体用户名的相关通知。
+我们要做的第一件事就是在所有已打开的通知中找到带有具体用户名的用户。首先调用'registration.getNotifications()'方法，之后遍历其结果检测`notification.data`中是否有具体用户名。
 
         const promiseChain = registration.getNotifications()
         .then(notifications => {
@@ -359,7 +355,7 @@ The code to getting all the windows and looking for a focused window looks like 
 We use [`clients.matchAll()`](https://developer.mozilla.org/en-US/docs/Web/API/Clients/matchAll)
 to get all of our window clients and then we loop over them checking the `focused` parameter.
 我们一般使用[`clients.matchAll()`](https://developer.mozilla.org/en-US/docs/Web/API/Clients/matchAll)来获得当前浏览器下所有窗口对象，
-然后遍历这些结果去找到拥有`focused`参数的窗口对象。
+然后遍历其结果去检查`focused`参数。
 
 Inside our push event we'd use this function to decide if we need to show a notification:
 在推送事件内，我们会使用如下方法来决定是否展示通知：
@@ -443,9 +439,11 @@ but if you implement a `fetch` event listener, make sure you take
 advantage of it in your `push` event by caching the page and assets
 you'll need before showing your notification.
 这就需要设置你的service worker来处理这些`fetch`事件，但如果你监听了`fetch`事件，
-确保在你展示通知之前，通过缓存你需要缓存的页面和资源，来充分利用它在推送事件中的优势。
+请确保在展示你的通知之前，通过缓存你需要的页面和资源来充分利用它在`push`事件中的优势。
 
 For more information check out this [introduction to service workers
 post](/web/fundamentals/getting-started/primers/service-workers)[introduction to service workers
              post](/web/fundamentals/getting-started/primers/service-workers]
-想要了解更多缓存相关信息，请参考[service workers的介绍]
+想要了解更多缓存相关信息，请参考[introduction to service workers
+post](/web/fundamentals/getting-started/primers/service-workers)[introduction to service workers
+             post](/web/fundamentals/getting-started/primers/service-workers]
