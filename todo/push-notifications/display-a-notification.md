@@ -23,7 +23,7 @@
 
     <ServiceWorkerRegistration>.showNotification(<title>, <options>);
 
-title是一个字符串，options 的参数如下：
+title是一个字符串类型，options 的参数如下：
 
     {
       "//": "Visual Options",
@@ -139,7 +139,7 @@ Firefox：
 通过参考 [Android
 guidelines](https://developer.android.com/guide/practices/ui_guidelines/icon_design_status_bar.html)，建议的大小是24px乘以设备像素比例。
 
-也就是说使用大于72px大小的图片应该是合适的（假设最大设备像素比率为3）。
+也就是说使用大于72px大小的图片应该是合适的（假设设备的最大像素比率为3）。
 
 ### Image
 
