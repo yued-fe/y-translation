@@ -16,14 +16,14 @@ are also options that alter the behaviour of notifications.
 
 Be default, calling `showNotification()` with just visual options will have
 the following behaviours:
-默认情况下，在设置好视觉相关选项时，调用`showNotification()`会出现以下行为：
+默认情况下，如果只设置好视觉相关选项时，调用`showNotification()`会出现以下行为：
 
 - Clicking on the notification does nothing.
 - 点击通知不会触发任何事件。
 
 - Each new notification is shown one after the other. The browser will not collapse the
 notifications in any way.
-- 每个新的通知会逐一有序的展示，浏览器不会以任何方式叠加展示通知。
+- 每个新的通知会逐一有序地展示，浏览器不会以任何方式叠加展示通知。
 
 - The platform may play a sound or vibrate the user's devices (depending on the platform).
 - 系统会以音效或震动的方式提示用户（具体方式则取决于设备系统）。
@@ -35,7 +35,7 @@ period of time while others will show the notification unless the user interacts
 
 In this section we are going to look at how we can alter these default behaviours using options
 alone. These are relatively easy to implement and take advantage of.
-在这一节中，我们会探讨如何单独使用一些选项改变默认的通知行为，这相对来说比较容易实施、且具有各自的优势。
+在这一节中，我们会探讨如何单独使用一些选项改变默认的通知行为，这相对来说比较容易实施和利用。
 
 ### Notification Click Event
 ### 通知的点击事件
@@ -50,7 +50,7 @@ The common practice for a notification click is for it to close and perform some
 
 To achieve this we need to add a 'notificationclick' event listener to our service worker. This
 will be called when ever a notification is clicked.
-为此，我们需要在service worker中添加一个 'notificationclick' 事件监听器。 这个事件将在点击通知时被调用。
+为此，我们需要在service worker中添加一个 “notificationclick” 事件监听器。 这个事件将在点击通知时被调用。
 
     self.addEventListener('notificationclick', function(event) {
       const clickedNotification = event.notification;
@@ -79,7 +79,7 @@ while your code is busy.
 
 Actions allow you to give users another level of interaction with your users
 over just clicking the notification.
-actions的使用可以提供给用户另一个级别的交互体验，相比于之前的普通点击行为。
+相比于之前的普通点击行为，actions的使用可以提供给用户更高级别的交互体验。
 
 In the previous section you saw how to define actions when calling
 `showNotification()`:
@@ -131,11 +131,11 @@ the `noticationclick` event to tell which action button was clicked.
 'gramophone-action' or 'atom-action'.
 'event.action'
 
-'event.action'会包含所有选项中有关行为（action）的值的集合。在上面的例子中，'event.action'的值则会是'coffee-action', 'doughnut-action',
-'gramophone-action' 或 'atom-action'的其中一个。
+'event.action'会包含所有选项中有关`action`的值的集合。在上面的例子中，`event.action`的值则会是： “coffee-action”、 “doughnut-action”,
+“gramophone-action” 或 “atom-action” 的其中一个。
 
 With this we would detect notification clicks or action clicks like so:
-因此通过event.action，我们可以依照以下代码来监听通知或行为（action）的点击事件。
+因此通过event.action，我们可以检测到通知或行为（action）的点击，代码如下：
 
     self.addEventListener('notificationclick', function(event) {
       if (!event.action) {
@@ -171,11 +171,11 @@ With this we would detect notification clicks or action clicks like so:
 The *tag* option is essentially a string ID that "groups" notifications together, providing
 an easy way to determine how multiple notifications are displayed to the user. This is easiest
 to explain with an example.
-标签选项的本质是一个字符串类型的ID，以此将通知"分组"在一起，并提供了一种简单的方法来向用户显示多个通知，这里可能用示例来解释最为简单：
+*tag* 选项的本质是一个字符串类型的ID，以此将通知"分组"在一起，并提供了一种简单的方法来向用户显示多个通知，这里可能用示例来解释最为简单：
 
 Let's display a notification and give it a tag, of
 'message-group-1'. We'd display the notification with this code:
-让我们来展示一个通知，并给它标记一个标签，例如'message-group-1'. 我们可以按照以下代码来展示这个通知：
+让我们来展示一个通知，并给它标记一个标签，例如“message-group-1”. 我们可以按照以下代码来展示这个通知：
 
         const title = 'Notification 1 of 3';
         const options = {
@@ -190,7 +190,7 @@ Which will show our first notification.
 ![First notification with tag of message group 1.](./images/notification-screenshots/desktop/chrome-first-tag.png)
 
 Let's display a second notification with a new tag of 'message-group-2', like so:
-我们再用一个新的标签'message-group-2'来标记并展示第二个通知，例如以下：
+我们再用一个新的标签 “message-group-2” 来标记并展示第二个通知，如下：
 
             const title = 'Notification 2 of 3';
             const options = {
@@ -206,7 +206,7 @@ Let's display a second notification with a new tag of 'message-group-2', like so
 
 Now let's show a third notification but re-use the first tag of 'message-group-1'. Doing this
 will close the first notification and replace it with our new notification.
-现在让我们展示第三个通知，但不新增标签，而是重用我们第一次定义的标签'message-group-1'。这么操作会关闭之前的第一个通知并将其替换成新定义的通知。
+现在让我们展示第三个通知，但不新增标签，而是重用我们第一次定义的标签 “message-group-1”。这么操作会关闭之前的第一个通知并将其替换成新定义的通知。
 
             const title = 'Notification 3 of 3';
             const options = {
@@ -221,11 +221,11 @@ Now we have two notifications even though `showNotification()` was called three 
 ![Two notifications where the first notification is replaced by a third notification.](./images/notification-screenshots/desktop/chrome-third-tag.png)
 The `tag` option is simply a way of grouping messages so that any old notifications that
 are currently displayed will be closed if they have the same tag as a new notification.
-`tag`这个选项简单来看就是一个用于分类信息的方式，因此在新通知与已有通知标记为同一个标签时，当前被展示的所有旧通知将会被关闭。
+`tag`这个选项简单来看就是一个用于信息分组的方式，因此在新通知与已有通知标记为同一个标签时，当前被展示的所有旧通知将会被关闭。
 
 A subtlety to using `tag` is that when it replaces a notification, it
 will do so *without* a sound and vibration.
-使用`tag`有一个容易被忽略的小细节：当它替换了一个通知时，是*没有*音效和震动提醒的。
+使用`tag`有一个容易被忽略的小细节：当它替换了一个通知时，是**没有**音效和震动提醒的。
 
 This is where the `renotify` option comes in.
 此时`Renotify`选项就有了用武之地。
@@ -235,7 +235,7 @@ This is where the `renotify` option comes in.
 
 This largely applies to mobile devices at the time of writing. Setting this option makes new
 notifications vibrate and play a system sound.
-这个选项主要适用于写作时间的移动设备。通过设置它，接收到新的通知时，系统会震动并播放系统音效。
+在写此文时，这个选项大多数应用于移动设备。通过设置它，接收到新的通知时，系统会震动并播放系统音效。
 
 There are scenarios where you might want a replacing notification to
 notify the user rather than silently update. Chat applications are a good
@@ -255,15 +255,16 @@ error:
     TypeError: Failed to execute 'showNotification' on 'ServiceWorkerRegistration':
     Notifications which set the renotify flag must specify a non-empty tag
 
-**注意：** 如果你设置了`Renotify为true`但却没有设置标签，会出现以下报错信息：
-    类型错误：不能够在'ServiceWorkerRegistration'上执行'showNotification'方法：设置了renotify标识的通知必须声明一个不为空的标签。
+**注意：** 如果你设置了`Renotify: true`但却没有设置标签，会出现以下报错信息：
+    类型错误：不能够在'ServiceWorkerRegistration'上执行'showNotification'方法：设置了renotify标识的通知必须声明一个不为空的标签。(TypeError: Failed to execute 'showNotification' on 'ServiceWorkerRegistration':
+    Notifications which set the renotify flag must specify a non-empty tag)
 
 ### Silent
 ### 静音
 
 This option allows you to show a new notification but prevents the default
 behavior of vibration, sound and turning on the device's display.
-这一选项可以阻止默认的震动及音效来展示新的通知，同时会亮起设备的屏幕。
+这一选项可以阻止设备震动、音效以及屏幕亮起的默认行为。
 
 This is ideal if your notifications don't require immediate attention
 from the user.
@@ -276,7 +277,7 @@ from the user.
         registration.showNotification(title, options);
 
 **Note:** If you define both *silent* and *renotify*, silent will take precedence.
-**注意：** 如果同时设置了*silent*和*Renotify*，silent()选项会取得更高的优先级。
+**注意：** 如果同时设置了**silent**和**Renotify**，silent选项会取得更高的优先级。
 
 ### Requires Interaction
 ### 与通知进行交互
