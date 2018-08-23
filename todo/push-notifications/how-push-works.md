@@ -15,13 +15,13 @@
 
 1. 添加客户端侧的逻辑来给用户订阅推送（也就是使用 Web App 当中的 JavaScript 和 UI，帮助用户注册推送消息）。
 2. 从你的后台/应用调用 API 来触发推送消息到用户的设备。
-3. 当推送到达用户的设备时，service worker 可以接收到 "推送事件"，通过使用 service worker 你将展示出一个通知。
+3. 当推送到达用户的设备时，service worker 可以接收到“推送事件”，通过使用 service worker 你将展示出一个通知。
 
 让我们更加详细的来看一下这三个步骤。
 
 ## Step 1: 客户端侧
 
-第一步是 "订阅" 一个用户来推送消息。
+第一步是 “订阅” 一个用户来推送消息。
 
 订阅一个用户需要2个条件。第一，从用户那里获取给他们发送消息的**许可**。第二，从浏览器那里获取 `PushSubscription`。
 
@@ -68,7 +68,7 @@
 	  }
 	}
 	
-这个示例当中的 **endpoint** 是 "https://random-push-service.com/some-kind-of-unique-id-1234/v2/"。 推送服务应该是 "random-push-service.com"，如 "some-kind-of-unique-id-1234" 所示，每个 endpoint 对用户来说都是独一无二的。
+这个示例当中的 **endpoint** 是 “https://random-push-service.com/some-kind-of-unique-id-1234/v2/”。 推送服务应该是 “random-push-service.com”，如 “some-kind-of-unique-id-1234” 所示，每个 endpoint 对用户来说都是独一无二的。
 当你开始着手于推送之后，你会注意到这个模式。
 
 关于上述示例当中的 **key** 这个字段，我们后续会讲到，这里就先不解释了。
