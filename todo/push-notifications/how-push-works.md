@@ -75,7 +75,7 @@
 
 ### 这个 API 是什么样的?
 
-我前面提到每个 Web 推送服务需要的是相同的 API 调用。这个 API 就是 [**网络推送协议**](https://tools.ietf.org/html/draft-ietf-webpush-protocol)。
+我前面提到每个 Web 推送服务需要的是相同的 API 调用。这个 API 就是 [**Web 推送协议**](https://tools.ietf.org/html/draft-ietf-webpush-protocol)。
 它是一个 IETF 标准，定义了如何向一个推送服务执行一个 API 调用。
 
 这个 API 调用需要设置一些头部，并且需要以字节流的方式发送数据。我们将看一下如何用库来执行这个 API，以及自己如何来实现这个 API。
@@ -98,7 +98,7 @@
 
 - 给推送消息一个话题名，拥有相同话题的新消息将替换掉仍在排队的老消息。
 
-![当你的服务器希望发送一个推送消息，它需要发送一个网络推送协议请求至推送服务](./images/svgs/server-to-push-service.svg)
+![当你的服务器希望发送一个推送消息，它需要发送一个 Web 推送协议请求至推送服务](./images/svgs/server-to-push-service.svg)
 
 ## Step 3: 用户设备上的推送事件
 

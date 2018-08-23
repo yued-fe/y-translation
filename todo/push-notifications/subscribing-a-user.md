@@ -304,7 +304,7 @@ Node 服务接收到这个请求之后，保存数据到数据库当中供以后
 
 所有的推送服务拥有相同的 API。
 
-这个相同的 API 被称为[网络推送协议](https://tools.ietf.org/html/draft-ietf-webpush-protocol)
+这个相同的 API 被称为[ Web 推送协议](https://tools.ietf.org/html/draft-ietf-webpush-protocol)
 它描述了你的应用需要怎样的网络请求来触发一个推送消息。
 
 > 如果用户在桌面版进行了订阅，那他们是不是同时在他们的手机版也订阅了？
