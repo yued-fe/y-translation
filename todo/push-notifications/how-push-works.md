@@ -23,9 +23,9 @@
 
 第一步是 "订阅" 一个用户来推送消息。
 
-订阅一个用户需要2个条件。第一，从用户那里获取给他们发送消息的**许可**。第二，从浏览器那里获取**推送订阅**。
+订阅一个用户需要2个条件。第一，从用户那里获取给他们发送消息的**许可**。第二，从浏览器那里获取 `PushSubscription`。
 
-**推送订阅**包含了我们需要推送消息给目标用户的所有信息。这个信息可以某种程度上认为是用户设备的 ID。
+`PushSubscription` 包含了我们需要推送消息给目标用户的所有信息。这个信息可以某种程度上认为是用户设备的 ID。
 
 这些全部可以通过 JavaScript 调用 [Push API](https://developer.mozilla.org/en-US/docs/Web/API/Push_API) 来实现。
 
@@ -33,9 +33,9 @@
 
 应用服务器密钥，也被称为 VAPID 密钥，对你的服务器来说是独一无二的。有了它，推送服务知道是哪一个应用服务器注册了一个用户，并且确保了是同一个服务器触发了推送消息给那个用户。
 
-一旦你订阅了一个用户，并且拿到了**推送订阅**，你需要将关于这个**推送订阅**的详细信息发送至你的后台/服务器。在服务器上，你需要将这个订阅保存至数据库当中，并使用它给用户推送消息。
+一旦你订阅了一个用户，并且拿到了 `PushSubscription`，你需要将关于这个 `PushSubscription` 的详细信息发送至你的后台/服务器。在服务器上，你需要将这个订阅保存至数据库当中，并使用它给用户推送消息。
 
-![确保你发送了**推送订阅**到你的后端](./images/svgs/browser-to-server.svg)
+![确保你发送了 `PushSubscription` 到你的后端](./images/svgs/browser-to-server.svg)
 
 ## Step 2: 发送一个推送消息
 
@@ -55,9 +55,9 @@
 
 每个浏览器都能使用他们想用的任何一个推送服务，这个是开发者管控不了的。这其实并不是一个问题，因为每一个推送服务都接受**相同**的 API 调用。也就是说你不必担心这个推送服务是谁。你只需要确保你的 API 调用是正确的。
 
-要获得合适的 URL 来触发推送消息（也就是推送服务的 URL），你只需要查看一下前面获得的**推送订阅**中 **endpoint** 的值。
+要获得合适的 URL 来触发推送消息（也就是推送服务的 URL），你只需要查看一下前面获得的 `PushSubscription` 中 `endPoint` 的值。
 
-下面是**推送订阅**的一个示例：
+下面是 **PushSubscription** 的一个示例：
 
 	{
 	  "endpoint": "https://random-push-service.com/some-kind-of-unique-id-1234/v2/",
@@ -68,21 +68,21 @@
 	  }
 	}
 	
-这个示例当中的 **endpoint** 是 "https://random-push-service.com/some-kind-of-unique-id-1234/v2/"。推送服务应该是 "random-push-service.com"，如 "some-kind-of-unique-id-1234" 所示，每个 endpoint 对用户来说都是独一无二的。
+这个示例当中的 **endpoint** 是 "https://random-push-service.com/some-kind-of-unique-id-1234/v2/"。 推送服务应该是 "random-push-service.com"，如 "some-kind-of-unique-id-1234" 所示，每个 endpoint 对用户来说都是独一无二的。
 当你开始着手于推送之后，你会注意到这个模式。
 
 关于上述示例当中的 **key** 这个字段，我们后续会讲到，这里就先不解释了。
 
 ### 这个 API 是什么样的?
 
-我前面提到每个 Web 推送服务需要的是相同的 API 调用。这个 API 就是 [**Web Push Protocol**](https://tools.ietf.org/html/draft-ietf-webpush-protocol)。
+我前面提到每个 Web 推送服务需要的是相同的 API 调用。这个 API 就是 [**网络推送协议**](https://tools.ietf.org/html/draft-ietf-webpush-protocol)。
 它是一个 IETF 标准，定义了如何向一个推送服务执行一个 API 调用。
 
 这个 API 调用需要设置一些头部，并且需要以字节流的方式发送数据。我们将看一下如何用库来执行这个 API，以及自己如何来实现这个 API。
 
 ### 这个 API 能做什么？
 
-这个 API 提供了发送消息到用户的一种方法，消息可以携带，也可以不携带数据。同时它也提供了如何发送消息的指导方法。
+这个 API 提供了发送消息到用户的一种方法，消息可以携带，也可以不携带数据。同时它也提供了**如何**发送消息的指导方法。
 
 你通过推送服务发送的数据必须是加密的。原因是推送服务可以是任何人。你必须防止他能够看到数据明文。
 这很重要，因为是浏览器决定（而不是开发者）该用哪一个推送服务，而那些不安全的推送服务可能打开浏览器的安全大门。
