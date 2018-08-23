@@ -11,9 +11,6 @@ description: Push notifications are one of the most valuable capabilities of nat
 
 # Web Push Notifications: Timely, Relevant, and Precise 
 
-{% include "web/_shared/contributors/josephmedley.html" %}
-
-
 <img src="images/cc-good.png" alt="Example Notification" class="attempt-right">
 
 If you ask a room of developers what mobile device features are missing from
@@ -91,4 +88,3 @@ and Mozilla's [Push Payload Demo](https://serviceworke.rs/push-payload_demo.html
 
 Note: Unless you're using localhost, the Push API requires HTTPS.
 
-<<../../_common-links.md>>
