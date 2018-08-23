@@ -29,7 +29,7 @@
 此处还有一系列适用的场景:
 - 这种特定商品已经卖完了，您要不要来个到货通知？
 - 这个惊天大新闻会持续更新，您要不要订阅一下？
-- 您目前是最高出价人，是否需要通知您当有人出价更高？
+- 是否需要在有人出价更高的时候通知您？
 
 这些都是用户投资你的服务的要点，启用推送通知对他们来说有清晰的价值体现。
 
@@ -37,17 +37,17 @@
 
 在用户预订好一个航班之后，它会询问用户是否需要提供通知来提示可能的延误。
 
-![Owen Campbell-Moore 的例子：优秀的推送交互](./images/ux-examples/owen/owen-good-example.png){: .device-image .center-image }
+![Owen Campbell-Moore 的例子：优秀的推送交互](./images/ux-examples/owen/owen-good-example.png)
 
 请注意，这是网站自定义的用户界面。
 
-这个demo的另一个优点是，假如用户点击启用通知，该网站会在显示权限提示时，在整个页面上添加半透明层，从而让用户注意到权限提示。
+这个 demo 的另一个优点是，假如用户点击启用通知，该网站会在显示权限提示时，在整个页面上添加半透明层，从而让用户注意到权限提示。
 
-![Owen Campbell-Moore 的例子：优秀的权限弹窗交互](./images/ux-examples/owen/owen-permission-prompt.png){: .device-image .center-image }
+![Owen Campbell-Moore 的例子：优秀的权限弹窗交互](./images/ux-examples/owen/owen-permission-prompt.png)
 
 与之相对的，即**较差的用户交互**，是在用户打开航空公司网站时立刻就请求权限。
 
-![Owen Campbell-Moore 的例子：不推荐的推送交互](./images/ux-examples/owen/owen-bad-ux.png){: .device-image .center-image }
+![Owen Campbell-Moore 的例子：不推荐的推送交互](./images/ux-examples/owen/owen-bad-ux.png)
 
 这种方法没有告诉用户为什么他需要通知，或是通知对他是否有用。这种方法也会阻碍用户达成其原有的目标（例如，预订一张机票）。
 
@@ -63,7 +63,7 @@
 
 通过这个方法，你可以在网站上展示一个自定义的弹窗来请求用户打开通知权限，无论用户现在打开还是不打开通知权限，你的网站都不会有被永久屏蔽的风险。当用户在自定义弹窗中选择了启用通知，你就可以展示真正的权限请求弹窗，反之，你可以隐藏自定义弹窗然后在其他时机展示。
 
-[Slack](https://slack.com/)就是一个很好的例子。一旦用户登录，他们就会在页面顶部展示一个弹窗，去请求用户启用通知。
+[Slack](https://slack.com/) 就是一个很好的例子。一旦用户登录，他们就会在页面顶部展示一个弹窗，去请求用户启用通知。
 
 
 
@@ -73,23 +73,23 @@
 
 [Google I/O's 2016 网页](https://events.google.com/io2016/)就是一个很好的例子. 当用户首次加载网站时，他们并不向用户请求任何权限，用户可以自由地探索页面。
 
-![首次加载页面，无弹窗，用户可以将注意力集中在Google IO](./images/ux-examples/google-io/google-io-first-load.png){: .device-image .center-image }
+![首次加载页面，无弹窗，用户可以将注意力集中在 Google IO](./images/ux-examples/google-io/google-io-first-load.png)
 
 几次访问后，单击右侧的菜单项会显示一个设置面板，允许用户设置和管理通知。
 
-![Google IO 网页上的推送消息设置面板](./images/ux-examples/google-io/google-io-settings-panel.png){: .device-image .center-image }
+![Google IO 网页上的推送消息设置面板](./images/ux-examples/google-io/google-io-settings-panel.png)
 
 单击复选框将显示权限弹窗，没有任何隐藏的惊喜。
 
-![Google IO 网页显示的权限弹窗](./images/ux-examples/google-io/google-io-permission-prompt.png){: .device-image .center-image }
+![Google IO 网页显示的权限弹窗](./images/ux-examples/google-io/google-io-permission-prompt.png)
 
-用户只要选中复选框，授予权限即可。这个用户界面的有点在于用户可以在页面的固定位置启用或关闭通知。
+用户只要选中复选框，授予权限即可。这个用户界面的优点在于用户可以在页面的固定位置启用或关闭通知。
 
 ### 被动方法
 
 向用户推送消息的最简单的方法之一，是在页面的固定位置——同时贯穿全站的位置，放置一个按钮或开关，让用户可以随时启用或关闭通知。
 
-这不会促使用户启用推送通知，但为用户提供了一种可靠且简单的方式来选择与网站互动。对于拥有常规读者以及高跳出率的博客网站而言，这是一个不二选择，因为它针对的是常规读者，并且不会打扰到路过的新用户。
+这不会促使用户启用推送通知，但为用户提供了一种可靠且简单的方式与网站互动。对于拥有常规读者以及高跳出率的博客网站而言，这是一个不二选择，因为它针对的是常规读者，并且不会打扰到路过的新用户。
 
 我的个人网站的页脚就有这样一个打开推送的开关。
 
