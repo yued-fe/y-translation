@@ -237,4 +237,4 @@ demo 中的 [Express](http://expressjs.com/) 服务器会监听 `/api/save-subsc
 
 无论你的后端使用什么语言 (Node, PHP, Python, ...)，实现推送的步骤都是一样的。
 
-接下来，这些 web-push 库实际上都为我们做了什么呢？
+接下来，这些 web-push 库实际上都为我们做了什么呢？请阅读下一章。
