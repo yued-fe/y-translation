@@ -9,7 +9,7 @@
 # 订阅一个用户
 
 
-第一步是从用户那里获取发送消息的权限，然后才能着手于**推送订阅**。
+第一步是从用户那里获取发送消息的权限，然后才能着手于 `PushSubscription`。
 
 实现这一步的 Javascript API 是相当直接，所以让我们来一步一步看一下这个逻辑流程。
 
@@ -41,7 +41,7 @@ if (!('PushManager' in window)) {
 当注册 service worker 的时候，相当于告诉浏览器我们的 service worker 文件在哪里。这个文件依然是 JavaScript，但是浏览器会给它访问系统 service worker API 的权限，包括推送。
 更确切的说，浏览器是在 service worker 环境运行这个文件。
 
-通过调用 `navigator.serviceWorker.register() `即可注册一个 service worker，同时将我们文件的路径作为参数传入。如下面所示：
+通过调用 `navigator.serviceWorker.register()` 即可注册一个 service worker，同时将我们文件的路径作为参数传入。如下面所示：
 
     function registerServiceWorker() {
       return navigator.serviceWorker.register('service-worker.js')
@@ -54,14 +54,14 @@ if (!('PushManager' in window)) {
       });
     }
 
-上面的代码告诉浏览器，我们有一个 service worker 文件，以及它存放的地址。在这个示例中，service worker 文件地址是 **/service-worker.js**。
+上面的代码告诉浏览器，我们有一个 service worker 文件，以及存放它的地址。在这个示例中，service worker 文件地址是 **/service-worker.js**。
 在调用完 `register()` 之后，后台浏览器会进行下面几个步骤：
 
 1. 下载 service worker 文件。
 
 2. 运行 JavaScript 代码。
 
-3. 如果一切都运行正常并且没有发生错误，调用 `register()` 之后返回的 promise 对象将会调用 resolve 方法。如果有任何错误发生，promise对象 会调用 reject方法。
+3. 如果一切都运行正常并且没有发生错误，调用 `register()` 之后返回的 promise 对象将会调用 resolve 方法。如果有任何错误发生，promise 对象会调用 reject 方法。
 
 > 如果 `register()` reject 了，请在 Chrome 的开发者工具当中再检查一遍你的 JavaScript 代码中的拼写错误或逻辑错误。
 
@@ -153,13 +153,13 @@ if (!('PushManager' in window)) {
 
 **Application server keys** 是一对公私钥的键值对，对于你的应用来说是独一无二的。私钥应该对你的应用保密，而公钥可以自由地分享。
 
-传入到 `subscribe()` 方法的 **applicationServerKey** 选项应该是公钥。当订阅一个用户的时候，浏览器会将这个值传递给推送服务，这意味着推送服务可以将你应用的公钥和用户的推送订阅绑定起来。
+传入到 `subscribe()` 方法的 **applicationServerKey** 选项应该是公钥。当订阅一个用户的时候，浏览器会将这个值传递给推送服务，这意味着推送服务可以将你应用的公钥和用户的 `PushSubscription` 绑定起来。
 
 下面的图描述了这些步骤：
 
 1. 浏览器加载了你的 Web App，然后你调用 `subscribe()`，传入你的 **application server key** 中的公钥。
 2. 然后浏览器发出一个网络请求到推送服务，推送服务会生成一个和 **applications public key** 联系在一起的 **endpoint**，并把该 **endpoint** 返回给浏览器。
-3. 浏览器将这个值添加到第1步调用 `subscribe()` 返回的 Promise 对象 **PubSubscription** 当中。
+3. 浏览器将这个值添加到第1步调用 `subscribe()` 返回的 Promise 对象 **PushSubscription** 当中。
 
 ![描述如何在订阅方法中使用应用公钥](./images/svgs/application-server-key-subscribe.svg)
 
@@ -189,9 +189,9 @@ if (!('PushManager' in window)) {
 在调用 `subscribe()` 时有一个副作用。就是你在调用它的时候，如果 Web 应用没有获得弹出通知的许可，浏览器会为你请求许可。
 如果你的 UI 和这个流程是匹配的，这会很有用。但是如果你需要更多的控制（我认为绝大多数开发者都是这样想的），请使用我们之前用过的 `Notification.requestPermission()`。
 
-## 什么是推送订阅
+## 什么是 `PushSubscription`
 
-我们调用 `subscribe()`，传入一些选项，然后获得一个 promise 对象，这个对象 resolve 返回的就是推送订阅。相应的代码如下：
+我们调用 `subscribe()`，传入一些选项，然后获得一个 promise 对象，这个对象 resolve 返回的就是 `PushSubscription`。相应的代码如下：
 
     function subscribeUserToPush() {
       return navigator.serviceWorker.register('service-worker.js')
@@ -211,7 +211,7 @@ if (!('PushManager' in window)) {
       });
     }
 
-这个推送订阅对象包含发送推送消息给目标用户所需要的全部信息。如果使用 `JSON.stringify()` 来打印，你可以看到如下所示：
+这个 `PushSubscription` 对象包含发送推送消息给目标用户所需要的全部信息。如果使用 `JSON.stringify()` 来打印，你可以看到如下所示：
 
     {
       "endpoint": "https://some.pushservice.com/something-unique",
@@ -290,7 +290,7 @@ node 服务接收到这个请求之后，保存数据到数据库当中供以后
       });
     });
 
-我们的服务器有了推送订阅的详细信息，就可以在任何想要的时候给用户发送一条消息了。
+我们的服务器有了 `PushSubscription` 的详细信息，就可以在任何想要的时候给用户发送一条消息了。
 
 ## 常见问题解答
 
@@ -298,7 +298,7 @@ node 服务接收到这个请求之后，保存数据到数据库当中供以后
 
 > 我可以更换浏览器使用的推送服务吗？
 
-不行。推送服务是由浏览器选择的。正如我们看到的，当我们调用 `subscribe()` 时，浏览器会产生一个发送给推送服务的网络请求，来获取组成推送订阅的细节信息。
+不行。推送服务是由浏览器选择的。正如我们看到的，当我们调用 `subscribe()` 时，浏览器会产生一个发送给推送服务的网络请求，来获取组成 **PushSubscription** 的细节信息。
 
 > 每个浏览器都使用不同的推送服务，那它们会有不同的 API 吗？
 
