@@ -266,7 +266,7 @@ if (!('PushManager' in window)) {
       });
     }
 
-node 服务接收到这个请求之后，保存数据到数据库当中供以后使用。
+Node 服务接收到这个请求之后，保存数据到数据库当中供以后使用。
 
     app.post('/api/save-subscription/', function (req, res) {
       if (!isValidSaveRequest(req, res)) {
