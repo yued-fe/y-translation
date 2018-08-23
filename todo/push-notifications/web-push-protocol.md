@@ -16,24 +16,24 @@
 ![Diagram of sending a push message from your server to a push
 service.](./images/svgs/server-to-push-service.svg)
 
-这一部分大致会描述服务器如何使用应用程序服务器密钥（Application server keys）来识别自身，以及如何发送签名的有效负载（payload）和关联数据。
+这一部分大致会描述服务器如何使用应用程序服务器密钥（Application server keys）来识别自身，以及如何发送加密的有效负载（payload）和关联数据。
 
-这不是 Web 推送容易理解的一个方面，而我（作者）也不是加密专家，但还是让我们看看每一部分，因为它让我们更容易理解这些库的原理。
+这不是 Web 推送容易理解的一个方面，而我（作者）也不是加密专家，但还是让我们看看每一部分，因为它让我们更容易理解这些库的底层原理。
 
 ## 应用程序服务器密钥
 
 当我们订阅一个用户时，我们会传入一个`applicationServerKey`。这个 key 会被传递给推送服务（push service），并被用于检查订阅用户的和推送消息的应用程序是不是同一个。
 
-当我们触发推送消息时，我们将会发送一组 headers 来用于让推送服务进行验证。（headers 在[ VAPID 规范](https://tools.ietf.org/html/draft-thomson-webpush-vapid)中进行了定义）
+当我们触发推送消息时，我们将会发送一组 headers 用于推送服务验证应用。（headers 在[ VAPID 规范](https://tools.ietf.org/html/draft-thomson-webpush-vapid)中进行了定义）
 
 这一切究竟意味着什么以及究竟发生了什么？ 下面是应用程序服务器身份验证所采取的步骤：
 
 1. 应用程序服务器使用它的 **私有应用程序密钥（私钥）** 来对一些 JSON 信息进行签名。
 2. 这些签名的信息作为 POST 请求中的 header 发送给推送服务。
-3. 推送服务将之前保存下来的公钥（用户在调用`pushManager.subscribe()`进行订阅推送服务时，推送服务会将传递的公钥进行保存）来校验接收到的消息是由与之匹配的私钥进行签名的。*注意*: 公钥是传递给subscribe 方法的 `applicationServerKey`。
+3. 推送服务用之前保存下来的公钥（用户在调用`pushManager.subscribe()`进行订阅推送服务时，推送服务会将传递的公钥进行保存）来校验接收到的消息是由与之匹配的私钥进行签名的。*注意*: 公钥是传递给subscribe 方法的 `applicationServerKey`。
 4. 如果签名的信息合法，则推送服务将推送消息发送给用户。
 
-下面是这种信息流的一个例子。（请注意左下角的图例表示公钥和私钥。）
+下面是以上信息流的一个例子。（请注意左下角的图例表示公钥和私钥。）
 
 ![Illustration of how the private application server key is used when sending a
 message.](./images/svgs/application-server-key-send.svg)
@@ -133,11 +133,11 @@ Web 推送的 JWT Info 必须包含以下信息：
 
 推送服务可以使用公共应用程序服务器密钥验证 JWT 以解密签名，并确保解密的字符串与“未签名的令牌”（即JWT中的前两个字符串）相同。
 
-签名的 JWT（即通过点连接的所有三个字符串）将在前面拼接上 WebPush 作为 header 中 Authorization 的值发送给 Web 推送服务，如下所示：
+签名的 JWT（即通过点连接的所有三个字符串）将在前面拼接上 `WebPush` 作为 header 中 `Authorization` 的值发送给 Web 推送服务，如下所示：
 
     Authorization: 'WebPush <JWT Info>.<JWT Data>.<Signature>'
 
-Web 推送协议还规定公共应用程序服务器密钥必须在 header Crypto-key 中一起发送。密钥需要使用 URL 安全的 base64算法进行编码，并加上 `p256ecdsa=` 的前缀。
+Web 推送协议还规定公共应用程序服务器密钥在 `Crypto-key` header 中进行发送时，必须使用 URL 安全的 base64 算法进行编码，并加上 `p256ecdsa=` 的前缀。
 
     Crypto-Key: p256ecdsa=<URL Safe Base64 Public Application Server Key>
 
@@ -155,7 +155,7 @@ Web推送的一部分优点在于，因为所有推送服务都使用相同的 A
 
 ### ECDH 和 HKDF
 
-ECDH 和 HKDF 都在整个加密过程中使用，为加密信息提供了很多好处。
+ECDH 和 HKDF 在整个加密过程中都会被使用，也为加密信息提供了很多好处。
 
 #### ECDH: 椭圆曲线迪菲-赫尔曼金钥交换
 
@@ -211,11 +211,11 @@ ECDH 和 HKDF 都在整个加密过程中使用，为加密信息提供了很多
 
 对于此示例代码，请参阅 [Mat Scale 的文章](https://developers.google.com/web/updates/2016/03/web-push-encryption)。
 
-这一部分涵盖了 [ECDH](https://en.wikipedia.org/wiki/Elliptic_curve_Diffie%E2%80%93Hellman) 和 [HKDF](https://tools.ietf.org/html/rfc5869)。
+这一部分粗略地概况了 [ECDH](https://en.wikipedia.org/wiki/Elliptic_curve_Diffie%E2%80%93Hellman) 和 [HKDF](https://tools.ietf.org/html/rfc5869)。
 
 ECDH 是一种共享公钥并生成共享密钥的安全方式，HKDF是一种采用不安全的来源并使其安全的方法。
 
-这些将在加密我们的有效负载期间使用，接下来让我们看看我们采取什么作为输入以及如何加密。
+这些将在加密我们的有效负载期间使用，接下来让我们看看采取什么作为输入以及如何加密。
 
 ### 输入（Inputs）
 
@@ -257,7 +257,7 @@ Salt 需要16字节的随机数据，在 NodeJS 中，我们将执行以下操�
 
 我们将这些密钥称为“本地密钥”，它们*仅*用于加密，与应用程序服务器密钥*无关*。
 
-使用有效负载，auth secret 和订阅公钥作为输入以及新生成的 salt 和本地密钥，我们准备好了来做一些真正的加密。。
+使用有效负载，auth secret 和订阅公钥作为输入以及新生成的 salt 和一系列本地密钥，我们已经准备好来做一些加密了。
 
 ### 共享的 secret
 
@@ -270,7 +270,7 @@ Salt 需要16字节的随机数据，在 NodeJS 中，我们将执行以下操�
 
 ### 伪随机密钥
 
-伪随机密钥（PRK）是推送订阅的 auth secret 和我们刚刚创建的共享秘密的组合。
+伪随机密钥（PRK）是推送订阅的 auth secret 和我们刚刚创建的共享密匙的组合。
 
     const authEncBuff = new Buffer('Content-Encoding: auth\0', 'utf8');
     const prk = hkdf(subscription.keys.auth, sharedSecret, authEncBuff, 32);
@@ -304,7 +304,7 @@ Salt 需要16字节的随机数据，在 NodeJS 中，我们将执行以下操�
       localPublicKey,
     ]);
 
-最终的 context buffer 是一个数组，包括一个标签，订阅公钥的字节长度，订阅公钥，然后是本地公钥的字节长度和本地公钥。
+最终的 context buffer 是一个数组，包括一个标签、订阅公钥的字节长度、订阅公钥，然后是本地公钥的字节长度和本地公钥。
 
 我们可以使用 context 值来创建随机数和内容加密密钥 (CEK)。
 
@@ -314,7 +314,7 @@ Salt 需要16字节的随机数据，在 NodeJS 中，我们将执行以下操�
 
 内容加密密钥（CEK）是最终用于加密我们的有效负载的密钥。
 
-首先，我们需要为 nonce 和 CEK 创建数据字节，这只是一个内容编码字符串，后跟我们刚刚计算的 context buffer：
+首先，我们需要为 nonce 和 CEK 创建数据字节，这只是一个内容编码字符串，后面是我们刚刚计算的 context buffer：
 
     const nonceEncBuffer = new Buffer('Content-Encoding: nonce\0', 'utf8');
     const nonceInfo = Buffer.concat([nonceEncBuffer, contextBuffer]);
