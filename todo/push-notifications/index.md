@@ -10,9 +10,6 @@
 
 # Web 推送通知: 及时、相关和准确
 
-{% include "web/_shared/contributors/josephmedley.html" %}
-
-
 <img src="images/cc-good.png" alt="Example Notification" class="attempt-right">
 
 如果你问一屋子的开发者，有哪些功能是移动设备拥有，而 Web 缺失的，推送通知一定位居前列。
@@ -64,5 +61,3 @@ Web 推送通知允许用户在他们喜欢的网站一有更新之后就选择�
 3. 第三个是，Mozilla 的 [推送载荷示例](https://serviceworke.rs/push-payload_demo.html)。
 
 提示: 除非你的页面是 localhost， 否则的话推送 API 必须要求页面是 HTTPS 的。
-
-<<../../_common-links.md>>
