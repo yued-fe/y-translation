@@ -58,6 +58,6 @@ Web 推送通知允许用户在他们喜欢的网站一有更新之后就选择�
 
 2. 第二个是，Peter Beverloo 的 [通知生成器](https://tests.peter.sh/notification-generator/)；
 
-3. 第三个是，Mozilla 的 [推送载荷示例](https://serviceworke.rs/push-payload_demo.html)。
+3. 第三个是，Mozilla 的 [推送 payload（有效载荷）示例](https://serviceworke.rs/push-payload_demo.html)。
 
 提示: 除非你的页面是 localhost， 否则的话推送 API 必须要求页面是 HTTPS 的。
