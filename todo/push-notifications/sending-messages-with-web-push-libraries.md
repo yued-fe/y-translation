@@ -13,14 +13,14 @@
 
 
 
-实现 Web 推送的痛点之一就是触发一个推送消息是极其"繁琐"的，应用程序需要按照[Web 推送协议](https://tools.ietf.org/html/draft-ietf-webpush-protocol)向推送服务发送 POST 请求。为了使推送能够跨浏览器使用，你还需要使用 [VAPID](https://tools.ietf.org/html/draft-thomson-webpush-vapid)
+实现 Web 推送的痛点之一就是触发一个推送消息是极其"繁琐"的，应用程序需要按照 [Web 推送协议](https://tools.ietf.org/html/draft-ietf-webpush-protocol)向推送服务发送 POST 请求。为了使推送能够跨浏览器使用，你还需要使用 [VAPID](https://tools.ietf.org/html/draft-thomson-webpush-vapid)
 (即应用服务器密钥)——需要在 header 中设置一个值来证明你的应用能够向用户发送消息。发送推送消息数据时，需要对数据进行[加密](https://tools.ietf.org/html/draft-ietf-webpush-encryption)并添加特定的headers，以便浏览器能够正确地解密消息。
 
 触发推送的主要问题是，如果遇到问题，很难进行诊断。随着时间的推移和更多浏览器的支持，这一点正在得到改善，但仍然不容易。因此，我强烈推荐使用库来处理推送的加密、格式化、触发这一系列流程。
 
 如果你想要深入学习这些库，我们会在下一个章节中介绍。现在，我们将着眼于管理订阅，并且使用现有的 Web 推送库来发送推送请求。
 
-在这个章节，我们将使用[web-push Node
+在这个章节，我们将使用 [web-push Node
 library](https://github.com/web-push-libs/web-push)。其他语言会有差异，但不会差太多。之所以用 node 是因为它是 JavaScript，应该是读者最容易理解的。
 
 > 注：如果你想要其他语言的库，可以查看 [web-push-libs organization
@@ -59,7 +59,7 @@ on Github](https://github.com/web-push-libs/).
       });
     }
 
-demo 中的[Express](http://expressjs.com/)服务器会监听 `/api/save-subscription/` endpoint:
+demo 中的 [Express](http://expressjs.com/) 服务器会监听 `/api/save-subscription/` endpoint:
 
     app.post('/api/save-subscription/', function (req, res) {
 
@@ -237,4 +237,4 @@ demo 中的[Express](http://expressjs.com/)服务器会监听 `/api/save-subscri
 
 无论你的后端使用什么语言 (Node、PHP、Python、...)，实现推送的步骤都是一样的。
 
-接下来，这些 web-push 库实际上都为我们做了什么呢？
+接下来，这些 web-push 库实际上都为我们做了什么呢？请阅读下一章。
