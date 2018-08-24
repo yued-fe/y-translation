@@ -82,7 +82,7 @@ demo 中的 [Express](http://expressjs.com/) 服务器会监听 `/api/save-subsc
       return true;
     };
 
-> 注：在这个路由中，我们只检查 endpoint，如果你**需要**载荷支持，确保你也检查了 auth 和 p256dh 密钥。
+> 注：在这个路由中，我们只检查 endpoint，如果你**需要**支持 payload，确保你也检查了 auth 和 p256dh 密钥。
 
 如果这个订阅是有效的，我们需要将其保存并返回一个合适的 JSON 响应:
 
