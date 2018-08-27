@@ -4,7 +4,7 @@
 
 >译者：[刘鹏](https://github.com/git-patrickliu)
 
->校对者：
+>校对者：[任家乐](https://github.com/jennyrenjiale) [张卓](https://github.com/Zhangdroid)
 
 # 订阅一个用户
 
