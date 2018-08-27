@@ -47,7 +47,7 @@ Chrome 在某种程度上实现了这个特性，虽然你可能发现它不太�
 
 这个问题将进一步解决。
 
-**注意：** 这个只是 Chrome 的表现，其它浏览器也会有一些不同。如果你有任何需要讨论的，请尽管[提出 issue](https://github.com/gauntface/web-push-book/issues)
+**注意：** 这个只是 Chrome 的表现，其它浏览器也会有一些不同。如果你有任何需要讨论的，请尽管[提出 issue](https://github.com/gauntface/web-push-book/issues)。
 
 ## 为什么这个比 web sockets 要好？
 
