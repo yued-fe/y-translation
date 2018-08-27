@@ -22,12 +22,12 @@
 
 ```
 if (!('serviceWorker' in navigator)) {
-  // Service Worker isn't supported on this browser, disable or hide UI.
+  // 此浏览器不支持 Service Worker，禁用或隐藏 UI
   return;
 }
 
 if (!('PushManager' in window)) {
-  // Push isn't supported on this browser, disable or hide UI.
+  // 此浏览器不支持推送，禁用或隐藏 UI
   return;
 }
 ```
