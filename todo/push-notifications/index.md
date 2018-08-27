@@ -10,7 +10,7 @@
 
 # Web 推送通知: 及时、相关和准确
 
-<img src="images/cc-good.png" alt="Example Notification" class="attempt-right">
+<img src="https://developers.google.com/web/fundamentals/push-notifications/images/cc-good.png" alt="Example Notification" class="attempt-right">
 
 如果你问一屋子的开发者，有哪些功能是移动设备拥有，而 Web 缺失的，推送通知一定位居前列。
 
@@ -45,7 +45,7 @@ Web 推送通知允许用户在他们喜欢的网站一有更新之后就选择�
       ]
     }
 
-<img src="images/cc-good.png" alt="Example Notification" class="attempt-right">
+<img src="https://developers.google.com/web/fundamentals/push-notifications/images/cc-good.png" alt="Example Notification" class="attempt-right">
 
 这些代码将生成一个如图所示的通知。它通常会提供和原生应用一样的能力。在深入到实现这些能力的细节之前，我将给你们展示如何有效地使用它们。我们将继续讲述实现推送通知的机制，包括如何处理权限、订阅、发送消息，以及如何回应消息等方面。
 
