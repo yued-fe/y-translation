@@ -39,7 +39,7 @@
 
 提示：在程序运行高峰期，你仍然需要利用event.waitUntil()方法保证service worker的持续运行。
 
-### 行为
+### Actions（行为）
 
 相比于之前的普通点击行为，actions的使用可以提供给用户更高级别的交互体验。
 
@@ -117,7 +117,7 @@
 
 ![Logs for action button clicks and notification click.](https://developers.google.com/web/fundamentals/push-notifications/images/notification-screenshots/action-button-click-logs.png)
 
-### 标签
+### Tag（标签）
 
 **tag** 选项的本质是一个字符串类型的ID，以此将通知 “分组” 在一起，并提供了一种简单的方法来向用户显示多个通知，这里可能用示例来解释最为简单：
 
@@ -166,7 +166,7 @@
 
 此时`Renotify`选项就有了用武之地。
 
-### 是否替换之前的通知
+### Renotify（是否替换之前的通知）
 
 在写此文时，这个选项大多数应用于移动设备。通过设置它，接收到新的通知时，系统会震动并播放系统音效。
 
@@ -186,7 +186,7 @@
 
 类型错误：不能够在 “ServiceWorkerRegistration” 上执行 “showNotification” 方法：设置了renotify标识的通知必须声明一个不为空的标签。(TypeError: Failed to execute 'showNotification' on 'ServiceWorkerRegistration':Notifications which set the renotify flag must specify a non-empty tag)
 
-### 静音
+### Silent（静音）
 
 这一选项可以阻止设备震动、音效以及屏幕亮起的默认行为。如果你的通知不需要立马让用户注意到，这个选项是最合适的。
 
@@ -198,7 +198,7 @@
 
 **注意：** 如果同时设置了**silent**和**Renotify**，silent选项会取得更高的优先级。
 
-### 与通知进行交互
+### requireInteraction （与通知进行交互）
 
 桌面chrome浏览器会展示通知一段时间后将其隐藏，而安卓设备的chrome浏览器不会有这种行为，通知会一直展示，直到用户对其进行操作。
 
