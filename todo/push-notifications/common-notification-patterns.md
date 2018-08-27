@@ -13,8 +13,8 @@
 ## 通知的关闭事件
 
 在上一篇中，我们了解了如何监听`notificationclick`事件。
-除了`notificationclick`事件，我们还可以监听`notificationclose`事件，它会在用户忽略其中一个通知
-（例如，用户点击了关闭按钮或划掉了通知，而不是点击了通知）时被调用。
+
+除了`notificationclick`事件，我们还可以监听`notificationclose`事件，它会在用户忽略其中一个通知（例如，用户点击了关闭按钮或划掉了通知，而不是点击了通知）时被调用。
 
 这个事件通常被用作数据分析，以此追踪用户与通知的互动情况。
 
@@ -28,9 +28,9 @@
 
 ## 给通知添加数据
 
-当收到推送的信息时，通常只需要获取用户点击后的有用数据。例如，获取用户点击通知时打开的页面地址.
-如果需要将推送事件中获取的数据传递给通知，最简单的方式就是在调用`showNotification()`时，
-给参数options对象添加一个`data`属性，其值为对象类型，例如以下所示：
+当收到推送的信息时，通常只需要获取用户点击后的有用数据。例如，获取用户点击通知时打开的页面地址。
+
+如果需要将推送事件中获取的数据传递给通知，最简单的方式就是在调用`showNotification()`时，给参数options对象添加一个`data`属性，其值为对象类型，例如以下所示：
 
         const options = {
           body: 'This notification has data attached to it that is printed ' +
@@ -105,6 +105,7 @@
 
 首先，我们将示例中目标页面的地址传递给URL API。这是我从[Jeff Posnick](https://twitter.com/jeffposnick)中学到的一个巧妙的计策。
 调用`new URL()`并传入location对象，如果传入的第一个参数是相对地址，则会返回页面的绝对地址（例如，'/'会变成'https://站点域名'）。
+
 我们将地址转成了绝对地址则是为了之后与窗口的地址作对比。
 
       const urlToOpen = new URL(examplePage, self.location.origin).href;
@@ -118,6 +119,7 @@
 
 `matchAll`方法中传入的options对象则告诉浏览器我们只想获取'window'类型的对象（例如，只查看标签页、窗口，不包含web workers[浏览器的其他工作线程]）。
 `includeUncontrolled`属性表示我们只能获取没有被当前service workder控制的所有标签页（本域下），例如service worker正在运行当前代码。一般来说，在调用`matchAll()`时，你通常会将`includeUncontrolled`设置为true。
+
 我们以`promiseChain`（promise链式调用）的形式捕获返回的promise对象，因此之后可以将其传入`event.waitUntil()`方法中以此保持我们的service worker持续工作。
 
 当上一步的`matchAll()`返回的promise对象已完成异步操作，我们就可以开始遍历返回的window对象，并将这些对象的URL和想要打开的目标URL进行对比，如果发现有匹配的，则调用`matchingClient.focus()`方法，它会呼起匹配的窗口，引起用户的注意。
@@ -157,6 +159,7 @@
 让我们看看如何使用这个API去实现刚说的聊天应用的例子。
 
 在聊天应用中，我们假设每个通知都有一些包含用户名的数据。
+
 我们要做的第一件事就是在所有已打开的通知中找到带有具体用户名的用户。首先调用`registration.getNotifications()`方法，之后遍历其结果检测`notification.data`中是否有具体用户名。
 
         const promiseChain = registration.getNotifications()
@@ -211,9 +214,7 @@
           );
         });
 
-If there is a notification currently display we increment the message count and set the
-notification title and body message accordingly. If there
-were no notifications, we create a new notification with a `newMessageCount` of 1.
+
 我们会累加当前展示的通知的信息数，同时依据这个数据来设置通知的主题和内容信息。如果当前没有展示通知，我们则会展示一个新的通知，其数据中`newMessageCount`的值为1。
 
 那么第一条信息的通知会是以下这样：
@@ -277,8 +278,8 @@ were no notifications, we create a new notification with a `newMessageCount` of 
 ## 通过推送事件给页面发送消息
 
 我们已知，可以在用户正在浏览我们站点的时候不进行通知。但是，如果你仍然想让用户知道这个推送事件已经发生，但又觉得进行通知太过严肃，应该如何处理？
-其中一个方法就是利用service worker给页面发送信息，页面可以给用户展示通知或更新，
-让用户知晓到这个推送事件。当然，只有当用户对于不易察觉的通知感到更友好时，这种做法才有用。
+
+其中一个方法就是利用service worker给页面发送信息，页面可以给用户展示通知或更新，让用户知晓到这个推送事件。当然，只有当用户对于不易察觉的通知感到更友好时，这种做法才有用。
 
 如果我们接收到了一个推送，并且检测到了我们的APP已经被打开了，那么我们就可以"发送消息"给每个打开的页面，就像以下这样：
 
@@ -307,12 +308,14 @@ were no notifications, we create a new notification with a `newMessageCount` of 
         });
 
 在这个消息监听器中，你可以做任何你想做的事，例如展示自定义的视图，或者完全忽略这个消息。
+
 值得注意的是，如果你没有在你的网页中定义消息监听器，那么service worker推送的消息将不会做任何事。
 
 
 ## 缓存页面和窗口对象
 
-有一个场景可能超出了这本书的范畴，但是依然值得探讨，那就是缓存你希望用户点击通知后访问的网页，以此来提升web应用的整体用户体验，
+有一个场景可能超出了这本书的范畴，但是依然值得探讨，那就是缓存你希望用户点击通知后访问的网页，以此来提升web应用的整体用户体验。
+
 这就需要设置你的service worker来处理这些`fetch`事件，但如果你监听了`fetch`事件，请确保在展示你的通知之前，通过缓存你需要的页面和资源来充分利用它在`push`事件中的优势。
 
 想要了解更多缓存相关信息，请参考[introduction to service workers post](/web/fundamentals/getting-started/primers/service-workers)[introduction to service workers post](/web/fundamentals/getting-started/primers/service-workers]
