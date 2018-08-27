@@ -2,9 +2,9 @@
 
 >译文地址：
 
->译者：张卓
+>译者：[张卓](https://github.com/Zhangdroid)
 
->校对者：
+>校对者：[杨芯芯](https://juejin.im/user/5a266d7a6fb9a0451543bd1e)、[刘文涛](https://github.com/HSDPA-wen)
 
 
 # 推送事件 

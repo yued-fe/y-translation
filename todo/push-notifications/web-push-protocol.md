@@ -4,14 +4,14 @@
 
 >译者：[张卓](https://github.com/Zhangdroid)
 
->校对者：
+>校对者：[刘鹏](https://github.com/git-patrickliu)、[任家乐](https://github.com/jennyrenjiale)
 
 # Web 推送协议
 
 
 我们已经看到了如何使用一个库来触发消息推送，但这些库究竟做了什么呢？
 
-嗯，他们发送了网络请求，同时确保这些请求符合[Web 推送协议](https://tools.ietf.org/html/draft-ietf-webpush-protocol)的规范。
+嗯，他们发送了网络请求，同时确保这些请求符合 [Web 推送协议](https://tools.ietf.org/html/draft-ietf-webpush-protocol)的规范。
 
 ![Diagram of sending a push message from your server to a push
 service.](https://developers.google.com/web/fundamentals/push-notifications/images/svgs/server-to-push-service.svg)
@@ -30,7 +30,7 @@ service.](https://developers.google.com/web/fundamentals/push-notifications/imag
 
 1. 应用程序服务器使用它的 **私有应用程序密钥（私钥）** 来对一些 JSON 信息进行签名。
 2. 这些签名的信息作为 POST 请求中的 header 发送给推送服务。
-3. 推送服务用之前保存下来的公钥（用户在调用`pushManager.subscribe()`进行订阅推送服务时，推送服务会将传递的公钥进行保存）来校验接收到的消息是由与之匹配的私钥进行签名的。*注意*: 公钥是传递给subscribe 方法的 `applicationServerKey`。
+3. 推送服务用之前保存下来的公钥（用户在调用`pushManager.subscribe()`进行订阅推送服务时，推送服务会将传递的公钥进行保存）来校验接收到的消息是由与之匹配的私钥进行签名的。*注意*: 公钥是传递给 subscribe 方法的 `applicationServerKey`。
 4. 如果签名的信息合法，则推送服务将推送消息发送给用户。
 
 下面是以上信息流的一个例子。（请注意左下角的图例表示公钥和私钥。）
@@ -91,7 +91,7 @@ Web 推送的 JWT Info 必须包含以下信息：
 
 最后， `sub` 必须是 URL 或 `mailto` 邮件地址。这样，如果推送服务需要联系发件人，它可以从 JWT 找到联系信息。（这也是网络推送库需要一个电子邮件地址的原因）。
 
-就像 JWT Info 一样，JWT Data 被编码为URL安全的 base64 字符串。
+就像 JWT Info 一样，JWT Data 被编码为 URL 安全的 base64 字符串。
 
 第三个字符串签名，是取前两个字符串的结果（JWT Info和JWT Data）并用点号连接（称为“未签名的令牌”），然后签名生成的。
 
@@ -245,7 +245,7 @@ Salt 需要16字节的随机数据，在 NodeJS 中，我们将执行以下操�
 
     const salt = crypto.randomBytes(16);
 
-**公/私钥**
+**公／私钥**
 
 公钥和私钥应该使用 P-256 椭圆曲线生成，我们在 Node 中这样做：
 
