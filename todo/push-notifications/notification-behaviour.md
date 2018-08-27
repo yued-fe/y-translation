@@ -122,7 +122,7 @@
 
 **tag** 选项的本质是一个字符串类型的ID，以此将通知 “分组” 在一起，并提供了一种简单的方法来向用户显示多个通知，这里可能用示例来解释最为简单：
 
-让我们来展示一个通知，并给它标记一个标签，例如“message-group-1”. 我们可以按照以下代码来展示这个通知：
+让我们来展示一个通知，并给它标记一个tag，例如“message-group-1”. 我们可以按照以下代码来展示这个通知：
 
         const title = 'Notification 1 of 3';
         const options = {
@@ -135,7 +135,7 @@
 
 ![First notification with tag of message group 1.](https://developers.google.com/web/fundamentals/push-notifications/images/notification-screenshots/desktop/chrome-first-tag.png)
 
-我们再用一个新的标签 “message-group-2” 来标记并展示第二个通知，如下：
+我们再用一个新的tag “message-group-2” 来标记并展示第二个通知，如下：
 
             const title = 'Notification 2 of 3';
             const options = {
@@ -148,7 +148,7 @@
 
 ![Two notifications where the second tag is message group 2.](https://developers.google.com/web/fundamentals/push-notifications/images/notification-screenshots/desktop/chrome-second-tag.png)
 
-现在让我们展示第三个通知，但不新增标签，而是重用我们第一次定义的标签 “message-group-1”。这么操作会关闭之前的第一个通知并将其替换成新定义的通知。
+现在让我们展示第三个通知，但不新增tag，而是重用我们第一次定义的tag “message-group-1”。这样操作会关闭之前的第一个通知并将其替换成新定义的通知。
 
             const title = 'Notification 3 of 3';
             const options = {
@@ -161,7 +161,7 @@
 
 ![Two notifications where the first notification is replaced by a third notification.](https://developers.google.com/web/fundamentals/push-notifications/images/notification-screenshots/desktop/chrome-third-tag.png)
 
-`tag`这个选项简单来看就是一个用于信息分组的方式，因此在新通知与已有通知标记为同一个标签时，当前被展示的所有旧通知将会被关闭。
+`tag`这个选项简单来看就是一个用于信息分组的方式，因此在新通知与已有通知标记为同一个tag时，当前被展示的所有旧通知将会被关闭。
 
 使用`tag`有一个容易被忽略的小细节：当它替换了一个通知时，是**没有**音效和震动提醒的。
 
