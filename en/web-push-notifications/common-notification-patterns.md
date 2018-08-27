@@ -8,7 +8,7 @@
 
 # 常用的通知模式
 
-此篇我们将会探索Web推送的一些常用模式，包括使用一些service worker提供的API。
+此篇我们将会探索 Web推送的一些常用模式，包括使用一些 service worker 提供的API。
 
 ## 通知的关闭事件
 
@@ -30,7 +30,7 @@
 
 当收到推送的信息时，通常只需要获取用户点击后的有用数据。例如，获取用户点击通知时打开的页面地址。
 
-如果需要将推送事件中获取的数据传递给通知，最简单的方式就是在调用`showNotification()`时，给参数options对象添加一个`data`属性，其值为对象类型，例如以下所示：
+如果需要将推送事件中获取的数据传递给通知，最简单的方式就是在调用`showNotification()`时，给参数 options 对象添加一个`data`属性，其值为对象类型，例如以下所示：
 
         const options = {
           body: 'This notification has data attached to it that is printed ' +
@@ -103,8 +103,8 @@
 
 让我们逐步浏览下代码。
 
-首先，我们将示例中目标页面的地址传递给URL API。这是我从[Jeff Posnick](https://twitter.com/jeffposnick)那学到的一个巧妙的计策。
-调用`new URL()`并传入location对象，如果传入的第一个参数是相对地址，则会返回页面的绝对地址（例如，“/” 会变成 “https://站点域名” ）。
+首先，我们将示例中目标页面的地址传递给 URL API。这是我从[Jeff Posnick](https://twitter.com/jeffposnick)那学到的一个巧妙的计策。
+调用`new URL()`并传入 location 对象，如果传入的第一个参数是相对地址，则会返回页面的绝对地址（例如，“/” 会变成 “https://站点域名” ）。
 
 我们将地址转成了绝对地址则是为了之后与窗口的地址作对比。
 
@@ -117,14 +117,14 @@
         includeUncontrolled: true
       })
 
-`matchAll`方法中传入的options对象则告诉浏览器我们只想获取 “window” 类型的对象（例如，只查看标签页、窗口，不包含web workers[浏览器的其他工作线程]）。
-`includeUncontrolled`属性表示我们只能获取没有被当前service worker控制的所有标签页（本域下），例如service worker正在运行当前代码。一般来说，在调用`matchAll()`时，你通常会将`includeUncontrolled`设置为true。
+`matchAll`方法中传入的 options 对象则告诉浏览器我们只想获取 “window” 类型的对象（例如，只查看标签页、窗口，不包含 web workers[浏览器的其他工作线程]）。
+`includeUncontrolled`属性表示我们只能获取没有被当前 service worker 控制的所有标签页（本域下），例如 service worker 正在运行当前代码。一般来说，在调用`matchAll()`时，你通常会将`includeUncontrolled`设置为 true。
 
-我们以`promiseChain`（promise链式调用）的形式捕获返回的promise对象，因此之后可以将其传入`event.waitUntil()`方法中以此保持我们的service worker持续工作。
+我们以`promiseChain`（promise 链式调用）的形式捕获返回的promise对象，因此之后可以将其传入`event.waitUntil()`方法中以此保持我们的 service worker 持续工作。
 
-当上一步的`matchAll()`返回的promise对象已完成异步操作，我们就可以开始遍历返回的window对象，并将这些对象的URL和想要打开的目标URL进行对比，如果发现有匹配的，则调用`matchingClient.focus()`方法，它会呼起匹配的窗口，引起用户的注意。
+当上一步的`matchAll()`返回的promise对象已完成异步操作，我们就可以开始遍历返回的 window 对象，并将这些对象的URL和想要打开的目标 URL 进行对比，如果发现有匹配的，则调用`matchingClient.focus()`方法，它会呼起匹配的窗口，引起用户的注意。
 
-如果没有与之匹配的URL，我们则采用上一节的方式新开窗口打开地址。
+如果没有与之匹配的 URL，我们则采用上一节的方式新开窗口打开地址。
 
       .then((windowClients) => {
         let matchingClient = null;
@@ -145,13 +145,13 @@
       });
 
 **注意：** 我们会返回`matchingClient.focus()`、`clients.openWindow()`方法执行后返回的promise对象，
-这样promise对象就可以组成我们的promise调用链了。
+这样 promise 对象就可以组成我们的 promise 调用链了。
 
 ## 合并通知
 
 我们已经看到，给一个通知添加标签后会导致用同一个标签标识的已有通知被替代。
 
-但通过使用通知相关的API，你可以更灵活地覆盖展示通知。比如一个聊天应用，开发者可能更希望用新的通知来展示"你有2条未读信息"等类似信息，而不是只展示最新接收到的信息。
+但通过使用通知相关的 API，你可以更灵活地覆盖展示通知。比如一个聊天应用，开发者可能更希望用新的通知来展示"你有2条未读信息"等类似信息，而不是只展示最新接收到的信息。
 
 你可以利用新的通知，或以其他方式操作当前已有通知，使用[registration.getNotifications()](https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerRegistration/getNotifications)API能够获得到你APP中所有当前展示的通知。
 
@@ -276,11 +276,11 @@
 
 ## 通过推送事件给页面发送消息
 
-我们已知，可以在用户正在浏览我们站点的时候不进行通知。但是，如果你仍然想让用户知道这个推送事件已经发生，但又觉得进行通知太过严肃，应该如何处理？
+我们已知，可以在用户正在浏览我们站点的时候不进行通知。但是，如果你仍然想让用户知道这个推送事件已经发生，但又觉得进行通知太过强硬，应该如何处理？
 
-其中一个方法就是利用service worker给页面发送信息，页面可以给用户展示通知或更新，让用户知晓到这个推送事件。当然，只有当用户对于不易察觉的通知感到更友好时，这种做法才有用。
+其中一个方法就是利用 service worker 给页面发送消息，这种情况下页面能够给用户展示通知或更新，以此让用户知晓到这个推送事件的发生。当然，只有当用户对于轻量级通知感到更友好时，这种做法才有用。
 
-如果我们接收到了一个推送，并且检测到了我们的APP已经被打开了，那么我们就可以"发送消息"给每个打开的页面，就像以下这样：
+如果我们接收到了一个推送，并且检测到了我们的 APP 已经被打开了，那么我们就可以"发送消息"给每个打开的页面，就像以下这样：
 
       const promiseChain = isClientFocused()
       .then((clientIsFocused) => {
@@ -308,7 +308,7 @@
 
 在这个消息监听器中，你可以做任何你想做的事，例如展示自定义的视图，或者完全忽略这个消息。
 
-值得注意的是，如果你没有在你的网页中定义消息监听器，那么service worker推送的消息将不会做任何事。
+值得注意的是，如果你没有在你的网页中定义消息监听器，那么 service worker 推送的消息将不会做任何事。
 
 
 ## 缓存页面和窗口对象
