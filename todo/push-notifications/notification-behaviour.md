@@ -88,7 +88,7 @@
 `event.action`会包含所有选项中有关`action`的值的集合。在上面的例子中，`event.action`的值则会是： “coffee-action”、 “doughnut-action”、
 “gramophone-action” 或 “atom-action” 的其中一个。
 
-因此通过event.action，我们可以检测到通知或action的点击，代码如下：
+因此通过`event.action`，我们可以检测到通知或action的点击，代码如下：
 
     self.addEventListener('notificationclick', function(event) {
       if (!event.action) {
