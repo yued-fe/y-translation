@@ -1,10 +1,10 @@
 >原文地址：https://developers.google.com/web/fundamentals/push-notifications/how-push-works
 
->译文地址：
+>译文地址：https://github.com/yued-fe/y-translation/blob/master/todo/push-notifications/how-push-works.md
 
->译者：刘鹏
+>译者：[刘鹏](https://github.com/git-patrickliu)
 
->校对者：
+>校对者：[任家乐](https://github.com/jennyrenjiale)、[张卓](https://github.com/Zhangdroid)
 
 
 # 推送是怎么工作的?
@@ -45,7 +45,7 @@
 
 - 推送服务是谁/是什么？
 
-- 这个 API 长什么样？它是 JSON 格式，XML 格式，还是其他什么格式？
+- 这个 API 长什么样？它是 JSON 格式？XML 格式？还是其他什么格式？
 
 - 这个 API 能干什么？
 
@@ -68,7 +68,7 @@
 	  }
 	}
 	
-这个示例当中的 **endpoint** 是 “https://random-push-service.com/some-kind-of-unique-id-1234/v2/”。 推送服务应该是 “random-push-service.com”，如 “some-kind-of-unique-id-1234” 所示，每个 endpoint 对用户来说都是独一无二的。
+这个示例当中的 **endpoint** 是 “https://random-push-service.com/some-kind-of-unique-id-1234/v2/ ”。 推送服务应该是 “random-push-service.com”，如 `some-kind-of-unique-id-1234` 所示，每个 endpoint 对用户来说都是独一无二的。
 当你开始着手于推送之后，你会注意到这个模式。
 
 关于上述示例当中的 **key** 这个字段，我们后续会讲到，这里就先不解释了。

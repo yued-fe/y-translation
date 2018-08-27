@@ -2,9 +2,9 @@
 
 >译文地址：https://github.com/yued-fe/y-translation/edit/master/todo/push-notifications/faq.md
 
->译者：
+>译者：[刘鹏](https://github.com/git-patrickliu)
 
->校对者：
+>校对者：[杨芯芯](https://github.com/y2x33)、[任家乐](https://github.com/jennyrenjiale)
 
 
 # FAQ 
@@ -41,21 +41,19 @@ Android 上的任何浏览器和上述应用的表现是一致的，当接收到
 
 Chrome 在某种程度上实现了这个特性，虽然你可能发现它不太靠谱并且难以追因。相关的实现细节如下：
 
-> 在 Android 系统上，添加到桌面的网站在点击推送消息的时候，应该被允许以 **standalone（独立）** 模式打开。然而即使网站被添加到了桌面，由于 Chromium 依然不能检测到这些
-> 网站是否在桌面上。我们启发式地采用了下面这种方法：那些在最近 10 天内从桌面启动过的网站，点击通知后将以 **standalone** 模式打开。
-> --[Chrome Issue](https://bugs.chromium.org/p/chromium/issues/detail?id=541711)
+> 在 Android 系统上，添加到桌面的网站在点击推送消息的时候，应该被允许以 **standalone（独立）** 模式打开。然而即使网站被添加到了桌面，由于 Chromium 依然不能检测到这些网站是否在桌面上。我们启发式地采用了下面这种方法：那些在最近 10 天内从桌面启动过的网站，点击通知后将以 **standalone** 模式打开。-- [Chrome Issue](https://bugs.chromium.org/p/chromium/issues/detail?id=541711)
 
 这就意味着，除非你的用户足够频繁地通过桌面访问你的站点，否则的话你的通知只会打开一个普通的浏览器 UI。
 
 这个问题将进一步解决。
 
-**注意：** 这个只是 Chrome 的表现，其它浏览器也会有一些不同。如果你有任何需要讨论的，请尽管[提出 issue](https://github.com/gauntface/web-push-book/issues)
+**注意：** 这个只是 Chrome 的表现，其它浏览器也会有一些不同。如果你有任何需要讨论的，请尽管[提出 issue](https://github.com/gauntface/web-push-book/issues)。
 
 ## 为什么这个比 web sockets 要好？
 
 即使浏览器窗口是关闭的，service worker 依然可以工作。而 web socket 只有在浏览器和网页保持打开的状态下才能正常工作。
 
-## GCM, FCM, Web 推送 和 Chrome 是怎么回事？
+## GCM、 FCM、 Web 推送 和 Chrome 是怎么回事？
 
 这个问题有很多方面，最简单的解释方法是逐步介绍 Web 推送和 Chrome 的历史。（别担心，很短）
 
@@ -84,12 +82,12 @@ Chrome 在某种程度上实现了这个特性，虽然你可能发现它不太�
 ## Firebase 有一个 JavaScript SDK，它是什么以及为什么会存在？
 对于那些已经发现 Firebase Web SDK 且注意到它有 JavaScript 版本的消息传递 API 的人，可能会想知道它与 Web 推送的区别。
 
-消息传递SDK（Firebase Cloud Messaging JS SDK）在幕后做了一些工作以便更轻松地实现 Web 推送。
+消息传递 SDK（Firebase Cloud Messaging JS SDK）在幕后做了一些工作以便更轻松地实现 Web 推送。
 
 - 只需要关心 FCM 令牌（仅仅是一个字符串），而不必关心 `PushSubscription` 及其各个字段。
 - 通过使用每个用户的令牌，你可以使用专有的 FCM API 来触发推送消息。此 API 不需要加密有效负载，可以在 POST 请求 body 中发送普通（未加密）的文本有效载荷。
 - FCM 的专有 API 支持自定义功能，例如 [FCM 主题](https://firebase.google.com/docs/cloud-messaging/android/topic-messaging)（尽管相关文档很少，但它也可以在 Web 上运行）。
-- 最后，FCM 支持 Android，iOS 和 Web，因此对于一些团队来说，在现有项目中更容易使用。
+- 最后，FCM 支持 Android、iOS 和 Web，因此对于一些团队来说，在现有项目中更容易使用。
 
 其实它在底层使用的还是 Web 推送，但是目的就是把 Web 推送抽象出来。
 
