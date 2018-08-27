@@ -56,7 +56,7 @@
 
 ## 打开一个窗口
 
-对一个通知来说，打开指定地址的窗口／标签页可以作为一种最常见的反馈，这个我们可以通过[clients.openWindow()]（https://developer.mozilla.org/en-US/docs/Web/API/Clients/openWindow）来实现。
+对一个通知来说，打开指定地址的窗口／标签页可以作为一种最常见的反馈，这个我们可以通过[clients.openWindow()](https://developer.mozilla.org/en-US/docs/Web/API/Clients/openWindow)来实现。
 
 在`notificationclick`事件中，我们会运行类似下面的代码来实现以上需求：
 

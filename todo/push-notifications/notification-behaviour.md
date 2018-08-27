@@ -9,12 +9,13 @@
 # 通知行为
 
 到此为止，我们已经浏览了可以改变通知样式的选项，除了样式，我们还可以通过一些选项来改变通知的行为。
-默认情况下，如果只设置视觉相关选项时，调用`showNotification()`会出现以下行为：
+
+默认情况下，如果只设置视觉相关选项，调用`showNotification()`会出现以下行为：
 
 - 点击通知不会触发任何事件。
 - 每个新的通知会逐一有序地展示，浏览器不会以任何方式叠加展示通知。
 - 系统会以音效或震动的方式提示用户（具体方式则取决于设备系统）。
-- 在某些系统上，通知会在短时间展示后消失，而其他系统则会一直展示通知直到用户对其进行操作。（可以对比安卓和电脑的通知行为）
+- 在某些系统上，通知会在短时间展示后消失，而其他系统则会一直展示通知直到用户对其进行操作。（可以对比安卓和桌面的通知行为）
 
 在这一节中，我们会探讨如何单独使用一些选项改变默认的通知行为，这相对来说比较容易实施和利用。
 
@@ -37,7 +38,7 @@
 
 正如你在此示例中所看到的，被点击的通知可以通过`event.notification`参数来访问。通过这个参数我们可以获得通知的属性和方法，因此我们能够调用通知的`close()`方法，同时执行一些额外的操作。
 
-提示：在程序运行高峰期，你仍然需要利用event.waitUntil()方法保证service worker的持续运行。
+提示：在程序运行高峰期，你仍然需要调用`event.waitUntil()`保证service worker的持续运行。
 
 ### Actions
 
@@ -84,10 +85,10 @@
 
 如果用户点击了action按钮，通过`notificationclick`回调中返回的`event.action`就可以知道被点击的按钮是哪个。
 
-'event.action'会包含所有选项中有关`action`的值的集合。在上面的例子中，`event.action`的值则会是： “coffee-action”、 “doughnut-action”,
+`event.action`会包含所有选项中有关`action`的值的集合。在上面的例子中，`event.action`的值则会是： “coffee-action”、 “doughnut-action”、
 “gramophone-action” 或 “atom-action” 的其中一个。
 
-因此通过event.action，我们可以检测到通知或action的点击，代码如下：
+因此通过`event.action`，我们可以检测到通知或action的点击，代码如下：
 
     self.addEventListener('notificationclick', function(event) {
       if (!event.action) {
@@ -121,7 +122,7 @@
 
 **tag** 选项的本质是一个字符串类型的ID，以此将通知 “分组” 在一起，并提供了一种简单的方法来向用户显示多个通知，这里可能用示例来解释最为简单：
 
-让我们来展示一个通知，并给它标记一个标签，例如“message-group-1”. 我们可以按照以下代码来展示这个通知：
+让我们来展示一个通知，并给它标记一个tag，例如“message-group-1”. 我们可以按照如下代码来展示这个通知：
 
         const title = 'Notification 1 of 3';
         const options = {
@@ -130,11 +131,11 @@
         };
         registration.showNotification(title, options);
 
-以上代码会展示我们定义好的第一个通知。
+这会展示我们定义好的第一个通知。
 
 ![First notification with tag of message group 1.](https://developers.google.com/web/fundamentals/push-notifications/images/notification-screenshots/desktop/chrome-first-tag.png)
 
-我们再用一个新的标签 “message-group-2” 来标记并展示第二个通知，如下：
+我们再用一个新的tag “message-group-2” 来标记并展示第二个通知，代码如下：
 
             const title = 'Notification 2 of 3';
             const options = {
@@ -143,11 +144,11 @@
             };
             registration.showNotification(title, options);
 
- 以上代码会展示给用户第二个通知。
+这样会展示给用户第二个通知。
 
 ![Two notifications where the second tag is message group 2.](https://developers.google.com/web/fundamentals/push-notifications/images/notification-screenshots/desktop/chrome-second-tag.png)
 
-现在让我们展示第三个通知，但不新增标签，而是重用我们第一次定义的标签 “message-group-1”。这么操作会关闭之前的第一个通知并将其替换成新定义的通知。
+现在让我们展示第三个通知，但不新增tag，而是重用我们第一次定义的tag “message-group-1”。这样操作会关闭之前的第一个通知并将其替换成新定义的通知。
 
             const title = 'Notification 3 of 3';
             const options = {
@@ -160,7 +161,7 @@
 
 ![Two notifications where the first notification is replaced by a third notification.](https://developers.google.com/web/fundamentals/push-notifications/images/notification-screenshots/desktop/chrome-third-tag.png)
 
-`tag`这个选项简单来看就是一个用于信息分组的方式，因此在新通知与已有通知标记为同一个标签时，当前被展示的所有旧通知将会被关闭。
+`tag`这个选项简单来看就是一个用于信息分组的方式，因此在新通知与已有通知标记为同一个tag时，当前被展示的所有旧通知将会被关闭。
 
 使用`tag`有一个容易被忽略的小细节：当它替换了一个通知时，是**没有**音效和震动提醒的。
 
