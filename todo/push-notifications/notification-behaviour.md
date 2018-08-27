@@ -21,7 +21,9 @@
 ### 通知的点击事件
 
 当用户点击通知时，默认不会触发任何事件，它并不会关闭或移除通知。
+
 通知点击事件的常见用法是调用它来关闭通知、同时执行一些其他的逻辑（例如，打开一个窗口或对应用程序进行一些API调用）
+
 为此，我们需要在service worker中添加一个 “ notificationclick ” 事件监听器。 这个事件将在点击通知时被调用。
 
     self.addEventListener('notificationclick', function(event) {
@@ -34,11 +36,13 @@
     });
 
 正如你在此示例中所看到的，被点击的通知可以通过`event.notification`参数来访问。通过这个参数我们可以获得通知的属性和方法，因此我们能够调用通知的`close()`方法，同时执行一些额外的操作。
+
 提示：在程序运行高峰期，你仍然需要利用event.waitUntil()方法保证service worker的持续运行。
 
 ### 行为
 
 相比于之前的普通点击行为，actions的使用可以提供给用户更高级别的交互体验。
+
 在上一节中，我们知道了如何调用`showNotification()`来定义行为：
 
         const title = 'Actions Notification';
@@ -79,8 +83,10 @@
         registration.showNotification(title, options);
 
 如果用户点击了可以触发行为的按钮，通过`notificationclick`回调中返回的`event.action`就可以知道被点击的按钮是哪个。
+
 'event.action'会包含所有选项中有关`action`的值的集合。在上面的例子中，`event.action`的值则会是： “coffee-action”、 “doughnut-action”,
 “gramophone-action” 或 “atom-action” 的其中一个。
+
 因此通过event.action，我们可以检测到通知或行为（action）的点击，代码如下：
 
     self.addEventListener('notificationclick', function(event) {
@@ -114,6 +120,7 @@
 ### 标签
 
 **tag** 选项的本质是一个字符串类型的ID，以此将通知 “分组” 在一起，并提供了一种简单的方法来向用户显示多个通知，这里可能用示例来解释最为简单：
+
 让我们来展示一个通知，并给它标记一个标签，例如“message-group-1”. 我们可以按照以下代码来展示这个通知：
 
         const title = 'Notification 1 of 3';
@@ -156,11 +163,13 @@
 `tag`这个选项简单来看就是一个用于信息分组的方式，因此在新通知与已有通知标记为同一个标签时，当前被展示的所有旧通知将会被关闭。
 
 使用`tag`有一个容易被忽略的小细节：当它替换了一个通知时，是**没有**音效和震动提醒的。
+
 此时`Renotify`选项就有了用武之地。
 
 ### 是否替换之前的通知
 
 在写此文时，这个选项大多数应用于移动设备。通过设置它，接收到新的通知时，系统会震动并播放系统音效。
+
 某些场景下，你可能更希望替换通知时能够提醒到用户，而不是默默地进行。聊天应用则是一个很好的例子。这种情况你需要同时使用`tag`和`Renotify`选项。
 
             const title = 'Notification 2 of 2';
@@ -174,6 +183,7 @@
     Notifications which set the renotify flag must specify a non-empty tag
 
 **注意：** 如果你设置了`Renotify: true`但却没有设置标签，会出现以下报错信息：
+
 类型错误：不能够在 “ServiceWorkerRegistration” 上执行 “showNotification” 方法：设置了renotify标识的通知必须声明一个不为空的标签。(TypeError: Failed to execute 'showNotification' on 'ServiceWorkerRegistration':Notifications which set the renotify flag must specify a non-empty tag)
 
 ### 静音
@@ -191,6 +201,7 @@
 ### 与通知进行交互
 
 桌面chrome浏览器会展示通知一段时间后将其隐藏，而安卓设备的chrome浏览器不会有这种行为，通知会一直展示，直到用户对其进行操作。
+
 如果要强制让通知持续展示直到用户对其操作，需要添加`requireInteraction`选项，此选项会展示通知直到用户消除或点击它。
 
         const title = 'Require Interaction Notification';
@@ -201,5 +212,6 @@
         registration.showNotification(title, options);
 
 请谨慎使用这个选项，因为一直展示通知、并强制让用户停下手头的事情来取消通知可能会干扰到用户。
+
 在下一节中，我们会浏览一些web上适用的用于管理通知的常见模式，例如在点击通知时执行打开网页的行为。
 
