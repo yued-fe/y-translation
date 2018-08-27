@@ -82,7 +82,7 @@
 
         registration.showNotification(title, options);
 
-如果用户点击了可以触发行为的按钮，通过`notificationclick`回调中返回的`event.action`就可以知道被点击的按钮是哪个。
+如果用户点击了action按钮，通过`notificationclick`回调中返回的`event.action`就可以知道被点击的按钮是哪个。
 
 'event.action'会包含所有选项中有关`action`的值的集合。在上面的例子中，`event.action`的值则会是： “coffee-action”、 “doughnut-action”,
 “gramophone-action” 或 “atom-action” 的其中一个。
