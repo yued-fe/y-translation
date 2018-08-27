@@ -1,10 +1,10 @@
 >原文地址：https://developers.google.com/web/fundamentals/push-notifications/display-a-notification
 
->译文地址：
+>译文地址：https://github.com/yued-fe/y-translation/blob/master/todo/push-notifications/display-a-notification.md
 
->译者：刘文涛
+>译者：[刘文涛](https://github.com/HSDPA-wen)
 
->校对者：
+>校对者：[杨芯芯](https://github.com/y2x33)  [任家乐](https://github.com/jennyrenjiale) 
 
 
 # 显示一个通知
@@ -13,17 +13,17 @@
 
 这么做的原因是每个开发人员都需要担心视觉方面，而行为方面则取决于你使用推送的方式。
 
-下面所有的例子的源代码，都来自我的一个demo页面。 如果你想自己测试它们，请点击下面的按钮。
+下面所有的例子的源代码，都来自我的一个 demo 页面。 如果你想自己测试它们，请点击下面的按钮。
 
 [Notification Demos](https://web-push-book.gauntface.com/demos/notification-examples/)
 
 ## 视觉显示相关参数
 
-显示一个通知的API很简单，如下：
+显示一个通知的 API 很简单，如下：
 
     <ServiceWorkerRegistration>.showNotification(<title>, <options>);
 
-title是一个字符串类型，options 的参数如下：
+title 是一个字符串类型，options 的参数如下：
 
     {
       "//": "Visual Options",
@@ -110,6 +110,7 @@ Firefox：
 ![Notification with icon on Firefox on Linux.](./images/notification-screenshots/desktop/firefox-icon.png)
 
 悲伤的是，图标大小并没有固定标准。
+
 [Android似乎想要一个64dp的图像](http://stackoverflow.com/questions/7220738/honeycomb-notifications-how-to-set-largeicon-to-the-right-size)（这是设备像素比例的64倍）。
 
 如果我们假设设备的最高像素比例为3，那么192像素及以上大小的图片是安全的。
@@ -214,7 +215,7 @@ guidelines](https://developer.android.com/guide/practices/ui_guidelines/icon_des
 
 对于每个 action，你可以定义一个 title，一个“action”（即一个 ID）和一个图标。标题和图标是你可以在通知中看到的内容。ID 是用来检测操作按钮是否已经被点击过（我们将在下一节中更详细地介绍这一点）。
 
-在上面的示例中，我定义了 4 个 actions，来证明你可以定义比显示的 actions 更多的 actions。 如果你想知道浏览器可以显示多少个action 按钮，你可以查看演示正文中使用的 `Notification.maxActions`。
+在上面的示例中，我定义了 4 个 actions，来证明你可以定义比显示的 actions 更多的 actions。 如果你想知道浏览器可以显示多少个 action 按钮，你可以查看演示正文中使用的 `Notification.maxActions`。
 
 在桌面端上，操作按钮图标会显示本身的颜色（请参阅上面的粉色甜甜圈 icon）。
 
