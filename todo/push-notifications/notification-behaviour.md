@@ -43,7 +43,7 @@
 
 相比于之前的普通点击行为，`actions`的使用可以提供给用户更高级别的交互体验。
 
-在上一节中，我们知道了如何调用`showNotification()`来定义行为：
+在上一节中，我们知道了如何调用`showNotification()`来定义`actions`：
 
         const title = 'Actions Notification';
         const options = {
