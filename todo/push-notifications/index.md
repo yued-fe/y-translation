@@ -12,7 +12,7 @@
 
 <img src="https://developers.google.com/web/fundamentals/push-notifications/images/cc-good.png" alt="Example Notification" class="attempt-right">
 
-如果你问一屋子的开发者，有哪些功能是移动设备拥有，而 Web 缺失的，推送通知一定位居前列。
+如果你问一屋子的开发者，有哪些功能是移动设备拥有而 Web 缺失的，推送通知一定位居前列。
 
 Web 推送通知允许用户在他们喜欢的网站一有更新之后就选择参与进来。同时允许开发者使用自定义的以及和用户相关的内容来有效地吸引用户。
 
@@ -24,7 +24,7 @@ Web 推送通知允许用户在他们喜欢的网站一有更新之后就选择�
 
 ## 两种技术
 
-推送和通知使用不同但是互补的 API。[**推送**](https://developer.mozilla.org/en-US/docs/Web/API/Push_API)在服务器提供给 service worker 信息的时候被调用。[**通知**](https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API)是 service worker 或者网页 script 展示信息给用户的一种方式。
+推送和通知是使用不同但是互补的 API。[**推送**](https://developer.mozilla.org/en-US/docs/Web/API/Push_API)在服务器提供给 service worker 信息的时候被调用。[**通知**](https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API)是 service worker 或者网页 script 展示信息给用户的一种方式。
 
 ## 对通知的一点剖析
 
@@ -47,7 +47,7 @@ Web 推送通知允许用户在他们喜欢的网站一有更新之后就选择�
 
 <img src="https://developers.google.com/web/fundamentals/push-notifications/images/cc-good.png" alt="Example Notification" class="attempt-right">
 
-这些代码将生成一个如图所示的通知。它通常会提供和原生应用一样的能力。在深入到实现这些能力的细节之前，我将给你们展示如何有效地使用它们。我们将继续讲述实现推送通知的机制，包括如何处理权限、订阅、发送消息，以及如何回应消息等方面。
+这些代码将生成一个如图所示的通知。它通常会提供和原生应用一样的能力。在深入到实现这些能力的细节之前，我将给你们展示如何有效地使用它们。我们将继续讲述实现推送通知的机制，包括如何处理权限、订阅、发送消息以及如何回应消息等方面。
 
 
 ## 我要怎样才能试用它呢?
