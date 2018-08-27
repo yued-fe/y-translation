@@ -1,8 +1,8 @@
 >原文地址：https://developers.google.com/web/fundamentals/push-notifications/subscribing-a-user
 
->译文地址：
+>译文地址：https://github.com/yued-fe/y-translation/blob/master/todo/push-notifications/subscribing-a-user.md
 
->译者：
+>译者：[刘鹏](https://github.com/git-patrickliu)
 
 >校对者：
 
@@ -54,7 +54,7 @@ if (!('PushManager' in window)) {
       });
     }
 
-上面的代码告诉浏览器，我们有一个 service worker 文件，以及存放它的地址。在这个示例中，service worker 文件地址是 **/service-worker.js**。
+上面的代码告诉浏览器，我们有一个 service worker 文件，以及存放它的地址。在这个示例中，service worker 文件地址是 `/service-worker.js`。
 在调用完 `register()` 之后，后台浏览器会进行下面几个步骤：
 
 1. 下载 service worker 文件。
@@ -65,14 +65,13 @@ if (!('PushManager' in window)) {
 
 > 如果 `register()` reject 了，请在 Chrome 的开发者工具当中再检查一遍你的 JavaScript 代码中的拼写错误或逻辑错误。
 
-如果 `register()` 确实 resolve 了， 它会返回一个 **ServiceWorkerRegistration** 的方法。我们将使用它来访问[推送管理 API](https://developer.mozilla.org/en-US/docs/Web/API/PushManager)
+如果 `register()` 确实 resolve 了， 它会返回一个 **ServiceWorkerRegistration** 的方法。我们将使用它来访问[推送管理 API](https://developer.mozilla.org/en-US/docs/Web/API/PushManager)。
 
 ## 获取许可
 
 我们注册了 service worker，为订阅用户做好了准备，下一步就是从用户那里获取给他们发送消息的权限。
 
-获取权限的 API 相对简单，但是不太好的是这个 API [最近由原来的回调方式变为返回一个 Promise 对象](https://developer.mozilla.org/en-US/docs/Web/API/Notification/requestPermission)
-这个变动造成了我们不能分辨当前浏览器究竟实现了哪一个，所以必须同时实现并处理两者。
+获取权限的 API 相对简单，但是不太好的是这个 API [最近由原来的回调方式变为返回一个 Promise 对象](https://developer.mozilla.org/en-US/docs/Web/API/Notification/requestPermission)。这个变动造成了我们不能分辨当前浏览器究竟实现了哪一个，所以必须同时实现并处理两者。
 
     function askPermission() {
       return new Promise(function(resolve, reject) {
@@ -92,6 +91,7 @@ if (!('PushManager' in window)) {
     }
 
 在上面的代码当中，最重要的代码片段就是调用 `Notification.requestPermission()`。这个方法会显示一个提示给用户：
+
 ![桌面和手机版 Chrome 的授权弹框](https://developers.google.com/web/fundamentals/push-notifications/images/permission-prompt.png)
 
 一旦这个权限被同意 / 允许，关闭（也就是点击弹层上的叉）或者被拦截，我们将获取结果字符串：'granted', 'default' 或者 'denied'。
@@ -128,7 +128,7 @@ if (!('PushManager' in window)) {
     }
 
 
-当调用 `subscribe()` 方法的时候，我们传入一个 *options* 的对象，此对象包含必传、可选参数。
+当调用 `subscribe()` 方法的时候，我们传入一个 **options** 的对象，此对象包含必传、可选参数。
 
 让我们来看一下我们能传入的所有参数。
 
@@ -143,7 +143,7 @@ if (!('PushManager' in window)) {
 
 所以说当前，你**必须**传入一个为 **true** 的值。如果你没有传入一个 **userVisibleOnly** 的键值或者传入的是 **false** 值，你会得到如下的错误：
 
-> Chrome 当前仅支持能够产生让用户可见消息的推送 API 的订阅。你可以调用 `pushManager.subscribe({useVisibleOnly: true})。查看 [https://goo.gl/yqv4Q4](https://goo.gl/yqv4Q4) 获取更多详情。
+> Chrome 当前仅支持能够产生让用户可见消息的推送 API 的订阅。你可以调用 `pushManager.subscribe({useVisibleOnly: true})`。查看 [https://goo.gl/yqv4Q4](https://goo.gl/yqv4Q4) 获取更多详情。
 
 当前看起来，在 Chrome 当中，完全的静默推送永远不会实现。规范编写者正在探索一个预算 API 的概念，它会基于用户对 Web App 的使用而给开发者们一定量的静默推送消息次数。
 
@@ -159,7 +159,7 @@ if (!('PushManager' in window)) {
 
 1. 浏览器加载了你的 Web App，然后你调用 `subscribe()`，传入你的 **application server key** 中的公钥。
 2. 然后浏览器发出一个网络请求到推送服务，推送服务会生成一个和 **applications public key** 联系在一起的 **endpoint**，并把该 **endpoint** 返回给浏览器。
-3. 浏览器将这个值添加到第1步调用 `subscribe()` 返回的 Promise 对象 **PushSubscription** 当中。
+3. 浏览器将这个值添加到第 1 步调用 `subscribe()` 返回的 Promise 对象 **PushSubscription** 当中。
 
 ![描述如何在订阅方法中使用应用公钥](https://developers.google.com/web/fundamentals/push-notifications/images/svgs/application-server-key-subscribe.svg)
 
