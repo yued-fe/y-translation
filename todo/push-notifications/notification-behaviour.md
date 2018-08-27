@@ -39,7 +39,7 @@
 
 提示：在程序运行高峰期，你仍然需要利用event.waitUntil()方法保证service worker的持续运行。
 
-### Actions（行为）
+### Actions
 
 相比于之前的普通点击行为，`actions`的使用可以提供给用户更高级别的交互体验。
 
@@ -87,7 +87,7 @@
 'event.action'会包含所有选项中有关`action`的值的集合。在上面的例子中，`event.action`的值则会是： “coffee-action”、 “doughnut-action”,
 “gramophone-action” 或 “atom-action” 的其中一个。
 
-因此通过event.action，我们可以检测到通知或行为（action）的点击，代码如下：
+因此通过event.action，我们可以检测到通知或action的点击，代码如下：
 
     self.addEventListener('notificationclick', function(event) {
       if (!event.action) {
