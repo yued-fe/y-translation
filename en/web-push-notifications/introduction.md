@@ -3,7 +3,7 @@
 
 > 参与者（排名不分先后）：[任家乐](https://github.com/jennyrenjiale)、[杨芯芯](https://github.com/y2x33)、[刘文涛](https://github.com/HSDPA-wen)、[张卓](https://github.com/Zhangdroid)、[刘鹏](https://github.com/git-patrickliu)。
 
-PWA 技术的流行，给了前端许多新的能力。以前很多前端做不到的事情，现在逐渐可以做到了。本系列文章讲述的的 Web 推送通知就是前端开发者最希望获得的能力之一。
+PWA 技术的流行，给了前端许多新的能力和机会。以前很多前端做不到的事情，现在逐渐可以做到了。本系列文章讲述的 Web 推送通知就是前端开发者最希望获得的能力之一。
 
 通过推送通知，即使用户的浏览器没有打开，我们也可以触达用户，让用户与我们的 Web 站点有更多的互动。在国外可以直接使用 Google 的推送服务进行推送，而国内也不要灰心，我们的国产浏览器厂商们也在补全国内的推送能力。去年 UC 就推出了国内首款支持推送通知的[浏览器](https://www.w3ctech.com/topic/2085)。
 
