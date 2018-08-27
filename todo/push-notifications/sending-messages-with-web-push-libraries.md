@@ -66,9 +66,9 @@ demo 中的 [Express](http://expressjs.com/) 服务器会监听 `/api/save-subsc
 在这个路由下，我们会验证订阅以确保请求正确并且内容有效：
 
     const isValidSaveRequest = (req, res) => {
-      // Check the request body has at least an endpoint.
+      // 检查请求请求的 body, 且至少要检查是否含有 endpoint
       if (!req.body || !req.body.endpoint) {
-        // Not a valid subscription.
+        // 不是有效的订阅
         res.status(400);
         res.setHeader('Content-Type', 'application/json');
         res.send(JSON.stringify({
