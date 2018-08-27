@@ -118,7 +118,7 @@
       })
 
 `matchAll`方法中传入的options对象则告诉浏览器我们只想获取 “window” 类型的对象（例如，只查看标签页、窗口，不包含web workers[浏览器的其他工作线程]）。
-`includeUncontrolled`属性表示我们只能获取没有被当前service workder控制的所有标签页（本域下），例如service worker正在运行当前代码。一般来说，在调用`matchAll()`时，你通常会将`includeUncontrolled`设置为true。
+`includeUncontrolled`属性表示我们只能获取没有被当前service worker控制的所有标签页（本域下），例如service worker正在运行当前代码。一般来说，在调用`matchAll()`时，你通常会将`includeUncontrolled`设置为true。
 
 我们以`promiseChain`（promise链式调用）的形式捕获返回的promise对象，因此之后可以将其传入`event.waitUntil()`方法中以此保持我们的service worker持续工作。
 
