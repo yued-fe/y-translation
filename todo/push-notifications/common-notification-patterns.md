@@ -14,7 +14,7 @@
 
 在上一篇中，我们了解了如何监听`notificationclick`事件。
 
-除了`notificationclick`事件，我们还可以监听`notificationclose`事件，它会在用户忽略其中一个通知（例如，用户点击了关闭按钮或划掉了通知，而不是点击了通知）时被调用。
+除了`notificationclick`事件，我们还可以监听`notificationclose`事件，它会在用户忽略其中一个通知（例如，用户点击了关闭按钮或划掉了通知，而不是点击了它）时被调用。
 
 这个事件通常被用作数据分析，以此追踪用户与通知的互动情况。
 
