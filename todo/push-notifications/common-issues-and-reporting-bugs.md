@@ -1,18 +1,18 @@
 >原文地址：https://developers.google.com/web/fundamentals/push-notifications/common-issues-and-reporting-bugs
 
->译文地址：
+>译文地址：https://github.com/yued-fe/y-translation/blob/master/todo/push-notifications/common-issues-and-reporting-bugs.md
 
->译者：刘文涛
+>译者：[刘文涛](https://github.com/HSDPA-wen)
 
->校对者：
+>校对者：[张卓](https://github.com/Zhangdroid)  [刘鹏](https://github.com/git-patrickliu) 
 
 # Web 推送：常见问题以及错误反馈
 
-当你使用网络推送遇到问题时，可能很难去调试这个问题或寻求帮助。 本文将概述一些常见问题以及如果你在Chrome或Firefox中发现错误，应该怎么去做。
+当你使用网络推送遇到问题时，可能很难去调试这个问题或寻求帮助。 本文将概述一些常见问题以及如果你在 Chrome 或 Firefox 中发现错误，应该怎么去做。
 
 在我们深入调试推送之前，你可能遇到 service workers 本身的问题，文件未更新，未注册或一般的异常行为。 关于[调试 service workers](https://developers.google.com/web/fundamentals/web/fundamentals/getting-started/codelabs/debugging-service-workers/) 的文档非常完善，如果你是初次使用 service worker 开发的话 ，我强烈建议你去阅读一下。
 
-在开发和测试Web推送的两个阶段中，每个阶段都遇到独有的一些常见问题。     
+在开发和测试 Web 推送的两个阶段中，每个阶段都遇到独有的一些常见问题。     
        
 - **发送消息：**首先应确保发送消息成功。正确返回的 HTTP 状态码应该是201。 如果不是：
 	- **检查授权错误：**如果收到授权错误消息，请参阅下面 “授权相关问题部分"。
@@ -21,7 +21,7 @@
 	- **检查加密问题：**请参阅下面的“有效负载加密问题部分“。
 	- **检查连接问题：**如果是在 Chrome 上出的问题，可能与连接有关。 可参阅下面的“连接问题”部分。
 
-如果无法发送和接收推送消息，并且本文档中的相关部分不能帮助你调试问题，那么你可能发现了推送机制本身的一个 bug。在这种情况下，请参阅 “如何提交错误报告”部分，提交一份包含所有重要信息的错误报告，以加快错误修复过程。
+如果无法发送和接收推送消息，并且本文档中的相关部分不能帮助你调试问题，那么你可能发现了推送机制本身的一个 Bug。在这种情况下，请参阅 “如何提交错误报告”部分，提交一份包含所有重要信息的错误报告，以加快错误修复过程。
 
 在提交错误报告之前我想说的一件事是：**Firefox 和 Mozilla 自动推送服务给了很多有用的错误信息**。 如果你遇到问题并且不确定是什么问题的时候，那么请在 Firefox 中进行测试，看看是否可以收到了更有用的错误消息。
 
@@ -33,7 +33,7 @@
 
 ### 在 Chrome + 云消息传递FCM
 
-对于使用 FCM 作为推送服务的Chrome，你将收到来自FCM：关于`UnauthorizedRegistration` response【未经授权注册】 的一系列不同的错误，所有错误都涉及应用程序服务器密钥。
+对于使用 FCM 作为推送服务的 Chrome，你将收到来自 FCM：关于`UnauthorizedRegistration` response【未经授权注册】 的一系列不同的错误，所有错误都涉及应用程序服务器密钥。
 
 在以下任何一种情况下，你都会收到一个 `UnauthorizedRegistration` 错误：
 
@@ -117,7 +117,7 @@ Firefox 和 Mozilla 自动推送 为 `Authorization` 授权问题提供了一系
 </tr>
 <tr>
 <td>400</td>
-<td>无效的请求。 你的某一个 header 无效或格式不正确。</td>
+<td>无效的请求。 你的某一个 Header 无效或格式不正确。</td>
 </tr>
 <tr>
 <td>404</td>
@@ -134,7 +134,7 @@ Firefox 和 Mozilla 自动推送 为 `Authorization` 授权问题提供了一系
 </table>
 
 如果http状态码不在此列表中且错误信息没有给到帮助，可以查看 [Web Push Protocol
-spec (Web推送协议)](https://tools.ietf.org/html/draft-ietf-webpush-protocol)，看下这个状态码是在哪些场景下触发。
+spec (Web 推送协议)](https://tools.ietf.org/html/draft-ietf-webpush-protocol)，看下这个状态码是在哪些场景下触发。
 
 ## 有效负载加密问题
 
@@ -159,13 +159,13 @@ spec (Web推送协议)](https://tools.ietf.org/html/draft-ietf-webpush-protocol)
 如果是这个问题，有一些工具可以帮助你调试加密：
 
 * [推送加密验证工具Peter Beverloo](https://tests.peter.sh/push-encryption-verifier/)
-* [网络推送：Mozilla的数据加密测试页面](https://mozilla-services.github.io/WebPushDataTestPage/)
+* [网络推送：Mozilla 的数据加密测试页面](https://mozilla-services.github.io/WebPushDataTestPage/)
 
 ## 连接问题
 
 如果你没有在 service worker 中收到推送事件，并且没有看到任何解密错误，可能是浏览器无法连接到推送服务。
 
-在Chrome中，可以通过页面：`chrome://gcm-internals` 中的“接收消息日志”模块来检查浏览器是否正在接收消息。
+在 Chrome 中，可以通过页面：`chrome://gcm-internals` 中的“接收消息日志”模块来检查浏览器是否正在接收消息。
 
 ![GCM internals receive message log](./images/gcm-internals-receive-log.png)
 
