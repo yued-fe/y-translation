@@ -25,7 +25,7 @@
 
 通知点击事件的常见用法是调用它来关闭通知、同时执行一些其他的逻辑（例如，打开一个窗口或对应用程序进行一些API调用）
 
-为此，我们需要在service worker中添加一个 “ notificationclick ” 事件监听器。 这个事件将在点击通知时被调用。
+为此，我们需要在 service worker 中添加一个 “notificationclick” 事件监听器。 这个事件将在点击通知时被调用。
 
     self.addEventListener('notificationclick', function(event) {
       const clickedNotification = event.notification;
@@ -38,7 +38,7 @@
 
 正如你在此示例中所看到的，被点击的通知可以通过`event.notification`参数来访问。通过这个参数我们可以获得通知的属性和方法，因此我们能够调用通知的`close()`方法，同时执行一些额外的操作。
 
-提示：在程序运行高峰期，你仍然需要调用`event.waitUntil()`保证service worker的持续运行。
+提示：在程序运行高峰期，你仍然需要调用`event.waitUntil()`保证 service worker 的持续运行。
 
 ### Actions
 
@@ -83,12 +83,12 @@
 
         registration.showNotification(title, options);
 
-如果用户点击了action按钮，通过`notificationclick`回调中返回的`event.action`就可以知道被点击的按钮是哪个。
+如果用户点击了 action 按钮，通过`notificationclick`回调中返回的`event.action`就可以知道被点击的按钮是哪个。
 
 `event.action`会包含所有选项中有关`action`的值的集合。在上面的例子中，`event.action`的值则会是： “coffee-action”、 “doughnut-action”、
 “gramophone-action” 或 “atom-action” 的其中一个。
 
-因此通过`event.action`，我们可以检测到通知或action的点击，代码如下：
+因此通过`event.action`，我们可以检测到通知或 action 的点击，代码如下：
 
     self.addEventListener('notificationclick', function(event) {
       if (!event.action) {
@@ -201,7 +201,7 @@
 
 ### 与通知进行交互
 
-桌面chrome浏览器会展示通知一段时间后将其隐藏，而安卓设备的chrome浏览器不会有这种行为，通知会一直展示，直到用户对其进行操作。
+桌面 chrome 浏览器会展示通知一段时间后将其隐藏，而安卓设备的 chrome 浏览器不会有这种行为，通知会一直展示，直到用户对其进行操作。
 
 如果要强制让通知持续展示直到用户对其操作，需要添加`requireInteraction`选项，此选项会展示通知直到用户消除或点击它。
 
@@ -214,5 +214,5 @@
 
 请谨慎使用这个选项，因为一直展示通知、并强制让用户停下手头的事情来忽略通知可能会干扰到用户。
 
-在下一节中，我们会浏览一些web上适用的用于管理通知的常见模式，例如在点击通知时执行打开网页的行为。
+在下一节中，我们会浏览一些 web 上适用的用于管理通知的常见模式，例如在点击通知时执行打开网页的行为。
 
