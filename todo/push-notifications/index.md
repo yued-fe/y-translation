@@ -1,8 +1,8 @@
 >原文地址：https://developers.google.com/web/fundamentals/push-notifications/index
 
->译文地址：
+>译文地址：https://github.com/yued-fe/y-translation/edit/master/todo/push-notifications/index.md
 
->译者：刘鹏
+>译者：[刘鹏](https://github.com/git-patrickliu)
 
 >校对者：
 
