@@ -2,100 +2,75 @@
 
 >译文地址：
 
->译者：
+>译者：张卓
 
 >校对者：
 
-# The Web Push Protocol
+# Web 推送协议
 
 
-We've seen how a library can be used to trigger push messages, but what
-exactly are these libraries doing?
+我们已经看到了如何使用一个库来触发消息推送，但这些库究竟做了什么呢？
 
-Well, they're making network requests while ensuring such requests are
-the right format. The spec that defines this network request is the
-[Web Push Protocol](https://tools.ietf.org/html/draft-ietf-webpush-protocol).
+嗯，他们发送了网络请求，同时确保这些请求符合[Web 推送协议](https://tools.ietf.org/html/draft-ietf-webpush-protocol)的规范。
 
 ![Diagram of sending a push message from your server to a push
 service.](./images/svgs/server-to-push-service.svg)
 
-This section outlines how the server can identify itself with application
-server keys and how the encrypted payload and associated data is sent.
+这一部分大致会描述服务器如何使用应用程序服务器密钥（Application server keys）来识别自身，以及如何发送加密的有效负载（payload）和关联数据。
 
-This isn't a pretty side of web push and I'm no expert at encryption, but let's look through
-each piece since it's handy to know what these libraries are doing under the hood.
+这不是 Web 推送容易理解的一个方面，而我（作者）也不是加密专家，但还是让我们看看每一部分，因为它让我们更容易理解这些库的底层原理。
 
-## Application server keys
+## 应用程序服务器密钥
 
-When we subscribe a user, we pass in an `applicationServerKey`. This key is
-passed to the push service and used to check that the application that subscribed
-the user is also the application that is triggering push messages.
+当我们订阅一个用户时，我们会传入一个`applicationServerKey`。这个 key 会被传递给推送服务（push service），并被用于检查订阅用户的和推送消息的应用程序是不是同一个。
 
-When we trigger a push message, there are a set of headers that we send that
-allow the push service to authenticate the application. (This is defined
-by the [VAPID spec](https://tools.ietf.org/html/draft-thomson-webpush-vapid).)
+当我们触发推送消息时，我们将会发送一组 headers 用于推送服务验证应用。（headers 在[ VAPID 规范](https://tools.ietf.org/html/draft-thomson-webpush-vapid)中进行了定义）
 
-What does all this actually mean and what exactly happens? Well these are the steps taken for
-application server authentication:
+这一切究竟意味着什么以及究竟发生了什么？ 下面是应用程序服务器身份验证所采取的步骤：
 
-1. The application server signs some JSON information with it's **private application key**.
-1. This signed information is sent to the push service as a header in a POST request.
-1. The push service uses the stored public key it received from
-`pushManager.subscribe()` to check the received information is signed by
-the private key relating to the public key. *Remember*: The public key is
-the `applicationServerKey` passed into the subscribe call.
-1. If the signed information is valid the push service sends the push
-message to the user.
+1. 应用程序服务器使用它的 **私有应用程序密钥（私钥）** 来对一些 JSON 信息进行签名。
+2. 这些签名的信息作为 POST 请求中的 header 发送给推送服务。
+3. 推送服务用之前保存下来的公钥（用户在调用`pushManager.subscribe()`进行订阅推送服务时，推送服务会将传递的公钥进行保存）来校验接收到的消息是由与之匹配的私钥进行签名的。*注意*: 公钥是传递给subscribe 方法的 `applicationServerKey`。
+4. 如果签名的信息合法，则推送服务将推送消息发送给用户。
 
-An example of this flow of information is below. (Note the legend in the bottom left to indicate
-public and private keys.)
+下面是以上信息流的一个例子。（请注意左下角的图例表示公钥和私钥。）
 
 ![Illustration of how the private application server key is used when sending a
 message.](./images/svgs/application-server-key-send.svg)
 
-The "signed information" added to a header in the request is a JSON Web Token.
+添加到请求头的“签名信息”是 JSON Web 令牌（JSON web token）。
 
-### JSON web token
+### JSON Web 令牌
 
-A [JSON web token](https://jwt.io/) (or JWT for short) is a way of
-sending a message to a third party such that the receiver can validate
-who sent it.
+[JSON Web 令牌](https://jwt.io/) (缩写为 JWT) 是一种向第三方发送消息的方式，接收方可以验证谁发送了它。
 
-When a third party receives a message, they need to get the senders
-public key and use it to validate the signature of the JWT. If the
-signature is valid then the JWT must have been signed with the matching
-private key so must be from the expected sender.
+当第三方收到消息时，他们需要获取发送者的公钥并使用它来验证 JWT 的签名。如果签名有效的话，那 JWT 一定是使用了匹配的私钥进行签名，一定是来自预期的发送者。
 
-There are a host of libraries on [https://jwt.io/](https://jwt.io/) that
-can perform the signing for you and I'd recommend you do that where you
-can. For completeness, let's look at how to manually create a signed JWT.
+[https://jwt.io/](https://jwt.io/) 上有许多库可以用来签名，并且我（作者）也建议你使用这些库。但是为了完整起见，我们来看看如何手动创建签名的 JWT。
 
-### Web push and signed JWTs
+### Web 推送和签名的 JWT
 
-A signed JWT is just a string, though it can be thought of as three strings joined
-by dots.
+一个签名的 JWT 只是一串字符串，也可以被认为是由点号连接的三个字符串。
 
 ![A illustration of the strings in a JSON Web
 Token](./images/svgs/authorization-jwt-diagram-header.svg)
 
-The first and second strings (The JWT info and JWT data) are pieces of
-JSON that have been base64 encoded, meaning it's publicly readable.
+第一个和第二个字符串（JWT Info 和 JWT Data）是已经使用 base64 进行编码的 JSON 片段，这意味着它是公开可读的。
 
-The first string is information about the JWT itself, indicating which algorithm
-was used to create the signature.
+第一个字符串是有关 JWT 本身的信息，指出使用了哪一种算法来创建签名。
 
-The JWT info for web push must contain the following information:
+Web 推送的 JWT Info 必须包含以下信息：
+
 
     {  
       "typ": "JWT",  
       "alg": "ES256"  
     }
 
+第二个字符串是 JWT Data。 它提供了有关 JWT 的发送者，目的人以及有效期等信息。
 
-The second string is the JWT Data. This provides information about the sender of the JWT, who
-it's intended for and how long it's valid.
+对于 Web 推送，数据将具有以下字段：
 
-For web push, the data would have this format:
 
     {  
       "aud": "https://some-push-service.org",
@@ -104,45 +79,31 @@ For web push, the data would have this format:
     }
 
 
-The `aud` value is the "audience", i.e. who the JWT is for. For web push the
-audience is the push service, so we set it to the **origin of the push
-service**.
+`aud` 代表 “观众（audience）”，即JWT的用户。对于网络推送，“观众”是推送服务，因此我们将其设置为推送服务的源。
 
-The `exp` value is the expiration of the JWT, this prevent snoopers from being
-able to re-use a JWT if they intercept it. The expiration is a timestamp in
-seconds and must be no longer 24 hours.
+`exp` 代表 JWT 的期限，这可以防止黑客在拦截后重新使用 JWT。 到期时间是以秒为单位的时间戳，必须不大于24小时。
 
-In Node.js the expiration is set using:
+在 Node.js 中，使用以下命令设置到期时间：
 
     Math.floor(Date.now() / 1000) + (12 * 60 * 60)
 
-It's 12 hours rather than 24 hours to avoid
-any issues with clock differences between the sending application and the push service.
+这里用了12小时而不是24小时，来避免发送应用程序和推送服务之间的时钟差异产生的任何问题。
 
-Finally, the `sub` value needs to be either a URL or a `mailto` email address.
-This is so that if a push service needed to reach out to sender, it can find
-contact information from the JWT. (This is why the web-push library needed an
-email address).
+最后， `sub` 必须是 URL 或 `mailto` 邮件地址。这样，如果推送服务需要联系发件人，它可以从 JWT 找到联系信息。（这也是网络推送库需要一个电子邮件地址的原因）。
 
-Just like the JWT Info, the JWT Data is encoded as a URL safe base64
-string.
+就像 JWT Info 一样，JWT Data 被编码为URL安全的 base64 字符串。
 
-The third string, the signature, is the result of taking the first two strings
-(the JWT Info and JWT Data), joining them with a dot character, which we'll
-call the "unsigned token", and signing it.
+第三个字符串签名，是取前两个字符串的结果（JWT Info和JWT Data）并用点号连接（称为“未签名的令牌”），然后签名生成的。
 
-The signing process requires encrypting the "unsigned token" using ES256. According to the [JWT
-spec](https://tools.ietf.org/html/rfc7519), ES256 is short for "ECDSA using the P-256 curve and
-the SHA-256 hash algorithm". Using web crypto you can create the signature like so:
+签名过程需要使用 ES256 加密 “未签名的令牌”。根据 [JWT 规范](https://tools.ietf.org/html/rfc7519)，ES256 是“椭圆曲线数字签名算法（ECDSA）使用 P-256 曲线和 SHA-256 哈希算法”的缩写。使用 web 加密技术，你可以像这样创建签名：
 
-    // Utility function for UTF-8 encoding a string to an ArrayBuffer.
+    // 将 UTF-8 编码的 string 转化为 ArrayBuffer 的工具库
     const utf8Encoder = new TextEncoder('utf-8');
 
-    // The unsigned token is the concatenation of the URL-safe base64 encoded
-    // header and body.
+    // “未签名的令牌”是由 URL 安全的 base64 算法进行编码的 header 和 body 的组合。
     const unsignedToken = .....;
 
-    // Sign the |unsignedToken| using ES256 (SHA-256 over ECDSA).
+    // 使用 ES256 (SHA-256 over ECDSA) 签名 |unsignedToken|
     const key = {
       kty: 'EC',
       crv: 'P-256',
@@ -153,8 +114,7 @@ the SHA-256 hash algorithm". Using web crypto you can create the signature like 
       d: window.uint8ArrayToBase64Url(applicationServerKeys.privateKey),
     };
 
-    // Sign the |unsignedToken| with the server's private key to generate
-    // the signature.
+    // 使用服务器的私钥签名 |unsignedToken|，来生成签名
     return crypto.subtle.importKey('jwk', key, {
       name: 'ECDSA', namedCurve: 'P-256',
     }, true, ['sign'])
@@ -170,74 +130,46 @@ the SHA-256 hash algorithm". Using web crypto you can create the signature like 
       console.log('Signature: ', signature);
     });
 
-A push service can validate a JWT using the public application server key
-to decrypt the signature and make sure the decrypted string is the same
-as the "unsigned token" (i.e. the first two strings in the JWT).
 
-The signed JWT (i.e. all three strings joined by dots), is sent to the web
-push service as the `Authorization` header with `WebPush ` prepended, like so:
+推送服务可以使用公共应用程序服务器密钥验证 JWT 以解密签名，并确保解密的字符串与“未签名的令牌”（即JWT中的前两个字符串）相同。
+
+签名的 JWT（即通过点连接的所有三个字符串）将在前面拼接上 `WebPush` 作为 header 中 `Authorization` 的值发送给 Web 推送服务，如下所示：
 
     Authorization: 'WebPush <JWT Info>.<JWT Data>.<Signature>'
 
-The Web Push Protocol also states the public application server key must be
-sent in the `Crypto-Key` header as a URL safe base64 encoded string with
-`p256ecdsa=` prepended to it.
+Web 推送协议还规定公共应用程序服务器密钥在 `Crypto-key` header 中进行发送时，必须使用 URL 安全的 base64 算法进行编码，并加上 `p256ecdsa=` 的前缀。
 
     Crypto-Key: p256ecdsa=<URL Safe Base64 Public Application Server Key>
 
-## The Payload Encryption
+## 有效负载加密
 
-Next let's look at how we can send a payload with a push message so that when our web app
-receives a push message, it can access the data it receives.
+接下来让我们看一下如何使用推送消息发送有效负载，以便当我们的Web应用程序收到推送消息时，它可以访问接收的数据。
 
-A common question that arises from any who've used other push services is why does the web push
-payload need to be encrypted? With native apps, push messages can send data as plain text.
+任何使用过其他推送服务的人都会提出一个相同的问题，那就是为什么网络推送有效负载需要加密？使用原生应用，推送消息可以以纯文本形式发送数据。
 
-Part of the beauty of web push is that because all push services use the
-same API (the web push protocol), developers don't have to care who the
-push service is. We can make a request in the right format and expect a
-push message to be sent. The downside of this is that developers could
-conceivably send messages to a push service that isn't trustworthy. By
-encrypting the payload, a push service can't read the data that's sent.
-Only the browser can decrypt the information. This protects the user's
-data.
+Web推送的一部分优点在于，因为所有推送服务都使用相同的 API（Web 推送协议），所以开发人员不必关心推送服务是谁。我们只要以正确的格式发出请求，就可以发送推送消息。这样做的缺点是，开发人员可能会将消息发送到不值得信任的推送服务。通过加密有效负载，推送服务无法读取发送的数据，只有浏览器才能解密信息，这可以保护用户的数据。
 
-The encryption of the payload is defined in the [Message Encryption
-spec](https://tools.ietf.org/html/draft-ietf-webpush-encryption).
+有效负载的加密在[消息加密规范](https://tools.ietf.org/html/draft-ietf-webpush-encryption)中进行了定义。
 
-Before we look at the specific steps to encrypt a push messages payload,
-we should cover some techniques that'll be used during the encryption
-process. (Massive hat tip to Mat Scales for his excellent article on push
-encryption.)
+在我们查看加密推送消息有效负载的具体步骤之前，我们应该先介绍一些在加密过程中将使用的技术。（感谢 Mat Scales 非常优秀的关于推送加密的文章）
 
-### ECDH and HKDF
+### ECDH 和 HKDF
 
-Both ECDH and HKDF are used throughout the encryption process and offer benefits for the
-purpose of encrypting information.
+ECDH 和 HKDF 在整个加密过程中都会被使用，也为加密信息提供了很多好处。
 
-#### ECDH: Elliptic Curve Diffie-Hellman key exchange
+#### ECDH: 椭圆曲线迪菲-赫尔曼金钥交换
 
-Imagine you have two people who want to share information, Alice and Bob.
-Both Alice and Bob have their own public and private keys. Alice and Bob
-share their public keys with each other.
+想象一下，你有两个想要分享信息的人，Alice 和 Bob，他们都有自己的公钥和私钥，并且互相分享他们的公钥。
 
-The useful property of keys generated with ECDH is that Alice can use her
-private key and Bob's public key to create secret value 'X'. Bob can do
-the same, taking his private key and Alice's public key to
-independently create the same value 'X'. This makes 'X' a shared secret
-and Alice and Bob only had to share their public key. Now Bob and Alice
-can use 'X' to encrypt and decrypt messages between them.
+使用 ECDH 生成的密钥的有用之处是，Alice 可以使用她的私钥和 Bob 的公钥来创建一个秘密值“X”，Bob 也可以这样做，利用他的私钥和 Alice 的公钥独立创建相同的值'X'，这使得'X'成为共享秘密。而 Alice 和 Bob 只需要共享他们的公钥，他们就可以使用'X'来加密和解密他们之间的消息。
 
-ECDH, to the best of my knowledge, defines the properties of curves which allow this "feature"
-of making a shared secret 'X'.
+据我所知，ECDH 定义了曲线的属性，它保证了可以同时生成一个相同的共享秘密“X”。
 
-This is a high level explanation of ECDH, if you want to learn more [I recommend checking out
-this video](https://www.youtube.com/watch?v=F3zzNa42-tQ).
+这是对 ECDH 的一个抽象的解释，如果想了解更多，我建议观看此[视频](https://www.youtube.com/watch?v=F3zzNa42-tQ)。
 
-In terms of code; most languages / platforms come with libraries to make it
-easy to generate these keys.
+在代码方面，大多数语言/平台都带有库来轻松的生成这些密钥。
 
-In node we'd do the following:
+在 node 中，我们执行以下操作：
 
     const keyCurve = crypto.createECDH('prime256v1');
     keyCurve.generateKeys();
@@ -245,64 +177,55 @@ In node we'd do the following:
     const publicKey = keyCurve.getPublicKey();
     const privateKey = keyCurve.getPrivateKey();
 
-#### HKDF: HMAC based key derivation function
+#### HKDF: 基于 HMAC 的密钥推导函数
 
-Wikipedia has a succinct description of [HKDF](https://tools.ietf.org/html/rfc5869):
+维基百科对 [HKDF](https://tools.ietf.org/html/rfc5869) 有一个简洁的描述：
 
-> HKDF is an HMAC based key derivation function that transforms any weak key
-> material into cryptographically strong key material. It can be used, for
-> example, to convert Diffie Hellman exchanged shared secrets into key material
-> suitable for use in encryption, integrity checking or authentication.
+> HKDF 是一种基于 HMAC 的密钥派生功能，可将任何弱密钥内容转换为强加密密钥内容。例如，它可以用于将 Diffie Hellman 交换的共享秘密转换为适用于加密，完整性检查或认证的密钥内容。
 >
-> -- [Wikipedia](https://en.wikipedia.org/wiki/HKDF)
+> -- [维基百科](https://en.wikipedia.org/wiki/HKDF)
 
-Essentially, HKDF will take input that is not particular secure and make it more secure.
+从本质上讲，HKDF 将不是特别安全的输入变得更安全。
 
-The spec defining this encryption requires use of SHA-256 as our hash algorithm
-and the resulting keys for HKDF in web push should be no longer than 256 bits
-(32 bytes).
+定义此加密的规范要求使用 SHA-256 作为我们的哈希算法，并且 Web 推送中 HKDF 的结果密钥不应超过256位（32字节）。
 
-In node this could be implemented like so:
+在 node 中，可以像这样实现：
 
-    // Simplified HKDF, returning keys up to 32 bytes long
+    // 简化的 HKDF，返回32个字节长度的密钥
     function hkdf(salt, ikm, info, length) {
-      // Extract
+      // 提取
       const keyHmac = crypto.createHmac('sha256', salt);
       keyHmac.update(ikm);
       const key = keyHmac.digest();
 
-      // Expand
+      // 扩展
       const infoHmac = crypto.createHmac('sha256', key);
       infoHmac.update(info);
 
-      // A one byte long buffer containing only 0x01
+      // 一个只有 0x01 的一个字节长的缓冲区
       const ONE_BUFFER = new Buffer(1).fill(1);
       infoHmac.update(ONE_BUFFER);
 
       return infoHmac.digest().slice(0, length);
     }
 
-Hat tip to [Mat Scale's article for this example code](/web/updates/2016/03/web-push-encryption).
+对于此示例代码，请参阅 [Mat Scale 的文章](https://developers.google.com/web/updates/2016/03/web-push-encryption)。
 
-This loosely covers [ECDH](https://en.wikipedia.org/wiki/Elliptic_curve_Diffie%E2%80%93Hellman)
-and [HKDF](https://tools.ietf.org/html/rfc5869).
+这一部分粗略地概况了 [ECDH](https://en.wikipedia.org/wiki/Elliptic_curve_Diffie%E2%80%93Hellman) 和 [HKDF](https://tools.ietf.org/html/rfc5869)。
 
-ECDH a secure way to share public keys and generate a shared secret. HKDF is a way to take
-insecure material and make it secure.
+ECDH 是一种共享公钥并生成共享密钥的安全方式，HKDF是一种采用不安全的来源并使其安全的方法。
 
-This will be used during the encryption of our payload. Next let's look at what we take as
-input and how that's encrypted.
+这些将在加密我们的有效负载期间使用，接下来让我们看看采取什么作为输入以及如何加密。
 
-### Inputs
+### 输入（Inputs）
 
-When we want to send a push message to a user with a payload, there are three inputs we need:
+当我们想要通过有效负载向用户发送推送消息时，我们需要三个输入：
 
-1. The payload itself.
-1. The `auth` secret from the `PushSubscription`.
-1. The `p256dh` key from the `PushSubscription`.
+1. 有效负载自身。
+2. 来自 `PushSubscription` 的 `auth` secret。
+3. 来自 `PushSubscription` 的 `p256dh` 密钥。
 
-We've seen the `auth` and `p256dh` values being retrieved from a `PushSubscription` but for a
-quick reminder, given a subscription we'd need these values:
+我们已经看到 `auth` 和 `p256dh` 值是从 `PushSubscription` 中返回的，但是再次提醒，给定一个订阅，我们将从中获得这些值：
 
     subscription.joJSON().keys.auth
     subscription.joJSON().keys.p256dh
@@ -310,27 +233,21 @@ quick reminder, given a subscription we'd need these values:
     subscription.getKey('auth')
     subscription.getKey('p256dh')
 
-The `auth` value should be treated as a secret and not shared outside of your application.
+`auth` 值应视为机密，不在应用程序外部共享。
 
-The `p256dh` key is a public key, this is sometimes referred to as the client public key. Here
-we'll refer to `p256dh` as the subscription public key. The subscription public key is generated
-by the browser. The browser will keep the private key secret and use it for decrypting the
-payload.
+`p256dh` 密钥是公钥，有时也称为客户端公钥。这里我们将`p256dh`称为订阅公钥。订阅公钥由浏览器生成，浏览器将保密私钥并将其用于解密有效负载。
 
-These three values, `auth`, `p256dh` and `payload` are needed as inputs and the result of the
-encryption process will be the encrypted payload, a salt value and a public key used just for
-encrypting the data.
+需要 `auth`，`p256dh` 和 `payload` 这三个值作为输入进行加密，其结果就是有效负载，而 salt 和公钥仅用于加密数据。
 
-**Salt**
+**盐（Salt）**
 
-The salt needs to be 16 bytes of random data. In NodeJS, we'd do the following to create a salt:
+Salt 需要16字节的随机数据，在 NodeJS 中，我们将执行以下操作来创建 salt：
 
     const salt = crypto.randomBytes(16);
 
-**Public / Private Keys**
+**公/私钥**
 
-The public and private keys should be generated using a P-256 elliptic curve,
-which we'd do in Node like so:
+公钥和私钥应该使用 P-256 椭圆曲线生成，我们在 Node 中这样做：
 
     const localKeysCurve = crypto.createECDH('prime256v1');
     localKeysCurve.generateKeys();
@@ -338,50 +255,37 @@ which we'd do in Node like so:
     const localPublicKey = localKeysCurve.getPublicKey();
     const localPrivateKey = localKeysCurve.getPrivateKey();
 
-We'll refer to these keys as "local keys". They are used *just* for encryption and have
-*nothing* to do with application server keys.
+我们将这些密钥称为“本地密钥”，它们*仅*用于加密，与应用程序服务器密钥*无关*。
 
-With the payload, auth secret and subscription public key as inputs and with a newly generated
-salt and set of local keys, we are ready to actually do some encryption.
+使用有效负载，auth secret 和订阅公钥作为输入以及新生成的 salt 和一系列本地密钥，我们已经准备好来做一些加密了。
 
-### Shared secret
+### 共享的 secret
 
-The first step is to create a shared secret using the subscription public key and our new
-private key (remember the ECDH explanation with Alice and Bob? Just like that).
+第一步是使用订阅公钥和我们的新私钥创建共享密钥（还记得 ECDH 中关于 Alice 和 Bob 的解释吗？就像那样）。
 
     const sharedSecret = localKeysCurve.computeSecret(
       subscription.keys.p256dh, 'base64');
 
-This is used in the next step to calculate the Pseudo Random Key (PRK).
+这用于下一步计算伪随机密钥（PRK）。
 
-### Pseudo random key
+### 伪随机密钥
 
-The Pseudo Random Key (PRK) is the combination of the push subscription's auth
-secret, and the shared secret we just created.
+伪随机密钥（PRK）是推送订阅的 auth secret 和我们刚刚创建的共享密匙的组合。
 
     const authEncBuff = new Buffer('Content-Encoding: auth\0', 'utf8');
     const prk = hkdf(subscription.keys.auth, sharedSecret, authEncBuff, 32);
 
-You might be wondering what the `Content-Encoding: auth\0` string is for.
-In short, it doesn't have a clear purpose, although browsers could
-decrypt an incoming message and look for the expected content-encoding.
-The `\0` adds a byte with a value of 0 to end of the Buffer. This is
-expected by browsers decrypting the message who will expect so many bytes
-for the content encoding, followed a byte with value 0, followed by the
-encrypted data.
+你可能想知道 `Content-Encoding: auth\0` 的用途。简而言之，它没有明确的目的，即便如此浏览器可以解密传入的消息并寻找预期的内容编码。`\0`是在缓冲区的末尾添加一个值为0的字节，这是浏览器在解密消息时所期盼的，在内容编码的许多字节之后跟着一个值0，再跟着的是加密的数据。
 
-Our Pseudo Random Key is simply running the auth, shared secret and a piece of encoding info
-through HKDF (i.e. making it cryptographically stronger).
+我们的伪随机密钥只是通过 HKDF 运行 auth，shared secret 和一段编码信息（即使其加密更强）。
 
 ### Context
 
-The "context" is a set of bytes that is used to calculate two values later on in the encryption
-browser. It's essentially an array of bytes containing the subscription public key and the
-local public key.
+“Context”是一组字节，用于稍后在加密浏览器中计算两个值，它本质上是一个包含订阅公钥和本地公钥的字节数组。
 
     const keyLabel = new Buffer('P-256\0', 'utf8');
 
-    // Convert subscription public key into a buffer.
+    // 将订阅公钥转换为 buffer
     const subscriptionPubKey = new Buffer(subscription.keys.p256dh, 'base64');
 
     const subscriptionPubKeyLength = new Uint8Array(2);
@@ -400,22 +304,17 @@ local public key.
       localPublicKey,
     ]);
 
-The final context buffer is a label, the number of bytes in the subscription public key,
-followed by the key itself, then the number of bytes local public key, followed by the key
-itself.
+最终的 context buffer 是一个数组，包括一个标签、订阅公钥的字节长度、订阅公钥，然后是本地公钥的字节长度和本地公钥。
 
-With this context value we can use it in the creation of a nonce and a content encryption key
-(CEK).
+我们可以使用 context 值来创建随机数和内容加密密钥 (CEK)。
 
-### Content encryption key and nonce
+### 内容加密密钥和 nonce
 
-A [nonce](https://en.wikipedia.org/wiki/Cryptographic_nonce) is a value that prevents replay
-attacks as it should only be used once.
+[Nonce](https://en.wikipedia.org/wiki/Cryptographic_nonce) 是一个可以防止重放攻击的值，因为它只能使用一次。
 
-The content encryption key (CEK) is the key that will ultimately be used to encrypt our payload.
+内容加密密钥（CEK）是最终用于加密我们的有效负载的密钥。
 
-First we need to create the bytes of data for the nonce and CEK, which is simply a content
-encoding string followed by the context buffer we just calculated:
+首先，我们需要为 nonce 和 CEK 创建数据字节，这只是一个内容编码字符串，后面是我们刚刚计算的 context buffer：
 
     const nonceEncBuffer = new Buffer('Content-Encoding: nonce\0', 'utf8');
     const nonceInfo = Buffer.concat([nonceEncBuffer, contextBuffer]);
@@ -423,208 +322,168 @@ encoding string followed by the context buffer we just calculated:
     const cekEncBuffer = new Buffer('Content-Encoding: aesgcm\0');
     const cekInfo = Buffer.concat([cekEncBuffer, contextBuffer]);
 
-This information is run through HKDF combining the salt and PRK with the nonceInfo and cekInfo:
+此信息通过 HKDF 将 salt 和 PRK 与 nonceInfo 和 cekInfo 结合使用：
 
-    // The nonce should be 12 bytes long
+    // Nonce 应该是12个字节长
     const nonce = hkdf(salt, prk, nonceInfo, 12);
 
-    // The CEK should be 16 bytes long
+    // CEK 应该是16个字节长
     const contentEncryptionKey = hkdf(salt, prk, cekInfo, 16);
 
-This gives us our nonce and content encryption key.
+这为我们提供了 nonce 和 content 加密密钥。
 
-### Perform the encryption
+### 执行加密
 
-Now that we have our content encryption key, we can encrypt the payload.
+现在我们有了内容加密密钥，我们可以加密有效负载了。
 
-We create an AES128 cipher using the content encryption key
-as the key and the nonce is an initialization vector.
+我们使用内容加密密钥作为密钥创建了 AES128 密码，nonce 是其初始化向量。
 
-In Node this is done like so:
+在 Node 中这样完成：
 
     const cipher = crypto.createCipheriv(
       'id-aes128-GCM', contentEncryptionKey, nonce);
 
-Before we encrypt our payload, we need to define how much padding we wish
-to add to the front of the payload. The reason we'd want to add padding
-is that it prevents the risk of eavesdroppers being able to determine
-"types" of messages based on the payload size.
+在我们加密有效负载之前，我们需要定义我们希望添加到有效负载的填充量，之所以添加填充，是以为它可以防止窃听者根据有效负载的大小来确定消息“类型”。
 
-You must add two bytes of padding to indicate the length of any additional padding.
+必须添加两个填充字节以指示任何额外的填充长度。
 
-For example, if you added no padding, you'd have two bytes with value 0, i.e. no padding exists, after these two bytes you'll be reading the payload. If you added 5 bytes of padding, the first two bytes will have a value of 5, so the consumer will then read an additional five bytes and then start reading the payload.
+例如，假如你没有添加填充，你也得有两个字节值为0，即没有填充存在，在这两个字节后将读取有效负载。 如果添加了5个字节的填充，前两个字节的值为5，那么消费者将再读取5个字节，然后再开始读取有效负载。
 
     const padding = new Buffer(2 + paddingLength);
-    // The buffer must be only zeros, except the length
+    // 除长度外，Buffer 必须为0
     padding.fill(0);
     padding.writeUInt16BE(paddingLength, 0);
 
-We then run our padding and payload through this cipher.
+然后我们通过这个密码运行填充和有效负载。
 
     const result = cipher.update(Buffer.concat(padding, payload));
     cipher.final();
 
-    // Append the auth tag to the result -
+    // 添加 auth tag 到 result 的后面 -
     // https://nodejs.org/api/crypto.html#crypto_cipher_getauthtag
     const encryptedPayload = Buffer.concat([result, cipher.getAuthTag()]);
 
-We now have our encrypted payload. Yay!
+我们现在有加密的有效负载了，️耶！
 
-All that remains is to determine how this payload is sent to the push service.
+剩下的就是确定如何将此有效负载发送到推送服务。
 
-### Encrypted payload headers & body
+### 加密有效负载的 headers 和 body
 
-To send this encrypted payload to the push service we need to define a few
-different headers in our POST request.
+要将此加密的有效负载发送到推送服务，我们需要在 POST 请求中定义几个不同的 header。
 
 #### Encryption header
 
-The 'Encryption' header must contain the *salt* used for encrypting the payload.
+Encryption header 必须包含用于加密有效负载的 salt。
 
-The 16 byte salt should be base64 URL safe encoded and added to the Encryption header, like so:
+Salt 应该是16字节的，并且经过 base64 URL 安全编码后添加到 Encryption header 中，如下所示：
 
     Encryption: salt=<URL Safe Base64 Encoded Salt>
 
 #### Crypto-Key header
 
-We saw that the `Crypto-Key` header is used under the 'Application Server Keys'
-section to contain the public application server key.
+在“应用程序服务器密钥”章节中，我们已经知道如何使用 `Crypto-Key` header 来包含公共应用程序服务器密钥。
 
-This header is also used to share the local public key used to encrypt
-the payload.
+此 header 还用作共享用于加密有效负载的本地公钥。
 
-The resulting header looks like this:
+header 的结果如下所示：
 
     Crypto-Key: dh=<URL Safe Base64 Encoded Local Public Key String>; p256ecdsa=<URL Safe Base64
     Encoded Public Application Server Key>
 
 #### Content type, length & encoding headers
 
-The `Content-Length` header is the number of bytes in the encrypted
-payload. 'Content-Type' and 'Content-Encoding' headers are fixed values.
-This is shown below.
+`Content-Length` header 是加密有效负载中的字节数。 “Content-Type”和“Content-Encoding”标头是固定值，如下所示。
 
     Content-Length: <Number of Bytes in Encrypted Payload>
     Content-Type: 'application/octet-stream'
     Content-Encoding: 'aesgcm'
 
-With these headers set, we need to send the encrypted payload as the body
-of our request. Notice that the `Content-Type` is set to
-`application/octet-stream`. This is because the encrypted payload must be
-sent as a stream of bytes.
+设置这些 header 后，我们需要将加密的有效负载作为请求的 body 发送。 请注意将 `Content-Type` 设置为`application/octet-stream`，这是因为加密的有效负载必须作为字节流发送。
 
-In NodeJS we would do this like so:
+在 NodeJS 中我们会这样做：
 
     const pushRequest = https.request(httpsOptions, function(pushResponse) {
     pushRequest.write(encryptedPayload);
     pushRequest.end();
 
-## More headers?
+## 更多的 header？
 
-We've covered the headers used for JWT / Application Server Keys (i.e. how to identify the
-application with the push service) and we've covered the headers used to send an encrypted
-payload.
+我们已经介绍了用于 JWT / 应用程序服务器密钥的 headers（即如何使用推送服务认证应用程序），也介绍了用于发送加密有效负载的 headers。
 
-There are additional headers that push services use to alter the behavior of
-sent messages. Some of these headers are required, while others are optional.
+推送服务还有其他的 headers 来用于改变发送消息的行为。其中一些 headers 是必需的，一些是可选的。
 
 ### TTL header
 
-**Required**
+**必选**
 
-`TTL` (or time to live) is an integer specifying the number of seconds
-you want your push message to live on the push service before it's
-delivered. When the `TTL` expires, the message will be removed from the
-push service queue and it won't be delivered.
+“TTL”（time to live，生存时间）是一个整数，指定推送消息在推送服务发布之前存活的时间。当 “TTL” 到期时，该消息将从推送服务队列中删除，并且不会被传递。
 
     TTL: <Time to live in seconds>
 
-If you set a `TTL` of zero, the push service will attempt to deliver the
-message immediately, **but** if the device can't be reached, your message
-will be immediately dropped from the push service queue.
+如果将 “TTL” 设置为 0，则推送服务将尝试立即传递消息，**但是**如果无法访问设备，则会立即从推送服务队列中删除该消息。
 
-Technically a push service can reduce the `TTL` of a push message if it
-wants. You can tell if this has happened by examining the `TTL` header in
-the response from a push service.
+从技术上讲，推送服务可以在需要时减少推送消息的 “TTL”。你可以通过检查推送服务响应中的“TTL”标头来判断是否发生了这种情况。
 
-##### Topic
+##### 主题（Topic）
 
-**Optional**
+**可选**
 
-Topics are strings that can be used to replace a pending messages with a
-new message if they have matching topic names.
+当一条的消息与待处理的消息有相同的主题（字符串形式）时，新的消息就会替换旧的。
 
-This is useful in scenarios where multiple messages are sent while a
-device is offline, and you really only want a user to see the latest
-message when the device is turned on.
+这在设备离线时发送多条消息的情况下非常有用，用户在设备打开时只会收到最新消息。
 
-##### Urgency
+##### 紧急度（Urgency）
 
-**Optional**
+**可选**
 
-Urgency indicates to the push service how important a message is to the user. This
-can be used by the push service to help conserve the battery life of a user's device by only
-waking up for important messages when battery is low.
+紧急度向推送服务说明消息对用户的重要性。推送服务可以使用此字段来帮助节省用户设备的电量，当电池电量低的时候，只有当重要消息来临的时候才进行唤醒。
 
-The header value is defined as shown below. The default
-value is `normal`.
+Header 的值定义如下。 默认值是 `normal`.
 
     Urgency: <very-low | low | normal | high>
 
-### Everything together
+### 将一切整合在一起
 
-If you have further questions about how this all works you can always see how libraries trigger
-push messages on [the web-push-libs org](https://github.com/web-push-libs).
+如果你对这一切的工作方式有进一步的疑问，可以随时在 [web-push-libs](https://github.com/web-push-libs) 上查看一些库如何触发推送消息。
 
-Once you have an encrypted payload, and the headers above, you just need to make a POST request
-to the `endpoint` in a `PushSubscription`.
+一旦你有了加密的有效负载和上面提到的 header，你只需要在 `PushSubscription` 中向 `endpoint` 发出POST请求。
 
-So what do we do with the response to this POST request?
+那么我们如何处理 POST 请求的响应呢？
 
-### Response from push service
+### 推送服务的响应
 
-Once you've made a request to a push service, you need to check the status code
-of the response as that'll tell you whether the request was successful
-or not.
+一旦向推送服务发出请求，你需要检查响应的状态码，它会告诉请求是否成功。
 
 <table>
   <tr>
-    <th>Status Code</th>
-    <th>Description</th>
+    <th>状态码</th>
+    <th>描述</th>
   </tr>
   <tr>
     <td>201</td>
-    <td>Created. The request to send a push message was received and accepted.
+    <td>创建。收到并接受发送推送消息的请求。
     </td>
   </tr>
   <tr>
     <td>429</td>
-    <td>Too many requests. Meaning your application server has reached a rate
-    limit with a push service. The push service should include a 'Retry-After'
-    header to indicate how long before another request can be made.</td>
+    <td>请求过多。意味着应用程序服务器已经达到了推送服务的速率限制。推送服务会包括 “Retry-After” 标头，来指示在下一个请求发出之前等多长时间。</td>
   </tr>
   <tr>
     <td>400</td>
-    <td>Invalid request. This generally means one of your headers is invalid
-    or improperly formatted.</td>
+    <td>无效的请求。这通常意味着存在无效的 header 或格式不正确。</td>
   </tr>
   <tr>
     <td>404</td>
-    <td>Not Found. This is an indication that the subscription is expired
-    and can't be used. In this case you should delete the `PushSubscription`
-    and wait for the client to resubscribe the user.</td>
+    <td>未找到。这表示订阅已过期且无法使用。在这种情况下，你应该删除 `PushSubscription` 并等待客户端重新订阅用户。</td>
   </tr>
   <tr>
     <td>410</td>
-    <td>Gone. The subscription is no longer valid and should be removed
-    from application server. This can be reproduced by calling
-    `unsubscribe()` on a `PushSubscription`.</td>
+    <td>被移除。订阅不再有效，应从应用程序服务器中删除。可以通过在 `PushSubscription` 上调用 `unsubscribe()` 来重现。</td>
   </tr>
   <tr>
     <td>413</td>
-    <td>Payload size too large. The minimum size payload a push service must
-    support is <a
+    <td>有效负载过大。一个推送服务支持的最小的有效负载大小是 <a
 href="https://tools.ietf.org/html/draft-ietf-webpush-protocol-10#section-7.2">4096 bytes</a>
-(or 4kb).</td>
+（或者 4kb）。</td>
   </tr>
 </table>
