@@ -1,10 +1,5 @@
 
-![logo](https://github.com/yued-fe/y-translation/blob/master/images/logo_横版.png)
-
-
-
-
-# 阅文集团前端团队翻译计划
+# 阅文集团前端团队
 我们旨在翻译实用、前沿以及有价值的文章。
 
 欢迎关注：[知乎主页](https://www.zhihu.com/org/yue-wen-ji-tuan-qian-duan-tuan-dui)、[掘金主页](https://juejin.im/user/5acb247951882555712ca8ee)、[微信公众号](https://mmbiz.qpic.cn/mmbiz_png/HGCZWzWIk2liaYW08y8icyg7HnticSJboWpVzQXSibhNUWbFtntZynHjrgEtq6NAjVkjNNRe4Cz8CMzLCBbCKtDTew/640?wx_fmt=png)
