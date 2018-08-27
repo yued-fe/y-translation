@@ -94,7 +94,7 @@ if (!('PushManager' in window)) {
 
 ![桌面和手机版 Chrome 的授权弹框](https://developers.google.com/web/fundamentals/push-notifications/images/permission-prompt.png)
 
-一旦这个权限被同意 / 允许，关闭（也就是点击弹层上的叉）或者被拦截，我们将获取结果字符串：'granted', 'default' 或者 'denied'。
+一旦这个权限被同意 / 允许，关闭（也就是点击弹层上的叉）或者被拦截，我们将获取结果字符串：'granted'、'default' 或者 'denied'。
 
 在上面的示例代码中，如果权限被许可了，调用 `askPermission()` 返回的 promise 对象会 resolve，否则的话我们会抛出一个错误让 promise 对象拒绝。
 
@@ -138,8 +138,7 @@ if (!('PushManager' in window)) {
 
 这是考虑到开发者可能会做一些让人讨厌的事情，比如说持续不断地追踪用户的位置，而不让用户知道。
 
-为了避免这个场景以及让规范编写者有时间来考虑如何更好地支持这个特性，他们添加了 **userVisibleOnly** 选项，并且和浏览器达成了一个象征性的协议，给此选项传入一个 **true** 值，这样的话
-每次收到一个推送，Web 应用都会展示出一个通知 (也就是说没有静默推送）。
+为了避免这个场景以及让规范编写者有时间来考虑如何更好地支持这个特性，他们添加了 **userVisibleOnly** 选项，并且和浏览器达成了一个象征性的协议，给此选项传入一个 **true** 值，这样的话每次收到一个推送，Web 应用都会展示出一个通知 (也就是说没有静默推送）。
 
 所以说当前，你**必须**传入一个为 **true** 的值。如果你没有传入一个 **userVisibleOnly** 的键值或者传入的是 **false** 值，你会得到如下的错误：
 
@@ -304,8 +303,7 @@ Node 服务接收到这个请求之后，保存数据到数据库当中供以后
 
 所有的推送服务拥有相同的 API。
 
-这个相同的 API 被称为[ Web 推送协议](https://tools.ietf.org/html/draft-ietf-webpush-protocol)
-它描述了你的应用需要怎样的网络请求来触发一个推送消息。
+这个相同的 API 被称为[ Web 推送协议](https://tools.ietf.org/html/draft-ietf-webpush-protocol)，它描述了你的应用需要怎样的网络请求来触发一个推送消息。
 
 > 如果用户在桌面版进行了订阅，那他们是不是同时在他们的手机版也订阅了？
 
