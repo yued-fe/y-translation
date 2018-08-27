@@ -153,8 +153,7 @@
 
 但通过使用通知相关的API，你可以更灵活地覆盖展示通知。比如一个聊天应用，开发者可能更希望用新的通知来展示"你有2条未读信息"等类似信息，而不是只展示最新接收到的信息。
 
-你可以利用新的通知，或以其他方式操作当前已有通知，使用[registration.getNotifications()]
-(https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerRegistration/getNotifications)API能够获得到你APP中所有当前展示的通知。
+你可以利用新的通知，或以其他方式操作当前已有通知，使用[registration.getNotifications()](https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerRegistration/getNotifications)API能够获得到你APP中所有当前展示的通知。
 
 让我们看看如何使用这个API去实现刚说的聊天应用的例子。
 
