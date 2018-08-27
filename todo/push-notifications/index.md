@@ -4,7 +4,7 @@
 
 >译者：[刘鹏](https://github.com/git-patrickliu)
 
->校对者：
+>校对者：[任家乐](https://github.com/jennyrenjiale)、[张卓](https://github.com/Zhangdroid)
 
 描述：推送通知是原生 APP 中最重要的能力之一。现在 Web 也有这个能力了。为了能让用户充分使用它们，通知必须能够达到及时、准确和相关。
 
