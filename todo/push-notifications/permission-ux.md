@@ -4,7 +4,7 @@
 
 >译者：杨芯芯
 
->校对者：
+>校对者：[张卓](https://github.com/Zhangdroid)、[刘鹏](https://github.com/git-patrickliu) 
 
 # 请求权限的交互
 

@@ -4,7 +4,7 @@
 
 >译者：杨芯芯
 
->校对者：
+>校对者：[刘鹏](https://github.com/git-patrickliu)、[刘文涛](https://github.com/HSDPA-wen)
 
 # 使用 Web 推送库发送消息
 
