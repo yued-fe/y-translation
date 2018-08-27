@@ -122,7 +122,7 @@
 
 **tag** 选项的本质是一个字符串类型的ID，以此将通知 “分组” 在一起，并提供了一种简单的方法来向用户显示多个通知，这里可能用示例来解释最为简单：
 
-让我们来展示一个通知，并给它标记一个tag，例如“message-group-1”. 我们可以按照以下代码来展示这个通知：
+让我们来展示一个通知，并给它标记一个tag，例如“message-group-1”. 我们可以按照如下代码来展示这个通知：
 
         const title = 'Notification 1 of 3';
         const options = {
@@ -131,11 +131,11 @@
         };
         registration.showNotification(title, options);
 
-以上代码会展示我们定义好的第一个通知。
+这会展示我们定义好的第一个通知。
 
 ![First notification with tag of message group 1.](https://developers.google.com/web/fundamentals/push-notifications/images/notification-screenshots/desktop/chrome-first-tag.png)
 
-我们再用一个新的tag “message-group-2” 来标记并展示第二个通知，如下：
+我们再用一个新的tag “message-group-2” 来标记并展示第二个通知，代码如下：
 
             const title = 'Notification 2 of 3';
             const options = {
@@ -144,7 +144,7 @@
             };
             registration.showNotification(title, options);
 
- 以上代码会展示给用户第二个通知。
+这样会展示给用户第二个通知。
 
 ![Two notifications where the second tag is message group 2.](https://developers.google.com/web/fundamentals/push-notifications/images/notification-screenshots/desktop/chrome-second-tag.png)
 
