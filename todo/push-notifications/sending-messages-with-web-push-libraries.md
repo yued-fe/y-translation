@@ -13,8 +13,8 @@
 
 
 
-实现 Web 推送的痛点之一就是触发一个推送消息是极其"繁琐"的，应用程序需要按照 [Web 推送协议](https://tools.ietf.org/html/draft-ietf-webpush-protocol)向推送服务发送 POST 请求。为了使推送能够跨浏览器使用，你还需要使用 [VAPID](https://tools.ietf.org/html/draft-thomson-webpush-vapid)
-(即应用服务器密钥)——需要在 header 中设置一个值来证明你的应用能够向用户发送消息。发送推送消息数据时，需要对数据进行[加密](https://tools.ietf.org/html/draft-ietf-webpush-encryption)并添加特定的headers，以便浏览器能够正确地解密消息。
+实现 Web 推送的痛点之一就是触发一个推送消息是极其“繁琐”的，应用程序需要按照 [Web 推送协议](https://tools.ietf.org/html/draft-ietf-webpush-protocol)向推送服务发送 POST 请求。为了使推送能够跨浏览器使用，你还需要使用 [VAPID](https://tools.ietf.org/html/draft-thomson-webpush-vapid)
+(即应用服务器密钥)——需要在 header 中设置一个值来证明你的应用能够向用户发送消息。发送推送消息数据时，需要对数据进行[加密](https://tools.ietf.org/html/draft-ietf-webpush-encryption)并添加特定的 headers，以便浏览器能够正确地解密消息。
 
 触发推送的主要问题是，如果遇到问题，很难进行诊断。随着时间的推移和更多浏览器的支持，这一点正在得到改善，但仍然不容易。因此，我强烈推荐使用库来处理推送的加密、格式化、触发这一系列流程。
 
@@ -165,9 +165,9 @@ demo 中的 [Express](http://expressjs.com/) 服务器会监听 `/api/save-subsc
 
 这个 demo 使用了一个伪管理面板来触发消息推送。
 
-![管理页面截图](./images/demo-admin-page.png)
+![管理页面截图](https://developers.google.com/web/fundamentals/push-notifications/images/demo-admin-page.png)
 
-点击"触发消息推送"将会给 `/api/trigger-push-msg/` 接口发送一个 POST 请求，相当于给后端一个信号去推送消息。所以我们需要在 express 中创建这个路径：
+点击“触发消息推送”将会给 `/api/trigger-push-msg/` 接口发送一个 POST 请求，相当于给后端一个信号去推送消息。所以我们需要在 express 中创建这个路径：
 
     app.post('/api/trigger-push-msg/', function (req, res) {
 
@@ -204,7 +204,7 @@ demo 中的 [Express](http://expressjs.com/) 服务器会监听 `/api/save-subsc
 
 要确定推送服务的错误类型，最好的方法是查看状态码。错误消息因推送服务而异，不一定都有帮助。
 
-在这个例子中，我们检验了状态码"404"和"410"，分别是 HTTP 状态码中的"Not Fount（资源未找到）"和"Gone（资源不再可用）"，收到这两个状态码意味着订阅过期或失效，我们需要将订阅信息从数据库中移除。
+在这个例子中，我们检验了状态码 "404" 和 "410"，分别是 HTTP 状态码中的 "Not Fount（资源未找到）"和 "Gone（资源不再可用）"，收到这两个状态码意味着订阅过期或失效，我们需要将订阅信息从数据库中移除。
 
 下个章节中我们将会更仔细地介绍 Web 推送协议以及其他状态码。
 
