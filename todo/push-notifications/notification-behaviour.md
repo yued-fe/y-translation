@@ -38,7 +38,7 @@
 
 正如你在此示例中所看到的，被点击的通知可以通过`event.notification`参数来访问。通过这个参数我们可以获得通知的属性和方法，因此我们能够调用通知的`close()`方法，同时执行一些额外的操作。
 
-提示：在程序运行高峰期，你仍然需要利用event.waitUntil()方法保证service worker的持续运行。
+提示：在程序运行高峰期，你仍然需要调用`event.waitUntil()`保证service worker的持续运行。
 
 ### Actions
 
