@@ -1,10 +1,10 @@
 >原文地址：https://developers.google.com/web/fundamentals/push-notifications/common-notification-patterns
 
->译文地址：
+>译文地址：https://github.com/yued-fe/y-translation/edit/master/todo/push-notifications/common-notification-patterns.md
 
->译者：任家乐
+>译者：[任家乐](https://github.com/jennyrenjiale)
 
->校对者：
+>校对者：[刘文涛](https://github.com/HSDPA-wen)、[杨芯芯](https://github.com/y2x33)
 
 # 常用的通知模式
 
