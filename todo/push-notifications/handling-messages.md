@@ -2,27 +2,24 @@
 
 >译文地址：
 
->译者：
+>译者：张卓
 
 >校对者：
 
 
-# Push Events 
+# 推送事件 
 
 
 
 
 
-By this point covered subscribing a user for push sending them a message. The next step is to
-receive this push message on the user's device and display a notification (as well as any other
-work we might want to do).
+到此已经覆盖了订阅用户并给其推送发送消息。下一步是在用户的设备上接收此推送消息并显示通知（以及我们可能要做的任何其他工作）。
 
-## The Push Event
+## 推送事件
 
-When a message is received, it'll result in a push event being dispatched in your service worker.
+当接受到一条消息时，一个推送事件将被 dispatch 到你的 service worker 中。
 
-The code for setting up a push event listener should be pretty similar to any other event
-listener you'd write in JavaScript:
+监听推送事件的代码和在 JavaScript 中监听其它事件的代码十分类似：
 
     self.addEventListener('push', function(event) {
       if (event.data) {
@@ -32,48 +29,39 @@ listener you'd write in JavaScript:
       }
     });
 
-The weirdest bit of this code to most developers who are new to service workers is the `self`
-variable. `self` is commonly used in Web Workers, which a service worker is. `self` refers to
-the global scope, kind of like `window` in a web page. But for a web workers and service workers,
-`self` refers to the the worker itself.
+对于不熟悉 service workers 的开发者来说，这段代码最奇怪的部分应该是变量 `self`。`self` 常用在 Web Workers 中， service workers 就是这样的。`self` 是指全局作用域，类似于浏览器环境中的 `window`。但对于 web workers 和 service workers，`self` 指的的 worker 本身。
 
-In the example above `self.addEventListener()` can be thought of as adding an event listener to
-the service worker itself.
+在上面的例子中，可以将 `self.addEventListener()` 视为向 service workers 本身添加事件监听。
 
-Inside the push event example we check if there is any data and print something to the terminal.
+在推送事件示例中，我们检查是否有数据，并打印一些日志到终端。
 
-There are other ways you can parse data from a push event:
+除此之外，还有其他方法可以解析推送事件中的数据：
 
-    // Returns string
+    // 返回 string
     event.data.text()
 
     // Parses data as JSON string and returns an Object
     event.data.json()
 
-    // Returns blob of data
+    // 返回 blob
     event.data.blob()
 
-    // Returns an arrayBuffer
+    // 返回 arrayBuffer
     event.data.arrayBuffer()
 
-Most people use `json()` or `text()` depending on what they are expecting from their application.
+大多数人使用 `json()` 或者 `text()`（取决于他们希望从应用程序那得到什么）。
 
-This example demonstrates how to add a push event listener and how to access data, but it's
-missing two very important pieces of functionality. It's not showing a notification and it's
-not making use of `event.waitUntil()`.
+此示例演示如何添加推送事件监听器以及如何访问数据，但是它
+缺少两个非常重要的功能：它没有显示通知，并且没有使用 `event.waitUntil()`。
 
 ### Wait Until
 
-One of the things to understand about service workers is that you have little control over when
-the service worker code is going to run. The browser decides when to wake it up and when to
-terminate it. The only way you can tell the browser, "Hey I'm super busy doing important
-stuff", is to pass a promise into the `event.waitUntil()` method. With this, the browser will
-keep the service worker running until the promise you passed in has settled.
+必须要了解的一点是，你几乎无法控制 service workers 的代码何时运行，浏览器决定何时将其唤醒以及何时终止它。唯一的方法是，你告诉浏览器：“嘿——我非常忙，要做重要的事情了”，将一个 promise 对象传递给 `event.waitUntil()` 方法，这样，浏览器就会
+保持 service workers 运行，直到传入的 promise 被 resolve。
 
-With push events there is an additional requirement that you must display a notification before
-the promise you passed in has settled.
+对于推送事件，还有一个必要条件是必须在 promise 被 resolve 之前显示通知。
 
-Here's a basic example of showing a notification:
+以下是显示通知的基本示例：
 
     self.addEventListener('push', function(event) {
       const promiseChain = self.registration.showNotification('Hello, World.');
@@ -81,17 +69,14 @@ Here's a basic example of showing a notification:
       event.waitUntil(promiseChain);
     });
 
-Calling `self.registration.showNotification()` is the method that displays a notification to
-the user and it returns a promise that will resolve once the notification has been displayed.
+执行 `self.registration.showNotification()` 方法会向用户显示一个通知并且返回一个 promise 对象，这个 promise 对象会在通知显示之后被 resolve。
 
-For the sake of keeping this example as clear as possible I've assigned this promise to a
-variables called `promiseChain`. This is then passed into `event.waitUntil()`. I know this is
-very verbose, but I've seen a number of issues that have culminated as a result of
-misunderstanding what should be passed into `waitUntil()` or is the result of a broken promise
-chains.
+为了让这个例子尽可能清楚，我已经将这个 promise 对象赋值给了一个
+叫做 `promiseChain` 的变量，然后将其传递给 `event.waitUntil()`。 我知道这里
+非常冗长，但我已经看到了许多由此引发的问题，例如，
+误解了应该传递给 `waitUntil()` 的内容，或者是一个错误的 promise 链。
 
-A more complicated example with a network request for data and tracking the push event with
-analytics could look like this:
+一个包括网络请求数据和分析追踪推送事件的例子如下：
 
     self.addEventListener('push', function(event) {
       const analyticsPromise = pushReceivedTracking();
@@ -116,41 +101,22 @@ analytics could look like this:
       event.waitUntil(promiseChain);
     });
 
-Here we are calling a function that returns a promise `pushReceivedTracking()`,
-which, for the sake of the example, we can pretend will make a network request
-to our analytics provider. We are also making a network request, getting the
-response and showing a notification using the responses data for the title and
-message of the notification.
 
-We can ensure the service worker is kept alive while both of these tasks are done by combining
-these promises with `Promise.all()`. The resulting promise is passed into `event.waitUntil()`
-meaning the browser will wait until both promises have finished before checking that a notification
-has been displayed and terminating the service worker.
+这里为了示例，我们调用一个返回 promise 对象的函数 `pushReceivedTracking()`，
+，假装将发出网络请求到我们的分析提供商。同时，我们也会发送网络请求、获取响应，并使用响应的数据来显示通知的标题和内容。
 
-Note: If you ever find your promise chains confusing or a little messy,
-I find that breaking things into functions helps to reduce complexity.
-I'd also recommend
-[this blog post by Philip Walton on untangling promise
-chains](https://philipwalton.com/articles/untangling-deeply-nested-promise-chains/).
-The main point to take away is that you should experiment with how promises can be written
-and chained to find a style that works for you.
+我们使用 `Promise.all()` 将这两个 promise 对象合并，来确保 service worker 在这两个任务完成之前存活。合并后的 promise 被传递进   `event.waitUntil()` ，这意味着浏览器将等到两个 promise 都完成后，才会检查通知已显示，最后终止 service worker。
 
-The reason we should be concerned about `waitUntil()` and how to use it is that one of the most
-common issues developers face is that when the promise chain is incorrect / broken, Chrome will
-show this "default" notification:
+注意：如果你对 promise 链式调用有些疑惑，将功能分解为函数会有助于降低复杂性，同时也推荐这篇[Philip Walton 的博文](https://philipwalton.com/articles/untangling-deeply-nested-promise-chains/)来理解 promise 的链式调用。重点是你应该尝试如何来写 promise 以及它的链式调用，最终找到适合自己的风格。
+
+我们应该关注 `waitUntil()` 以及如何使用它，因为开发人员常常会面临的一个问题是，当 promise 链使用的不正确时，Chrome 会
+显示此“默认”通知：
 
 ![An Image of the default notification in Chrome](./images/default-notification-mobile.png)
 
-Chrome will only show the "This site has been updated in the background." notification when a
-push message is received and the push event in the service worker **does not** show a
-notification after the promise passed to `event.waitUntil()` has finished.
+当接收到一个推送消息，但在 service worker 中的推送事件当传递给 `event.waitUntil()` 的 promise 结束之后也没有显示任何消息，Chrome 就只会显示 "This site has been updated in the background." 
 
-The main reason developers get caught by this is that their code will
-often call `self.registration.showNotification()` but they **aren't** doing
-anything with the promise it returns. This intermittently results in the default notification
-being displayed. For example, we could remove the return for
-`self.registration.showNotification()` in the example above and we run the risk of seeing this
-notification.
+导致这个问题主要原因是开发者的代码中经常在调用 `self.registration.showNotification()` 之后在 promise 中 **没有**返回任何东西，这会导致显示默认通知。举个例子，我们可以删除上面示例中的 `self.registration.showNotification()` 的返回值，就会有看到“默认”通知的风险。
 
     self.addEventListener('push', function(event) {
       const analyticsPromise = pushReceivedTracking();
@@ -175,9 +141,8 @@ notification.
       event.waitUntil(promiseChain);
     });
 
-You can see how it's an easy thing to miss.
+你可以看到它是如何容易遗漏的。
 
-Just remember - if you see that notification, check your promise chains and `event.waitUntil()`.
+请记住 - 如果看到该通知，请检查 promise 链和 `event.waitUntil()`。
 
-In the next section we're going to look at what we can do to style notifications and
-what content we can display.
+在下一节中，我们将看看我们可以做什么来设置通知的样式以及可以展示什么内容。
