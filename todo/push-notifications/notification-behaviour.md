@@ -163,7 +163,7 @@ With this we would detect notification clicks or action clicks like so:
       }
     });
 
-![Logs for action button clicks and notification click.](./images/notification-screenshots/action-button-click-logs.png)
+![Logs for action button clicks and notification click.](https://developers.google.com/web/fundamentals/push-notifications/images/notification-screenshots/action-button-click-logs.png)
 
 ### Tag
 ### 标签
@@ -187,7 +187,7 @@ Let's display a notification and give it a tag, of
 Which will show our first notification.
 以上代码会展示我们定义好的第一个通知。
 
-![First notification with tag of message group 1.](./images/notification-screenshots/desktop/chrome-first-tag.png)
+![First notification with tag of message group 1.](https://developers.google.com/web/fundamentals/push-notifications/images/notification-screenshots/desktop/chrome-first-tag.png)
 
 Let's display a second notification with a new tag of 'message-group-2', like so:
 我们再用一个新的标签 “message-group-2” 来标记并展示第二个通知，如下：
@@ -202,7 +202,7 @@ Let's display a second notification with a new tag of 'message-group-2', like so
  This will display a second notification to the user.
  以上代码会展示给用户第二个通知。
 
-![Two notifications where the second tag is message group 2.](./images/notification-screenshots/desktop/chrome-second-tag.png)
+![Two notifications where the second tag is message group 2.](https://developers.google.com/web/fundamentals/push-notifications/images/notification-screenshots/desktop/chrome-second-tag.png)
 
 Now let's show a third notification but re-use the first tag of 'message-group-1'. Doing this
 will close the first notification and replace it with our new notification.
@@ -218,7 +218,7 @@ will close the first notification and replace it with our new notification.
 Now we have two notifications even though `showNotification()` was called three times.
 现在即使我们3次调用`showNotification()`也只会展示2个通知。
 
-![Two notifications where the first notification is replaced by a third notification.](./images/notification-screenshots/desktop/chrome-third-tag.png)
+![Two notifications where the first notification is replaced by a third notification.](https://developers.google.com/web/fundamentals/push-notifications/images/notification-screenshots/desktop/chrome-third-tag.png)
 The `tag` option is simply a way of grouping messages so that any old notifications that
 are currently displayed will be closed if they have the same tag as a new notification.
 `tag`这个选项简单来看就是一个用于信息分组的方式，因此在新通知与已有通知标记为同一个标签时，当前被展示的所有旧通知将会被关闭。

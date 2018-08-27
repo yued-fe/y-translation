@@ -51,7 +51,7 @@ title 是一个字符串类型，options 的参数如下：
 
 首先让我们看看视觉相关的参数，如下图：
 
-![Dissection of the UI of a Notification](./images/notification-ui.png)
+![Dissection of the UI of a Notification](https://developers.google.com/web/fundamentals/push-notifications/images/notification-ui.png)
 
 ### title 和 body 参数
 
@@ -67,27 +67,27 @@ title 和 body 参数，顾名思义，即通知上显示的两块不同区域�
 
 我们会在 chrome 中收到如下通知：
 
-![Notification with title and body text on Chrome on Linux.](./images/notification-screenshots/desktop/chrome-title-body.png)
+![Notification with title and body text on Chrome on Linux.](https://developers.google.com/web/fundamentals/push-notifications/images/notification-screenshots/desktop/chrome-title-body.png)
 
 在 Linux 的 Firefox 上，它看起来是这样的：
 
-![Notification with title and body text on Firefox on Linux.](./images/notification-screenshots/desktop/firefox-title-body.png)
+![Notification with title and body text on Firefox on Linux.](https://developers.google.com/web/fundamentals/push-notifications/images/notification-screenshots/desktop/firefox-title-body.png)
 
 我很好奇，如果我添加了大量文本会发生什么，其结果是：
 
-![Notification with long title and body text on Chrome on Linux.](./images/notification-screenshots/desktop/chrome-long-title-body.png)
+![Notification with long title and body text on Chrome on Linux.](https://developers.google.com/web/fundamentals/push-notifications/images/notification-screenshots/desktop/chrome-long-title-body.png)
 
 有趣的是，Linux 上的 Firefox 截断了正文的部分，直到鼠标 hover 到通知上面时，会展开显示全部
 
-![Notification with long title and body text on Firefox on Linux.](./images/notification-screenshots/desktop/firefox-long-title-body.png)
+![Notification with long title and body text on Firefox on Linux.](https://developers.google.com/web/fundamentals/push-notifications/images/notification-screenshots/desktop/firefox-long-title-body.png)
 
-![Notification with long title and body text on Firefox on Linux while hovering over the notification with the mouse cursor.](./images/notification-screenshots/desktop/firefox-long-title-body-expanded.png)
+![Notification with long title and body text on Firefox on Linux while hovering over the notification with the mouse cursor.](https://developers.google.com/web/fundamentals/push-notifications/images/notification-screenshots/desktop/firefox-long-title-body-expanded.png)
 
 我文中加入这些例子的原因有2个。首先浏览器之间会有显示上的差异。单单只看文本，Firefox 和 Chrome 在显示和行为上有所不同。 其次是跨平台存在差异。 Chrome 为所有平台提供自定义用户界面，而 Linux 机器上的 Firefox 则使用系统通知。 相同的通知在 windows 上的 Firefox 显示如下：
 
-![Notification with title and body text on Firefox on Windows.](./images/notification-screenshots/desktop/firefox-title-body-windows.png)
+![Notification with title and body text on Firefox on Windows.](https://developers.google.com/web/fundamentals/push-notifications/images/notification-screenshots/desktop/firefox-title-body-windows.png)
 
-![Notification with long title and body text on Firefox on Windows.](./images/notification-screenshots/desktop/firefox-long-title-body-windows.png)
+![Notification with long title and body text on Firefox on Windows.](https://developers.google.com/web/fundamentals/push-notifications/images/notification-screenshots/desktop/firefox-long-title-body-windows.png)
 
 ### Icon
 
@@ -103,11 +103,11 @@ title 和 body 参数，顾名思义，即通知上显示的两块不同区域�
 
 Linux 的 Chrome 上，我们收到的通知如下：
 
-![Notification with icon on Chrome on Linux.](./images/notification-screenshots/desktop/chrome-icon.png)
+![Notification with icon on Chrome on Linux.](https://developers.google.com/web/fundamentals/push-notifications/images/notification-screenshots/desktop/chrome-icon.png)
 
 Firefox：
 
-![Notification with icon on Firefox on Linux.](./images/notification-screenshots/desktop/firefox-icon.png)
+![Notification with icon on Firefox on Linux.](https://developers.google.com/web/fundamentals/push-notifications/images/notification-screenshots/desktop/firefox-icon.png)
 
 悲伤的是，图标大小并没有固定标准。
 
@@ -129,11 +129,11 @@ Firefox：
 
 在写本文时，badge 仅适用于 Android 版 Chrome。
 
-![Notification with badge on Chrome for Android.](./images/notification-screenshots/mobile/chrome-badge.png)
+![Notification with badge on Chrome for Android.](https://developers.google.com/web/fundamentals/push-notifications/images/notification-screenshots/mobile/chrome-badge.png)
 
 在其他浏览器（或没有指定 badge 的 Chrome）上，你会看到浏览器的图标。
 
-![Notification with badge on Firefox for Android.](./images/notification-screenshots/mobile/firefox-badge.png)
+![Notification with badge on Firefox for Android.](https://developers.google.com/web/fundamentals/push-notifications/images/notification-screenshots/mobile/firefox-badge.png)
 
 与 icon 参数一样，这里没有关于使用什么尺寸的 实际标准。
 
@@ -154,11 +154,11 @@ guidelines](https://developer.android.com/guide/practices/ui_guidelines/icon_des
 
 在系统桌面上，通知显示样式如下：
 
-![Notification with image on Chrome on Linux.](./images/notification-screenshots/desktop/chrome-image.png)
+![Notification with image on Chrome on Linux.](https://developers.google.com/web/fundamentals/push-notifications/images/notification-screenshots/desktop/chrome-image.png)
 
 在Android上，图片展示的 裁剪方式和显示的比例是不同的，如下图：
 
-![Notification with image on Chrome for Android.](./images/notification-screenshots/mobile/chrome-image.png)
+![Notification with image on Chrome for Android.](https://developers.google.com/web/fundamentals/push-notifications/images/notification-screenshots/mobile/chrome-image.png)
 
 鉴于桌面和移动设备之间的图片显示比例差异，给一个标准是极其困难的。
 
@@ -211,7 +211,7 @@ guidelines](https://developer.android.com/guide/practices/ui_guidelines/icon_des
 
 目前只有 Chrome 和 Android 中的 Opera 支持 actions 参数。
 
-![Notification with actions on Chrome on Linux.](./images/notification-screenshots/desktop/chrome-actions.png)
+![Notification with actions on Chrome on Linux.](https://developers.google.com/web/fundamentals/push-notifications/images/notification-screenshots/desktop/chrome-actions.png)
 
 对于每个 action，你可以定义一个 title，一个“action”（即一个 ID）和一个图标。标题和图标是你可以在通知中看到的内容。ID 是用来检测操作按钮是否已经被点击过（我们将在下一节中更详细地介绍这一点）。
 
@@ -221,7 +221,7 @@ guidelines](https://developer.android.com/guide/practices/ui_guidelines/icon_des
 
 在 Android 6.0 Marshmallow 上，图标被改变颜色以匹配系统配色方案：
 
-![Notification with actions on Chrome for Android.](./images/notification-screenshots/mobile/chrome-actions-m.png)
+![Notification with actions on Chrome for Android.](https://developers.google.com/web/fundamentals/push-notifications/images/notification-screenshots/mobile/chrome-actions-m.png)
 
 Chrome 将有望改变在桌面端的行为 ，与 Android 相匹配（即应用适当的配色方案使图标与系统配色相匹配）。同时，你可以手动修改图标颜色为"#333333"，来匹配 Chrome 的文字颜色。
 
@@ -252,11 +252,11 @@ Notification 规范正在探索一种可以定义多种尺寸图标的方式，�
 
 RTL（从右向左）语言在 Linux 的 Chrome 上显示如下：
 
-![Notification with right-to-left language on Chrome on Linux.](./images/notification-screenshots/desktop/chrome-rtl.png)
+![Notification with right-to-left language on Chrome on Linux.](https://developers.google.com/web/fundamentals/push-notifications/images/notification-screenshots/desktop/chrome-rtl.png)
 
 在 Firefox 上（当鼠标悬停在上面时），你会得到的显示如下：
 
-![Notification with right-to-left language on Firefox on Linux.](./images/notification-screenshots/desktop/firefox-rtl-expanded.png)
+![Notification with right-to-left language on Firefox on Linux.](https://developers.google.com/web/fundamentals/push-notifications/images/notification-screenshots/desktop/firefox-rtl-expanded.png)
 
 ### Vibrate
 

@@ -92,7 +92,7 @@ if (!('PushManager' in window)) {
     }
 
 在上面的代码当中，最重要的代码片段就是调用 `Notification.requestPermission()`。这个方法会显示一个提示给用户：
-![桌面和手机版 Chrome 的授权弹框](./images/permission-prompt.png)
+![桌面和手机版 Chrome 的授权弹框](https://developers.google.com/web/fundamentals/push-notifications/images/permission-prompt.png)
 
 一旦这个权限被同意 / 允许，关闭（也就是点击弹层上的叉）或者被拦截，我们将获取结果字符串：'granted', 'default' 或者 'denied'。
 
@@ -161,13 +161,13 @@ if (!('PushManager' in window)) {
 2. 然后浏览器发出一个网络请求到推送服务，推送服务会生成一个和 **applications public key** 联系在一起的 **endpoint**，并把该 **endpoint** 返回给浏览器。
 3. 浏览器将这个值添加到第1步调用 `subscribe()` 返回的 Promise 对象 **PushSubscription** 当中。
 
-![描述如何在订阅方法中使用应用公钥](./images/svgs/application-server-key-subscribe.svg)
+![描述如何在订阅方法中使用应用公钥](https://developers.google.com/web/fundamentals/push-notifications/images/svgs/application-server-key-subscribe.svg)
 
 当你后续想要发送一个推送消息，需要创建一个 **Authorization** 的 header 头，这个 header 头将包含使用应用服务器的私钥签名之后的信息。
 当推送服务接收到一个要求发送推送消息的请求，它通过查询关联到该请求的 endpoint 值的公钥，来验证该请求中签名过的 **Authorization** 的 header 头。如果签名是合法的，
 推送服务知道它一定来自于拥有匹配的私钥的应用服务器。总的来说，它是用来防止其他人伪造身份发送消息给应用用户的一个安全措施。
 
-![如何使用私有应用服务器密钥来发送消息](./images/svgs/application-server-key-send.svg)
+![如何使用私有应用服务器密钥来发送消息](https://developers.google.com/web/fundamentals/push-notifications/images/svgs/application-server-key-send.svg)
 
 从技术上来说，`applicationSecretKey` 是一个可选项。然而，在 Chrome 浏览器上最容易的实现方案是需要它的，其他浏览器在以后也可能需要它。在 Firefox 中当前是可选项。
 

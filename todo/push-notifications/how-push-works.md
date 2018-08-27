@@ -35,7 +35,7 @@
 
 一旦你订阅了一个用户，并且拿到了 `PushSubscription`，你需要将关于这个 `PushSubscription` 的详细信息发送至你的后台/服务器。在服务器上，你需要将这个订阅保存至数据库当中，并使用它给用户推送消息。
 
-![确保你发送了 `PushSubscription` 到你的后端](./images/svgs/browser-to-server.svg)
+![确保你发送了 `PushSubscription` 到你的后端](https://developers.google.com/web/fundamentals/push-notifications/images/svgs/browser-to-server.svg)
 
 ## Step 2: 发送一个推送消息
 
@@ -98,7 +98,7 @@
 
 - 给推送消息一个话题名，拥有相同话题的新消息将替换掉仍在排队的老消息。
 
-![当你的服务器希望发送一个推送消息，它需要发送一个 Web 推送协议请求至推送服务](./images/svgs/server-to-push-service.svg)
+![当你的服务器希望发送一个推送消息，它需要发送一个 Web 推送协议请求至推送服务](https://developers.google.com/web/fundamentals/push-notifications/images/svgs/server-to-push-service.svg)
 
 ## Step 3: 用户设备上的推送事件
 
@@ -115,6 +115,6 @@
 
 秘密就是位于 **service worker** 的推送事件当中，它能让你能执行任何后台任务。你可以执行分析调用，缓存离线页面和弹出通知等。
 
-![当推送服务发送一条推送消息给用户的设备，设备的 service worker 将收到一个推送事件](./images/svgs/push-service-to-sw-event.svg)
+![当推送服务发送一条推送消息给用户的设备，设备的 service worker 将收到一个推送事件](https://developers.google.com/web/fundamentals/push-notifications/images/svgs/push-service-to-sw-event.svg)
 
 这就是整个推送消息的流程。让我们更详细的来看一下其中的每一步吧。

@@ -23,7 +23,7 @@ Android 上的任何浏览器和上述应用的表现是一致的，当接收到
 
 如果你对比一下下面 dock 中的两个 Chrome icon，通过 icon 下面的标记我们可以知道左边的那个正在运行，然而右边的那个 Chrome **没有在运行**，因为缺少了下面的标记。
 
-![ OS X 的示例](./images/faq/os-x-dock.png)
+![ OS X 的示例](https://developers.google.com/web/fundamentals/push-notifications/images/faq/os-x-dock.png)
 
 在桌面系统上接收推送消息的情况下，当浏览器在运行的时候（即在 icon 下面有一个标记），你可以接收到消息。
 
@@ -35,7 +35,7 @@ Android 上的任何浏览器和上述应用的表现是一致的，当接收到
 
 在 Android 系统的 Chrome 浏览器上，Web App 可以被添加到桌面。当它在桌面被打开的时候，可以在没有地址栏的全屏模式打开，就像下面显示的那样。
 
-![桌面图标全屏方式打开](./images/faq/gauntface-homescreen-to-fullscreen.png)
+![桌面图标全屏方式打开](https://developers.google.com/web/fundamentals/push-notifications/images/faq/gauntface-homescreen-to-fullscreen.png)
 
 为了保持体验的一致性，开发者也想用户在点击通知之后能够全屏打开他们的 Web App。
 

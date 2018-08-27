@@ -112,7 +112,7 @@
 我们应该关注 `waitUntil()` 以及如何使用它，因为开发人员常常会面临的一个问题是，当 promise 链使用的不正确时，Chrome 会
 显示此“默认”通知：
 
-![An Image of the default notification in Chrome](./images/default-notification-mobile.png)
+![An Image of the default notification in Chrome](https://developers.google.com/web/fundamentals/push-notifications/images/default-notification-mobile.png)
 
 当接收到一个推送消息，但在 service worker 中的推送事件当传递给 `event.waitUntil()` 的 promise 结束之后也没有显示任何消息，Chrome 就只会显示 "This site has been updated in the background." 
 

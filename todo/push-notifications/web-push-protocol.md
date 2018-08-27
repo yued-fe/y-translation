@@ -2,7 +2,7 @@
 
 >译文地址：
 
->译者：张卓
+>译者：[张卓](https://github.com/Zhangdroid)
 
 >校对者：
 
@@ -14,7 +14,7 @@
 嗯，他们发送了网络请求，同时确保这些请求符合[Web 推送协议](https://tools.ietf.org/html/draft-ietf-webpush-protocol)的规范。
 
 ![Diagram of sending a push message from your server to a push
-service.](./images/svgs/server-to-push-service.svg)
+service.](https://developers.google.com/web/fundamentals/push-notifications/images/svgs/server-to-push-service.svg)
 
 这一部分大致会描述服务器如何使用应用程序服务器密钥（Application server keys）来识别自身，以及如何发送加密的有效负载（payload）和关联数据。
 
@@ -36,7 +36,7 @@ service.](./images/svgs/server-to-push-service.svg)
 下面是以上信息流的一个例子。（请注意左下角的图例表示公钥和私钥。）
 
 ![Illustration of how the private application server key is used when sending a
-message.](./images/svgs/application-server-key-send.svg)
+message.](https://developers.google.com/web/fundamentals/push-notifications/images/svgs/application-server-key-send.svg)
 
 添加到请求头的“签名信息”是 JSON Web 令牌（JSON web token）。
 
@@ -53,7 +53,7 @@ message.](./images/svgs/application-server-key-send.svg)
 一个签名的 JWT 只是一串字符串，也可以被认为是由点号连接的三个字符串。
 
 ![A illustration of the strings in a JSON Web
-Token](./images/svgs/authorization-jwt-diagram-header.svg)
+Token](https://developers.google.com/web/fundamentals/push-notifications/images/svgs/authorization-jwt-diagram-header.svg)
 
 第一个和第二个字符串（JWT Info 和 JWT Data）是已经使用 base64 进行编码的 JSON 片段，这意味着它是公开可读的。
 

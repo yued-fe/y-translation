@@ -142,17 +142,17 @@ spec (Web 推送协议)](https://tools.ietf.org/html/draft-ietf-webpush-protocol
 
 如果是这种情况，可以在 Firefox 的 DevTools 控制台中看到一条错误消息，如下所示：
 
-![Firefox DevTools with decryption message](./images/ff-devtools-decryption-msg.png)
+![Firefox DevTools with decryption message](https://developers.google.com/web/fundamentals/push-notifications/images/ff-devtools-decryption-msg.png)
 
 要检查 Chrome 中是否存在此问题，请执行以下操作：
 
 1. 地址栏输入 chrome://gcm-internals ，进入并点击“Start Recording【开始录制】”按钮。
 
-![Chrome GCM internals record](./images/gcm-internals-start-recording.png)
+![Chrome GCM internals record](https://developers.google.com/web/fundamentals/push-notifications/images/gcm-internals-start-recording.png)
 
 2. 触发一个推送消息,看下“消息解密失败日志”。
 
-![GCM internals decryption log](./images/gcm-internals-decryption-log.png)
+![GCM internals decryption log](https://developers.google.com/web/fundamentals/push-notifications/images/gcm-internals-decryption-log.png)
 
 如果有效负载的解密存在问题，将看到类似于上面显示的错误。 （请注意详细信息列中的`AES-GCM decryption failed`消息。）
 
@@ -167,11 +167,11 @@ spec (Web 推送协议)](https://tools.ietf.org/html/draft-ietf-webpush-protocol
 
 在 Chrome 中，可以通过页面：`chrome://gcm-internals` 中的“接收消息日志”模块来检查浏览器是否正在接收消息。
 
-![GCM internals receive message log](./images/gcm-internals-receive-log.png)
+![GCM internals receive message log](https://developers.google.com/web/fundamentals/push-notifications/images/gcm-internals-receive-log.png)
 
 如果没有及时看到消息，请确保你的浏览器的连接状态为 `CONNECTED`，如下图所示：
 
-![GCM internals connection state](./images/gcm-internals-connection-state.png)
+![GCM internals connection state](https://developers.google.com/web/fundamentals/push-notifications/images/gcm-internals-connection-state.png)
 
 如果链接状态**不是** “CONNECTED”，可能需要删除当前的配置文件并创建一个新的。 如果仍然无法解决问题，请按照下面章节的建议提出错误报告。
 

@@ -304,12 +304,12 @@ were no notifications, we create a new notification with a `newMessageCount` of 
 The result is that the first message would look like this:
 那么第一条信息的通知会是以下这样：
 
-![First notification without merging.](./images/notification-screenshots/desktop/merge-notification-first.png)
+![First notification without merging.](https://developers.google.com/web/fundamentals/push-notifications/images/notification-screenshots/desktop/merge-notification-first.png)
 
 A second notification would collapse the notifications into this:
 第二条通知会以这样的方式覆盖已有的通知：
 
-![Second notification with merging.](./images/notification-screenshots/desktop/merge-notification-second.png)
+![Second notification with merging.](https://developers.google.com/web/fundamentals/push-notifications/images/notification-screenshots/desktop/merge-notification-second.png)
 
 The nice thing with this approach is that if your user witnesses the
 notifications appearing one over the other, it'll look and feel more cohesive
