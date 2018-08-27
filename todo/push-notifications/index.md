@@ -2,60 +2,37 @@
 
 >译文地址：
 
->译者：
+>译者：刘鹏
 
 >校对者：
 
-description: Push notifications are one of the most valuable capabilities of native apps, and this capability is now available on the web. To get the most out of them, notifications need to be timely, precise, and relevant.
+描述：推送通知是原生 APP 中最重要的能力之一。现在 Web 也有这个能力了。为了能让用户充分使用它们，通知必须能够达到及时、准确和相关。
 
-
-# Web Push Notifications: Timely, Relevant, and Precise 
+# Web 推送通知: 及时、相关和准确
 
 <img src="images/cc-good.png" alt="Example Notification" class="attempt-right">
 
-If you ask a room of developers what mobile device features are missing from
-the web, push notifications are always high on the list.
+如果你问一屋子的开发者，有哪些功能是移动设备拥有，而 Web 缺失的，推送通知一定位居前列。
 
-Web push notifications allow users to opt-in to timely updates from sites
-they love and allow you to effectively re-engage them with customized,
-relevant content.
+Web 推送通知允许用户在他们喜欢的网站一有更新之后就选择参与进来。同时允许开发者使用自定义的以及和用户相关的内容来有效地吸引用户。
 
-The Push API and Notification API open a whole new set of possibilities for
-you to re-engage with your users.
+推送 API 和通知 API 给予了开发者一系列全新的可能性去和用户重修旧好。
 
-## Are service workers involved? {: #service-worker-involved }
+## 和 service worker 相关吗?
 
-Yes. Push is based on service workers because service workers operate in the
-background. This means the only time code is run for a push notification (in
-other words, the only time the battery is used) is when the user interacts with
-a notification by clicking it or closing it.   If you're not familiar with them,
-check out the  [service worker introduction][service-worker-primer]. We will use
-service worker code in later sections when we show you how to implement pushes
-and notifications.
+是的，推送是基于 service worker 的，因为 service worker 在后台负责操作。这就是说只有用户点击或者关掉通知的时候，相关代码才会运行（换另一句话说就是电池被消耗）。如果你现在还对这个不熟悉，请查看 [service worker introduction](https://developers.google.com/web/fundamentals/primers/service-workers/) 章节。在后面的章节当中我们会使用 service worker 代码给大家展示如何实现推送和通知。
 
-## Two technologies {: #two-technologies }
+## 两种技术
 
-Push and notification use different, but complementary, APIs:
-[**push**](https://developer.mozilla.org/en-US/docs/Web/API/Push_API) is
-invoked when a server supplies information to a service worker; a
-[**notification**](https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API)
-is the action of a service worker or web page script showing information
-to a user.
+推送和通知使用不同但是互补的 API。[**推送**](https://developer.mozilla.org/en-US/docs/Web/API/Push_API)在服务器提供给 service worker 信息的时候被调用。[**通知**](https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API)是 service worker 或者网页 script 展示信息给用户的一种方式。
 
-## A little notification anatomy {: #anatomy }
+## 对通知的一点剖析
 
-In the next section we're going to throw a bunch of pictures at you, but we
-promised code. So, here it is. With a service worker registration you call
-`showNotification` on a registration object.
-
+在下面的章节当中，我们直接用代码来展示如何使用通知。在 service worker 注册完成之后，我们可以在注册成功的 service worker 对象上调用 `showNotification` 方法。
 
     serviceWorkerRegistration.showNotification(title, options);
 
-
-The `title` argument appears as a heading in the notification. The `options`
-argument is an object literal that sets the other properties of a notification.
-A typical options object looks something like this:
-
+`title` 参数表示的是通知的标题。`options` 参数是一个对象字面量，它用于设置通知的其它属性。options 对象通常表示如下：
 
     {
       "body": "Did you make a $1,000,000 purchase at Dr. Evil...",
@@ -70,21 +47,17 @@ A typical options object looks something like this:
 
 <img src="images/cc-good.png" alt="Example Notification" class="attempt-right">
 
-This code produces a notification like the one in the image. It generally
-provides the same capabilities as a native application. Before diving into the
-specifics of implementing those capabilities, I'll show you how to use those
-capabilities effectively.   We'll go on to describe the mechanics of
-implementing push notifications, including handling permissions and
-subscriptions, sending messages, and responding to them.
+这些代码将生成一个如图所示的通知。它通常会提供和原生应用一样的能力。在深入到实现这些能力的细节之前，我将给你们展示如何有效地使用它们。我们将继续讲述实现推送通知的机制，包括如何处理权限、订阅、发送消息，以及如何回应消息等方面。
 
-## How can I try it?
 
-There are several ways you can play with the features before you completely
-understand how they work, or have to implement them. First, check out
-[our own sample](https://github.com/GoogleChrome/samples/tree/gh-pages/push-messaging-and-notifications).
-Also available are Peter Beverloo's
-[Notification Generator](https://tests.peter.sh/notification-generator/)
-and Mozilla's [Push Payload Demo](https://serviceworke.rs/push-payload_demo.html).
+## 我要怎样才能试用它呢?
 
-Note: Unless you're using localhost, the Push API requires HTTPS.
+在你完全了解它们是怎么运作或者你必须实现这些功能之前，你可以尝试下面几种方式来试用这些特性。
 
+1. 第一个是，查看 [我们自己的示例](https://github.com/GoogleChrome/samples/tree/gh-pages/push-messaging-and-notifications)；
+
+2. 第二个是，Peter Beverloo 的 [通知生成器](https://tests.peter.sh/notification-generator/)；
+
+3. 第三个是，Mozilla 的 [推送 payload（有效载荷）示例](https://serviceworke.rs/push-payload_demo.html)。
+
+提示: 除非你的页面是 localhost， 否则的话推送 API 必须要求页面是 HTTPS 的。
