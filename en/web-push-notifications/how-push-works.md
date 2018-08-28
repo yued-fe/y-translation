@@ -1,6 +1,6 @@
->原文地址：https://developers.google.com/web/fundamentals/push-notifications/how-push-works
+>原文地址：[how-push-works](https://developers.google.com/web/fundamentals/push-notifications/how-push-works)
 
->译文地址：https://github.com/yued-fe/y-translation/blob/master/todo/push-notifications/how-push-works.md
+>译文地址：[推送是怎么工作的?](https://github.com/yued-fe/y-translation/blob/master/todo/push-notifications/how-push-works.md)
 
 >译者：[刘鹏](https://github.com/git-patrickliu)
 
