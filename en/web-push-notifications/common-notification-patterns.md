@@ -317,4 +317,4 @@
 
 这就需要设置你的service worker来处理这些`fetch`事件，但如果你监听了`fetch`事件，请确保在展示你的通知之前，通过缓存你需要的页面和资源来充分利用它在`push`事件中的优势。
 
-想要了解更多缓存相关信息，请参考[introduction to service workers post](/web/fundamentals/getting-started/primers/service-workers)[introduction to service workers post](/web/fundamentals/getting-started/primers/service-workers]
+想要了解更多缓存相关信息，请参考[服务工作线程：简介](/web/fundamentals/getting-started/primers/service-workers)[introduction to service workers post](/web/fundamentals/getting-started/primers/service-workers]
