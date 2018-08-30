@@ -1,15 +1,12 @@
->原文地址：https://developers.google.com/web/fundamentals/push-notifications/permission-ux
+>原文地址：[permission-ux](https://developers.google.com/web/fundamentals/push-notifications/permission-ux)
 
->译文地址：
+>译文地址：[请求权限的交互](https://github.com/yued-fe/y-translation/blob/master/en/web-push-notifications/permission-ux.md)
 
->译者：杨芯芯
+>译者：[杨芯芯](https://github.com/y2x33)
 
 >校对者：[张卓](https://github.com/Zhangdroid)、[刘鹏](https://github.com/git-patrickliu) 
 
 # 请求权限的交互
-
-
-
 
 
 获得 `PushSubscription` 并将其保存到我们的服务器之后，就可以触发推送消息了，但是有一件事我之前一笔带过了，那就是向用户请求权限时的用户体验。
