@@ -1,4 +1,4 @@
->原文地址：[how-push-works](https://developers.google.com/web/fundamentals/push-notifications/subscribing-a-user)
+>原文地址：[Subscribing a User](https://developers.google.com/web/fundamentals/push-notifications/subscribing-a-user)
 
 >译文地址：[订阅一个用户](https://github.com/yued-fe/y-translation/blob/master/todo/push-notifications/subscribing-a-user.md)
 
