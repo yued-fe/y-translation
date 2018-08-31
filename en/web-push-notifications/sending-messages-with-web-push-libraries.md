@@ -1,16 +1,12 @@
->原文地址：https://developers.google.com/web/fundamentals/push-notifications/sending-messages-with-web-push-libraries
+>原文地址：[sending messages with web push libraries](https://developers.google.com/web/fundamentals/push-notifications/sending-messages-with-web-push-libraries)
 
->译文地址：
+>译文地址：[使用 Web 推送库发送消息](https://github.com/yued-fe/y-translation/blob/master/en/web-push-notifications/sending-messages-with-web-push-libraries.md)
 
->译者：杨芯芯
+>译者：[杨芯芯](https://github.com/y2x33)
 
 >校对者：[刘鹏](https://github.com/git-patrickliu)、[刘文涛](https://github.com/HSDPA-wen)
 
 # 使用 Web 推送库发送消息
-
-
-
-
 
 
 实现 Web 推送的痛点之一就是触发一个推送消息是极其“繁琐”的，应用程序需要按照 [Web 推送协议](https://tools.ietf.org/html/draft-ietf-webpush-protocol)向推送服务发送 POST 请求。为了使推送能够跨浏览器使用，你还需要使用 [VAPID](https://tools.ietf.org/html/draft-thomson-webpush-vapid)
