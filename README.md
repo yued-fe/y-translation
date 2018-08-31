@@ -6,7 +6,7 @@
 
 扫码关注微信公众号：
 
-<img src="./images/公众号二维码.png" style="width:30%" alt="公众号二维码" >
+<img src="./images/公众号二维码.png" width="30%" alt="公众号二维码" >
 
 ## 翻译的文章：
 
