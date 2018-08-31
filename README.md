@@ -2,8 +2,11 @@
 # 阅文集团前端团队
 我们旨在翻译实用、前沿以及有价值的文章。
 
-欢迎关注：[知乎主页](https://www.zhihu.com/org/yue-wen-ji-tuan-qian-duan-tuan-dui)、[掘金主页](https://juejin.im/user/5acb247951882555712ca8ee)、[微信公众号](https://mmbiz.qpic.cn/mmbiz_png/HGCZWzWIk2liaYW08y8icyg7HnticSJboWpVzQXSibhNUWbFtntZynHjrgEtq6NAjVkjNNRe4Cz8CMzLCBbCKtDTew/640?wx_fmt=png)
+欢迎关注：[知乎主页](https://www.zhihu.com/org/yue-wen-ji-tuan-qian-duan-tuan-dui)、[掘金主页](https://juejin.im/user/5acb247951882555712ca8ee)
 
+扫码关注微信公众号：
+
+<img src="./images/公众号二维码.png" style="zoom:40%" alt="公众号二维码" />
 
 ## 翻译的文章：
 
