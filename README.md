@@ -1,11 +1,11 @@
 
 # 阅文集团前端团队
-> 我们旨在翻译实用、前沿以及有价值的文章。
+我们旨在翻译实用、前沿以及有价值的文章。
 
-欢迎关注：[知乎主页](https://www.zhihu.com/org/yue-wen-ji-tuan-qian-duan-tuan-dui)、[掘金主页](https://juejin.im/user/5acb247951882555712ca8ee)
-
-扫码关注微信公众号：
-
+平台链接：
+- [知乎主页](https://www.zhihu.com/org/yue-wen-ji-tuan-qian-duan-tuan-dui)
+- [掘金主页](https://juejin.im/user/5acb247951882555712ca8ee)
+- 微信公众号：
 <img src="./images/公众号二维码.png" width="30%" alt="公众号二维码" >
 
 ## 翻译的文章：
