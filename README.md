@@ -1,6 +1,6 @@
 
 # 阅文集团前端团队
-我们旨在翻译实用、前沿以及有价值的文章。
+> 我们旨在翻译实用、前沿以及有价值的文章。
 
 欢迎关注：[知乎主页](https://www.zhihu.com/org/yue-wen-ji-tuan-qian-duan-tuan-dui)、[掘金主页](https://juejin.im/user/5acb247951882555712ca8ee)
 
