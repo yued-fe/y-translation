@@ -1,6 +1,6 @@
->原文地址：https://developers.google.com/web/fundamentals/push-notifications/web-push-protocol
+>原文地址：[web push protocol](https://developers.google.com/web/fundamentals/push-notifications/web-push-protocol)
 
->译文地址：
+>译文地址：[Web 推送协议](https://github.com/yued-fe/y-translation/blob/master/en/web-push-notifications/web-push-protocol.md)
 
 >译者：[张卓](https://github.com/Zhangdroid)
 
