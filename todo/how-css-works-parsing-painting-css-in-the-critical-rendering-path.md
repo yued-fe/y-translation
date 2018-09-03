@@ -1,6 +1,6 @@
-> * 原文地址：https://blog.logrocket.com/how-css-works-parsing-painting-css-in-the-critical-rendering-path-b3ee290762d3
+> * 原文地址：[How CSS works: Parsing & painting CSS in the critical rendering path](https://blog.logrocket.com/how-css-works-parsing-painting-css-in-the-critical-rendering-path-b3ee290762d3)
 
-> * 译文地址：https://github.com/yued-fe/y-translation/blob/master/todo/how-css-works-parsing-painting-css-in-the-critical-rendering-path.md
+> * 译文地址：[CSS 是如何工作的：关键渲染路径中的 CSS 解析和渲染](https://github.com/yued-fe/y-translation/blob/master/todo/how-css-works-parsing-painting-css-in-the-critical-rendering-path.md)
 
 > * 译者：[马头](https://github.com/chengbapi)
 
