@@ -1,6 +1,6 @@
->原文地址：https://developers.google.com/web/fundamentals/push-notifications/display-a-notification
+>原文地址：[display a notification](https://developers.google.com/web/fundamentals/push-notifications/display-a-notification)
 
->译文地址：https://github.com/yued-fe/y-translation/blob/master/todo/push-notifications/display-a-notification.md
+>译文地址：[显示一个通知](https://github.com/yued-fe/y-translation/blob/master/todo/push-notifications/display-a-notification.md)
 
 >译者：[刘文涛](https://github.com/HSDPA-wen)
 
