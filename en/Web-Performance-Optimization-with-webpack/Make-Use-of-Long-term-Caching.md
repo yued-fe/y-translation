@@ -32,7 +32,7 @@ The common approach of doing caching is to:
     Note: If you aren’t familiar what `Cache-Control` does, see Jake Archibald’s excellent post [on caching best
     practices](https://jakearchibald.com/2016/caching-best-practices/).
     
-    注意：如果你不熟悉 `Cache-Control` 的原理，请参阅 Jake Archibald 的优秀文章: [关于缓存的最佳实践](https://jakearchibald.com/2016/caching-best-practices/)
+    注意：如果你不熟悉 `Cache-Control` 的原理，请参阅 Jake Archibald 的文章: [关于缓存的最佳实践](https://jakearchibald.com/2016/caching-best-practices/)
     
 2. and rename the file when it’s changed to force the re-download:
 
@@ -49,7 +49,7 @@ The common approach of doing caching is to:
 
 This approach tells the browser to download the JS file, cache it and use the cached copy. The browser will only hit the network only if the file name changes (or if a year passes).
 
-这个方法可以告诉浏览器去下载 JS 文件，并将它缓存，之后使用的都是它的缓存副本。浏览器只会在文件名发生改变（或者一年之后缓存失效）时才会请求网络。。
+这个方法可以告诉浏览器去下载 JS 文件，并将它缓存，之后使用的都是它的缓存副本。浏览器只会在文件名发生改变（或者一年之后缓存失效）时才会请求网络。
 
 With webpack, you do the same, but instead of a version number, you specify the file hash. To include the hash into the file name, use
 [`[chunkhash]`](https://webpack.js.org/configuration/output/#output-filename):
@@ -68,7 +68,7 @@ module.exports = {
 
 > ⭐️ Note: Webpack could generate a different hash even if the bundle stays the same – e.g. if you rename a file or compile the bundle under a different OS. This is a bug, and there’s no clear solution yet. [See the discussion on GitHub](https://github.com/webpack/webpack/issues/1479)
 
-> ⭐️ 注意: 即使 bundle 不变，webpack 也可能生成不同的哈希值 – 例如，你重命名了一个文件或者在不同的操作系统下编译了 bundle。 当然，这其实是一个  bug.目前还没有明确的解决方案。[具体可参阅 GitHub 上的讨论](https://github.com/webpack/webpack/issues/1479)
+> ⭐️ 注意: 即使 bundle 不变，webpack 也可能生成不同的哈希值 – 例如，你重命名了一个文件或者在不同的操作系统下编译了 bundle。 当然，这其实是一个  bug，目前还没有明确的解决方案。[具体可参阅 GitHub 上的讨论](https://github.com/webpack/webpack/issues/1479)
 
 If you need the file name to send it to the client, use either the `HtmlWebpackPlugin` or the `WebpackManifestPlugin`.
 
@@ -515,7 +515,7 @@ module.exports = {
 
 ## Lazy-load code that you don’t need right now
 
-## 懒加载
+## 代码懒加载
 
 Sometimes, a page has more and less important parts:
 
@@ -621,7 +621,7 @@ If we split the app into pages (or routes, if it’s a single-page app), the use
 
 To split single-page apps by routes, use `import()` (see the [“Lazy-load code that you don’t need right now”](#lazy-loading) section). If you use a framework, it might have an existing solution for this:
 
-要通过路由来拆分单页应用，可以使用 `import()`（参加上文[懒加载](#lazy-loading)部分）。如果你使用的是一个框架，目前也有现成的解决方案：
+要通过路由来拆分单页应用，可以使用 `import()`（参加上文[代码懒加载](#lazy-loading)部分）。如果你使用的是一个框架，目前也有现成的解决方案：
 
 * [“Code Splitting”](https://reacttraining.com/react-router/web/guides/code-splitting) in `react-router`'s docs (for React)
 
@@ -873,7 +873,7 @@ module.exports = {
 
 * Split the bundle into app code, vendor code and runtime
 
-* 将 bundle 拆分成 app（应用） 代码、vendor（第三方库） 代码和运行时
+* 将 bundle 拆分成 app（应用） 代码、vendor（第三方库） 代码和 runtime
 
 * Inline the runtime to save an HTTP request
 
