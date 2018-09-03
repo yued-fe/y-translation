@@ -1,6 +1,6 @@
->原文地址：https://developers.google.com/web/fundamentals/push-notifications/handling-messages
+>原文地址：[handling messages](https://developers.google.com/web/fundamentals/push-notifications/handling-messages)
 
->译文地址：
+>译文地址：[推送事件](https://github.com/yued-fe/y-translation/blob/master/en/web-push-notifications/handling-messages.md)
 
 >译者：[张卓](https://github.com/Zhangdroid)
 
@@ -8,9 +8,6 @@
 
 
 # 推送事件 
-
-
-
 
 
 到此已经覆盖了订阅用户并给其推送发送消息。下一步是在用户的设备上接收此推送消息并显示通知（以及我们可能要做的任何其他工作）。
