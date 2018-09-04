@@ -16,7 +16,7 @@ webpack 是当下最流行的打包工具之一。我们可以利用其特性来
 ![Before and after applying JavaScript
   optimizations. Time-to-Interactive is improved](https://developers.google.com/web/fundamentals/performance/webpack/code-splitting.png)
 
-受 Susie Lu 的[在 Bundle Buddy 中进行代码拆分](http://www.susielu.com/data-viz/bundle-buddy)的启发
+受 Susie Lu 的[在 Bundle Buddy 中进行代码拆分](http://www.susielu.com/data-viz/bundle-buddy)的启发。
 
 > **⭐️ 注意：** 我们创建了一个可供练习的应用来演示这篇文章中讲到的内容。请充分利用它来练习这些技巧：[`webpack-training-project`](https://github.com/GoogleChromeLabs/webpack-training-project)
 
