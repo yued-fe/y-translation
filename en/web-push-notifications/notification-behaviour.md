@@ -1,6 +1,6 @@
->原文地址：https://developers.google.com/web/fundamentals/push-notifications/notification-behaviour
+>原文地址：[notification behaviour](https://developers.google.com/web/fundamentals/push-notifications/notification-behaviour)
 
->译文地址：https://github.com/yued-fe/y-translation/edit/master/todo/push-notifications/notification-behaviour.md
+>译文地址：[通知行为](https://github.com/yued-fe/y-translation/edit/master/todo/push-notifications/notification-behaviour.md)
 
 >译者：[任家乐](https://github.com/jennyrenjiale)
 
