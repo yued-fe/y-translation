@@ -1,6 +1,6 @@
->原文地址：https://developers.google.com/web/fundamentals/push-notifications/common-notification-patterns
+>原文地址：[common notification patterns](https://developers.google.com/web/fundamentals/push-notifications/common-notification-patterns)
 
->译文地址：https://github.com/yued-fe/y-translation/edit/master/todo/push-notifications/common-notification-patterns.md
+>译文地址：[常用的通知模式](https://github.com/yued-fe/y-translation/edit/master/todo/push-notifications/common-notification-patterns.md)
 
 >译者：[任家乐](https://github.com/jennyrenjiale)
 
