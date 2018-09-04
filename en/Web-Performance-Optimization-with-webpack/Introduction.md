@@ -1,11 +1,11 @@
 
 # 介绍
 
-> - **原文地址：** https://developers.google.com/web/fundamentals/performance/webpack/
+> - **原文地址：** [introduction](https://developers.google.com/web/fundamentals/performance/webpack/)
 > - **原文作者：** [Addy Osmani](https://developers.google.com/web/resources/contributors/addyosmani)
-> - **译文地址：** https://github.com/yued-fe/y-translation/blob/master/en/Web-Performance-Optimization-with-webpack/Introduction.md
+> - **译文地址：** [介绍](https://github.com/yued-fe/y-translation/blob/master/en/Web-Performance-Optimization-with-webpack/Introduction.md)
 > - **译者：** [闫萌](https://github.com/yanyixin)
-> - **校对者：**
+> - **校对者：** [周文康](https://github.com/wenkangzhou)、[杨建](https://github.com/ASkyBig)
 
 现代 web 应用经常使用**打包工具**来创建生产环境的“打包”文件（脚本、样式等等），这些文件经过[优化](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/javascript-startup-optimization)和[压缩](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/optimize-encoding-and-transfer)之后能够极快的被用户下载。在**使用 webpack 进行 web 性能优化**系列文章中，我们将介绍如何使用 webpack 高效的优化站点资源。这将会帮助用户更快的加载网站以及交互。
 
