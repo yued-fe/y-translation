@@ -1,17 +1,17 @@
 
 # 减小前端大小
 
-> - **原文地址：** https://developers.google.com/web/fundamentals/performance/webpack/decrease-frontend-size
+> - **原文地址：** [decrease frontend size](https://developers.google.com/web/fundamentals/performance/webpack/decrease-frontend-size)
 > - **原文作者：** [Ivan Akulov](https://developers.google.com/web/resources/contributors/iamakulov)
-> - **译文地址：** https://github.com/yued-fe/y-translation/blob/master/en/Web-Performance-Optimization-with-webpack/Decrease-Front-end-Size.md
-> - **译者：** 
-> - **校对者：**
+> - **译文地址：** [减小前端大小](https://github.com/yued-fe/y-translation/blob/master/en/Web-Performance-Optimization-with-webpack/Decrease-Front-end-Size.md)
+> - **译者：** [杨建](https://github.com/ASkyBig)
+> - **校对者：** [泥坤](https://github.com/nkplus)、[周文康](https://github.com/wenkangzhou)
 
-当你正在优化一个应用时，第一件事就是尽可能地减少它的大小。这里介绍如何利用webpack来实现。
+当你正在优化一个应用时，第一件事就是尽可能地减少它的大小。这里介绍如何利用 webpack 来实现。
 
-## 使用生产模式(只在 webpack 4)
+## 使用生产模式(只在 webpack4)
 
-Webpack 4 引入了 [新的 `mode` 标志](https://webpack.js.org/concepts/mode/). 你可以将这个标志设置为 `'development'` 或者 `'production'` 来指示 webpack 你正在为特定环境构建应用：
+Webpack4 引入了 [新的 `mode` 标志](https://webpack.js.org/concepts/mode/). 你可以将这个标志设置为 `'development'` 或者 `'production'` 来指示 webpack 你正在为特定环境构建应用：
 
 ```js
 // webpack.config.js
@@ -28,7 +28,7 @@ module.exports = {
 
 ## 启用缩减
 
-> ⭐️ **注意：** 这些大部分只适用于 webpack 3. 如果你使用 [production 模式下的 webpack 4](#enable-the-production-mode), bundle-level 缩减已经启用 – 你只需要启用 [loader-specific 选项](#loader-specific-options).
+> ⭐️ **注意：** 这些大部分只适用于 webpack3. 如果你使用 [production 模式下的 webpack4](#enable-the-production-mode), bundle-level 缩减已经启用 – 你只需要启用 [loader-specific 选项](#loader-specific-options).
 
 缩减尺寸是在你通过移除多余的空格、缩短变量的命名等方式压缩代码的时候。例如这样：
 
@@ -53,7 +53,7 @@ function map(array, iteratee) {
 function map(n,r){let t=-1;for(const a=null==n?0:n.length,l=Array(a);++t<a;)l[t]=r(n[t],t,n);return l} 
 ```
 
-Webpack 支持两种方式缩减代码： **bundle-level 缩减** and **loader-specific 选项**. 它们应该同步使用。
+Webpack 支持两种方式缩减代码： **bundle-level 缩减** 和 **loader-specific 选项**。 它们应该同步使用。
 
 ### Bundle-level 缩减
 
@@ -90,9 +90,9 @@ Webpack 支持两种方式缩减代码： **bundle-level 缩减** and **loader-s
     Object.defineProperty(n,"__esModule",{value:!0}),n.render=t;var o=r(1);r.n(o)
     ```   
 
-**在 webpack 4,** bundle-level 自动启用缩减 – 无论是否在生产模式。它在底层使用的是 [UglifyJS minifier](https://github.com/mishoo/UglifyJS2)。（如果你需要禁用缩减，只要使用开发模式或者将 `optimization.minimize` 选项设置为`false` 。）
+**在 webpack4,** bundle-level 自动启用缩减 – 无论是否在生产模式。它在底层使用的是 [UglifyJS minifier](https://github.com/mishoo/UglifyJS2)。（如果你需要禁用缩减，只要使用开发模式或者将 `optimization.minimize` 选项设置为`false` 。）
 
-**在 webpack 3,** 你需要直接使用 [UglifyJS 插件](https://github.com/webpack-contrib/uglifyjs-webpack-plugin)。这个插件是 webpack 自带的；将它添加到配置的 `plugins` 部分即可启用：
+**在 webpack3,** 你需要直接使用 [UglifyJS 插件](https://github.com/webpack-contrib/uglifyjs-webpack-plugin)。这个插件是 webpack 自带的；将它添加到配置的 `plugins` 部分即可启用：
 
 ``` js
 // webpack.config.js
@@ -105,13 +105,13 @@ module.exports = {
 };  
 ```
 
-> ⭐️ **注意：** 在 webpack 3 中, UglifyJS 插件不能编译版本超过 ES2015 (即ES6) 的代码。这意味着如果你的代码使用了类、箭头函数或者其它新的语言特性，你不能将它们编译成 ES5 版本的代码, 否则插件将抛出一个错误。
+> ⭐️ **注意：** 在 webpack 3 中, UglifyJS 插件不能编译版本超过 ES2015 (即 ES6) 的代码。这意味着如果你的代码使用了类、箭头函数或者其它新的语言特性，你不能将它们编译成 ES5 版本的代码, 否则插件将抛出一个错误。
   
-> 如果你需要编译包含新的语法（的代码），使用[uglifyjs-webpack-plugin](https://github.com/webpack-contrib/uglifyjs-webpack-plugin) 插件。 这同样是 webpack 自带的插件，但是更新，并且可以编译 ES2015+ 的代码。
+> 如果你需要编译包含新的语法（的代码），使用 [uglifyjs-webpack-plugin](https://github.com/webpack-contrib/uglifyjs-webpack-plugin) 插件。 这同样是 webpack 自带的插件，但是更新，并且可以编译 ES2015+ 的代码。
 
 ### Loader-specific 选项
 
-缩减代码的第二种方法是 loader-specific 选项 ([加载器是什么](https://webpack.js.org/concepts/loaders/)). 利用加载器选项，你可以压缩 minifier 不能缩减的东西。例如，当你利用[`css-loader`](https://github.com/webpack-contrib/css-loader)导入一个CSS文件时，该文件会被编译成一个字符串：
+缩减代码的第二种方法是 loader-specific 选项 ([加载器是什么](https://webpack.js.org/concepts/loaders/)). 利用加载器选项，你可以压缩 minifier 不能缩减的东西。例如，当你利用 [`css-loader`](https://github.com/webpack-contrib/css-loader) 导入一个 CSS 文件时，该文件会被编译成一个字符串：
 
 ``` css
 /* comments.css */  
@@ -189,7 +189,7 @@ warning$3(
 // … 
 ```
 
-生产中通常不需要这些检查和警告，但是它们还是存在于代码中并增加了库的大小。 **在 webpack 4,** 通过添加`optimization.nodeEnv: 'production'` 选项以移除它们:
+生产中通常不需要这些检查和警告，但是它们还是存在于代码中并增加了库的大小。 **在 webpack 4,** 通过添加 `optimization.nodeEnv: 'production'` 选项以移除它们:
 
 ``` js
 // webpack.config.js (for webpack 4)
@@ -201,7 +201,7 @@ module.exports = {
 }; 
 ```
 
-**在 webpack 3,** 使用 [`DefinePlugin`](https://webpack.js.org/plugins/define-plugin/) 替代:
+**在 webpack 3 中，** 使用 [`DefinePlugin`](https://webpack.js.org/plugins/define-plugin/) 替代:
 
 ```
 // webpack.config.js (for webpack 3)
@@ -268,7 +268,7 @@ module.exports = {
 
 降低前端尺寸的另一种方法是使用 [ES 模块](https://ponyfoo.com/articles/es6-modules-in-depth).
 
-当你使用 ES 模块, webpack 就可以进行 tree-shaking. Tree-shaking 是当 bundler 遍历整个依赖树时，检查使用了什么依赖，并移除无用的。所以，如果你使用了 ES 模块语法， webpack 可以去掉未使用的代码：
+当你使用 ES 模块, webpack 就可以进行 tree-shaking。Tree-shaking 是当 bundler 遍历整个依赖树时，检查使用了什么依赖，并移除无用的。所以，如果你使用了 ES 模块语法， webpack 可以去掉未使用的代码：
 
 1.  你写了一个带有多个 export 的文件，但是应用只使用它们其中的一个：
     
@@ -320,9 +320,9 @@ This works even with libraries if they are written with ES modules.
 
 ## 优化图片
 
-图片占页面大小的[一半以上](http://httparchive.org/interesting.php?a=All&l=Oct%2016%202017)。 尽管它们不如JavaScript关键(例如，它们不会阻塞渲染)，它们仍然消耗了带宽的一大部分。在 webpack 中使用 `url-loader`, `svg-url-loader` 和 `image-webpack-loader` 来优化它们。
+图片占页面大小的[一半以上](http://httparchive.org/interesting.php?a=All&l=Oct%2016%202017)。 尽管它们不如 JavaScript 关键(例如，它们不会阻塞渲染)，它们仍然消耗了带宽的一大部分。在 webpack 中使用 `url-loader`, `svg-url-loader` 和 `image-webpack-loader` 来优化它们。
 
-[`url-loader`](https://github.com/webpack-contrib/url-loader) 将小的静态文件内联进应用。没有配置的话，它需要通过传递文件，将它放在编译后的打包 bundle 内并返回一个这个文件的 url。然而，如果我们指定了 `limit` 选项，它会将文件编码成比无配置更小的 [Base64 的数据 url](https://css-tricks.com/data-uris/) 并将该 url 返回。这样可以将图片内联进JavaScript代码中，并节省一次HTTP请求：
+[`url-loader`](https://github.com/webpack-contrib/url-loader) 将小的静态文件内联进应用。没有配置的话，它需要通过传递文件，将它放在编译后的打包 bundle 内并返回一个这个文件的 url。然而，如果我们指定了 `limit` 选项，它会将文件编码成比无配置更小的 [Base64 的数据 url](https://css-tricks.com/data-uris/) 并将该 url 返回。这样可以将图片内联进 JavaScript 代码中，并节省一次 HTTP 请求：
 
 ``` js
 // webpack.config.js
@@ -351,7 +351,7 @@ import imageUrl from './image.png';
 // and `imageUrl` will include its url: `/2fcd56a1920be.png`
 ```
 
-> ⭐️ **注意：** 内联图片减少了单独请求的数量，这是好的([即使通过HTTP/2](https://blog.octo.com/en/http2-arrives-but-sprite-sets-aint-no-dead/))，但是增加了 bundle 和内存消耗的下载/解析时间。确保不要嵌入大的或者很多的图片，否则增加的 bundle 时间可能超过内联带来的好处。
+> ⭐️ **注意：** 内联图片减少了单独请求的数量，这是好的([即使通过 HTTP/2](https://blog.octo.com/en/http2-arrives-but-sprite-sets-aint-no-dead/))，但是增加了 bundle 和内存消耗的下载/解析时间。确保不要嵌入大的或者很多的图片，否则增加的 bundle 时间可能超过内联带来的好处。
 
 [`svg-url-loader`](https://github.com/bhovhannes/svg-url-loader)的工作原理类似于 `url-loader` – 除了它利用 [URL encoding](https://developer.mozilla.org/en-US/docs/Glossary/percent-encoding) 而不是 Base64 对文件编码。对于 SVG 图片这是有效的 – 因为 SVG 文件恰好是纯文本，这种编码规模效应更加明显：
 
@@ -378,7 +378,7 @@ module.exports = {
 
 > ⭐️ **注意:** svg-url-loader 拥有改善 IE 浏览器支持的选项，但是在其他浏览器中更糟糕。如果你需要兼容 IE 浏览器，[设置 `iesafe: true` 选项](https://github.com/bhovhannes/svg-url-loader#iesafe).
 
-[`image-webpack-loader`](https://github.com/tcoopman/image-webpack-loader) 会压缩检查到的所有图片。它支持 JPG、 PNG、GIF 和 SVG 格式的图片，因此我们在碰到所有这些类型的图片都会使用它。
+[`image-webpack-loader`](https://github.com/tcoopman/image-webpack-loader) 会压缩检查到的所有图片。它支持 JPG、PNG、GIF 和 SVG 格式的图片，因此我们在碰到所有这些类型的图片都会使用它。
 
 此加载器不能将图片嵌入应用，所以它必须和 `url-loader` 以及 `svg-url-loader` 一起使用。为了避免同时将它复制粘贴到两个规则中（一个针对 JPG/PNG/GIF 图片， 另一个针对 SVG ），我们使用 [`enforce: 'pre'`](https://webpack.js.org/configuration/module/#rule-enforce) 作为单独的规则涵盖在这个加载器：
 
@@ -411,7 +411,7 @@ module.exports = {
 
 例如，Lodash (自 v4.17.4 版本起) 向 bundle 增加了 72KB 的缩小代码。但是如果你仅使用它差不多20种的方法，那么大约 65KB 的缩小代码什么都不做。
 
-另一个例子是 Moment.js。它的 2.19.1 版本占据了 223KB 的缩减代码，这是巨大的 - 截至2017年10月，一个页面的JavaScript平均体积是 [452 KB] (http://httparchive.org/interesting.php?a=All&l=Oct%2016%202017)。然而，其中的 170KB 是[本地化文件](https://github.com/moment/moment/tree/4caa268356434f3ae9b5041985d62a0e8c246c78/locale)。如果你没有用到多语言版 Moment.js，这些文件都将毫无目的地使 bundle 更臃肿。
+另一个例子是 Moment.js。它的 2.19.1 版本占据了 223KB 的缩减代码，这是巨大的 - 截至 2017 年 10 月，一个页面的 JavaScript 平均体积是 [452 KB] (http://httparchive.org/interesting.php?a=All&l=Oct%2016%202017)。然而，其中的 170KB 是[本地化文件](https://github.com/moment/moment/tree/4caa268356434f3ae9b5041985d62a0e8c246c78/locale)。如果你没有用到多语言版 Moment.js，这些文件都将毫无目的地使 bundle 更臃肿。
 
 所有的这些依赖都可以轻易地优化。我们已经在 GitHub 仓库中收集了优化方法 - [检查出来](https://github.com/GoogleChromeLabs/webpack-libs-optimizations)!
 
@@ -496,7 +496,7 @@ export function render(data, target) {
 })
 ```
 
-看到不同了吗？在普通绑定中，模块 0 需要模块 1 的  `render`。使用模块连接， `require` 只需用所需要的功能替换，模块 1 就被移除了。 bundle 拥有更小的模块 – 以及更少的模块开支!
+看到不同了吗？在普通绑定中，模块 0 需要模块 1 的 `render`。使用模块连接， `require` 只需用所需要的功能替换，模块 1 就被移除了。 bundle 拥有更小的模块 – 以及更少的模块开支!
 
 要在 **webpack 4** 中开启这个功能，启用 `optimization.concatenateModules` 选项即可：
 
@@ -509,7 +509,7 @@ module.exports = {
 };
 ```
 
-在**webpack 3** 中，使用 `ModuleConcatenationPlugin` 插件:
+在 **webpack 3** 中，使用 `ModuleConcatenationPlugin` 插件:
 
 ``` js
 // webpack.config.js (for webpack 3)
