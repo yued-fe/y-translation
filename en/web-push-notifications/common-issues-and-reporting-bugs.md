@@ -1,6 +1,6 @@
->原文地址：https://developers.google.com/web/fundamentals/push-notifications/common-issues-and-reporting-bugs
+>原文地址：[common issues and reporting bugs](https://developers.google.com/web/fundamentals/push-notifications/common-issues-and-reporting-bugs)
 
->译文地址：https://github.com/yued-fe/y-translation/blob/master/todo/push-notifications/common-issues-and-reporting-bugs.md
+>译文地址：[Web 推送：常见问题以及错误反馈](https://github.com/yued-fe/y-translation/blob/master/todo/push-notifications/common-issues-and-reporting-bugs.md)
 
 >译者：[刘文涛](https://github.com/HSDPA-wen)
 
@@ -14,12 +14,12 @@
 
 在开发和测试 Web 推送的两个阶段中，每个阶段都遇到独有的一些常见问题。     
        
-- **发送消息：**首先应确保发送消息成功。正确返回的 HTTP 状态码应该是201。 如果不是：
-	- **检查授权错误：**如果收到授权错误消息，请参阅下面 “授权相关问题部分"。
-	- **其他API错误：**如果收到非201状态代码，请参阅下面的“HTTP 状态代码部分“以获取有关问题原因的指导。
-- **接收消息：**如果你能够成功发送消息，但在浏览器上未收到消息：
-	- **检查加密问题：**请参阅下面的“有效负载加密问题部分“。
-	- **检查连接问题：**如果是在 Chrome 上出的问题，可能与连接有关。 可参阅下面的“连接问题”部分。
+- **发送消息：** 首先应确保发送消息成功。正确返回的 HTTP 状态码应该是201。 如果不是：
+	- **检查授权错误：** 如果收到授权错误消息，请参阅下面 “授权相关问题部分"。
+	- **其他API错误：** 如果收到非201状态代码，请参阅下面的“HTTP 状态代码部分“以获取有关问题原因的指导。
+- **接收消息：** 如果你能够成功发送消息，但在浏览器上未收到消息：
+	- **检查加密问题：** 请参阅下面的“有效负载加密问题部分“。
+	- **检查连接问题：** 如果是在 Chrome 上出的问题，可能与连接有关。 可参阅下面的“连接问题”部分。
 
 如果无法发送和接收推送消息，并且本文档中的相关部分不能帮助你调试问题，那么你可能发现了推送机制本身的一个 Bug。在这种情况下，请参阅 “如何提交错误报告”部分，提交一份包含所有重要信息的错误报告，以加快错误修复过程。
 
