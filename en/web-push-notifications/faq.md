@@ -1,6 +1,6 @@
->原文地址：https://developers.google.com/web/fundamentals/push-notifications/faq
+>原文地址：[FAQ](https://developers.google.com/web/fundamentals/push-notifications/faq)
 
->译文地址：https://github.com/yued-fe/y-translation/edit/master/todo/push-notifications/faq.md
+>译文地址：[FAQ](https://github.com/yued-fe/y-translation/edit/master/todo/push-notifications/faq.md)
 
 >译者：[刘鹏](https://github.com/git-patrickliu)
 
