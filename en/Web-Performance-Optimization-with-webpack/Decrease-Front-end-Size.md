@@ -11,7 +11,7 @@
 
 ## 使用生产模式(只在 webpack4)
 
-Webpack4 引入了 [新的 `mode` 标志](https://webpack.js.org/concepts/mode/). 你可以将这个标志设置为 `'development'` 或者 `'production'` 来指示 webpack 你正在为特定环境构建应用：
+Webpack 4 引入了 [新的 `mode` 标志](https://webpack.js.org/concepts/mode/). 你可以将这个标志设置为 `'development'` 或者 `'production'` 来指示 webpack 你正在为特定环境构建应用：
 
 ```js
 // webpack.config.js
@@ -28,7 +28,7 @@ module.exports = {
 
 ## 启用缩减
 
-> ⭐️ **注意：** 这些大部分只适用于 webpack3. 如果你使用 [production 模式下的 webpack4](#enable-the-production-mode), bundle-level 缩减已经启用 – 你只需要启用 [loader-specific 选项](#loader-specific-options).
+> ⭐️ **注意：** 这些大部分只适用于 webpack 3. 如果你使用 [production 模式下的 webpack4](#enable-the-production-mode), bundle-level 缩减已经启用 – 你只需要启用 [loader-specific 选项](#loader-specific-options).
 
 缩减尺寸是在你通过移除多余的空格、缩短变量的命名等方式压缩代码的时候。例如这样：
 
@@ -90,9 +90,9 @@ Webpack 支持两种方式缩减代码： **bundle-level 缩减** 和 **loader-s
     Object.defineProperty(n,"__esModule",{value:!0}),n.render=t;var o=r(1);r.n(o)
     ```   
 
-**在 webpack4,** bundle-level 自动启用缩减 – 无论是否在生产模式。它在底层使用的是 [UglifyJS minifier](https://github.com/mishoo/UglifyJS2)。（如果你需要禁用缩减，只要使用开发模式或者将 `optimization.minimize` 选项设置为`false` 。）
+**在 webpack 4,** bundle-level 自动启用缩减 – 无论是否在生产模式。它在底层使用的是 [UglifyJS minifier](https://github.com/mishoo/UglifyJS2)。（如果你需要禁用缩减，只要使用开发模式或者将 `optimization.minimize` 选项设置为`false` 。）
 
-**在 webpack3,** 你需要直接使用 [UglifyJS 插件](https://github.com/webpack-contrib/uglifyjs-webpack-plugin)。这个插件是 webpack 自带的；将它添加到配置的 `plugins` 部分即可启用：
+**在 webpack 3,** 你需要直接使用 [UglifyJS 插件](https://github.com/webpack-contrib/uglifyjs-webpack-plugin)。这个插件是 webpack 自带的；将它添加到配置的 `plugins` 部分即可启用：
 
 ``` js
 // webpack.config.js
