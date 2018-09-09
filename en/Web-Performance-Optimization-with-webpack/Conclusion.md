@@ -1,11 +1,11 @@
 
 # 结论
 
-> - **原文地址：** https://developers.google.com/web/fundamentals/performance/webpack/conclusion
+> - **原文地址：** [conclusion](https://developers.google.com/web/fundamentals/performance/webpack/conclusion)
 > - **原文作者：** [Ivan Akulov](https://developers.google.com/web/resources/contributors/iamakulov)
-> - **译文地址：** https://github.com/yued-fe/y-translation/blob/master/en/Web-Performance-Optimization-with-webpack/Conclusion.md
+> - **译文地址：** [结论](https://github.com/yued-fe/y-translation/blob/master/en/Web-Performance-Optimization-with-webpack/Conclusion.md)
 > - **译者：** [闫萌](https://github.com/yanyixin)
-> - **校对者：**
+> - **校对者：** [周文康]()、[杨建]()
 
 总结:
 
