@@ -1,12 +1,12 @@
 # 利用好持久化缓存
 
-> - **原文地址：** https://developers.google.com/web/fundamentals/performance/webpack/use-long-term-caching
+> - **原文地址：** [use long term caching](https://developers.google.com/web/fundamentals/performance/webpack/use-long-term-caching)
 > - **原文作者：** [Ivan Akulov](https://developers.google.com/web/resources/contributors/iamakulov)
-> - **译文地址：** https://github.com/yued-fe/y-translation/blob/master/en/Web-Performance-Optimization-with-webpack/Make-Use-of-Long-term-Caching.md
+> - **译文地址：** [利用好持久化缓存](https://github.com/yued-fe/y-translation/blob/master/en/Web-Performance-Optimization-with-webpack/Make-Use-of-Long-term-Caching.md)
 > - **译者：** [周文康](https://github.com/wenkangzhou)
-> - **校对者：**
+> - **校对者：** [闫蒙]()、[泥坤]()
 
-在[优化应用体积](https://developers.google.com/web/fundamentals/performance/webpack/decrease-frontend-size)之后,下一个提升应用加载时间的策略就是缓存。将资源缓存在客户端中，可以避免之后每次都重新下载。
+在[优化应用体积](https://developers.google.com/web/fundamentals/performance/webpack/decrease-frontend-size)之后，下一个提升应用加载时间的策略就是缓存。将资源缓存在客户端中，可以避免之后每次都重新下载。
 
 ## bundle 的版本控制和缓存头的使用
 
@@ -19,7 +19,7 @@
     Cache-Control: max-age=31536000
     ```
     
-    注意：如果你不熟悉 `Cache-Control` 的原理，请参阅 Jake Archibald 的文章: [关于缓存的最佳实践](https://jakearchibald.com/2016/caching-best-practices/)
+    注意：如果你不熟悉 `Cache-Control` 的原理，请参阅 Jake Archibald 的文章: [关于缓存的最佳实践](https://jakearchibald.com/2016/caching-best-practices/)。
 
 2. 当文件改变时，文件会被重命名，这样就迫使浏览器重新下载：
 
@@ -46,7 +46,7 @@ module.exports = {
 };
 ```
 
-> ⭐️ 注意: 即使 bundle 不变，webpack 也可能生成不同的哈希值 – 例如，你重命名了一个文件或者在不同的操作系统下编译了 bundle。 当然，这其实是一个  bug，目前还没有明确的解决方案。[具体可参阅 GitHub 上的讨论](https://github.com/webpack/webpack/issues/1479)
+> ⭐️ 注意: 即使 bundle 不变，webpack 也可能生成不同的哈希值 – 例如，你重命名了一个文件或者在不同的操作系统下编译了 bundle。 当然，这其实是一个  bug，目前还没有明确的解决方案，[具体可参阅 GitHub 上的讨论](https://github.com/webpack/webpack/issues/1479)。
 
 如果你需要将文件名发送给客户端，可以使用 `HtmlWebpackPlugin` 或者 `WebpackManifestPlugin`。
 
@@ -59,7 +59,7 @@ module.exports = {
 <script src="bundle.8e0d62a03.js"></script>
 ```
 
-[`WebpackManifestPlugin`](https://github.com/danethurber/webpack-manifest-plugin)是一个扩展性更佳的插件，它可以帮助你解决服务端逻辑比较复杂的那部分。在打包时，它会生成一个 JSON 文件，里面包含了原文件名和带哈希文件名的映射。在服务端，通过这个JSON就能方便的找到我们真正要执行的文件：
+[`WebpackManifestPlugin`](https://github.com/danethurber/webpack-manifest-plugin)是一个扩展性更佳的插件，它可以帮助你解决服务端逻辑比较复杂的那部分。在打包时，它会生成一个 JSON 文件，里面包含了原文件名和带哈希文件名的映射。在服务端，通过这个 JSON 就能方便的找到我们真正要执行的文件：
 
 ``` js
 // manifest.json
@@ -115,7 +115,7 @@ module.exports = {
     
     到目前为止，如果你构建应用，这个 chunk 还是包含了整个应用的代码 - 就像我们没有做过上述这些步骤一样。但接下来很快就将产生变化。
 
-3. **在 webpack 4 中 ** ，可以将`optimization.splitChunks.chunks: 'all'` 选项添加到 webpack 的配置中:
+3. **在 webpack 4 中**，可以将 `optimization.splitChunks.chunks: 'all'` 选项添加到 webpack 的配置中:
 
     ``` js
     // webpack.config.js (for webpack 4)
@@ -130,7 +130,7 @@ module.exports = {
     
     这个选项可以开启智能代码拆分。使用了这个功能，webpack 将会提取大于 30KB（压缩和 gzip 之前）的第三方库代码。它同时也可以提取公共代码 - 如果你的构建结果会生成多个 bundle 时这将非常有用。（例如：[假如你通过路由来拆分应用](https://developers.google.com/web/fundamentals/performance/webpack/use-long-term-caching#split-the-code-into-routes-and-pages)）。
      
-    **在 webpack 3 中** 添加 [CommonsChunkPlugin](https://webpack.js.org/plugins/commons-chunk-plugin/)插件:
+    **在 webpack 3 中**添加 [CommonsChunkPlugin](https://webpack.js.org/plugins/commons-chunk-plugin/) 插件:
     
     ``` js
     // webpack.config.js (for webpack 3)
@@ -192,7 +192,7 @@ console.log('Wat');
 ./vendor.e6ea4504d61a1cc1c60b.js  47 kB       1  [emitted]  vendor
 ```
 
-这是由于 webpack 打包时，除了模块代码之外，webpack 的 bundle 中还包含了 *[runtime](https://webpack.js.org/concepts/manifest/)*  - 一小段可以管理模块执行的代码。当你将代码拆分成多个文件时，这小部分代码在 chunk id 和 匹配的文件之间会生成一个映射：
+这是由于 webpack 打包时，除了模块代码之外，webpack 的 bundle 中还包含了 *[runtime](https://webpack.js.org/concepts/manifest/)*  - 一小段可以管理模块执行的代码。当你将代码拆分成多个文件时，这小部分代码在 chunk id 和匹配的文件之间会生成一个映射：
 
 ``` js
 // vendor.e6ea4504d61a1cc1c60b.js
@@ -227,14 +227,10 @@ module.exports = {
         module.context.includes('node_modules'),
     }),
 
-    // This plugin must come after the vendor one (because webpack
-    // includes runtime into the last chunk)
     // 这个插件必须在 vendor 生成之后执行（因为 webpack 把运行时打进了最新的 chunk）
     new webpack.optimize.CommonsChunkPlugin({
       name: 'runtime',
 
-      // minChunks: Infinity means that no app modules
-      // will be included into this chunk
       // minChunks: Infinity 表示任何应用模块都不能打进这个 chunk
       minChunks: Infinity,
     }),
@@ -405,7 +401,7 @@ module.exports = {
 
 * 又比如你在一个新闻网站看一篇文章, 你更关心的肯定是文章的文字而不是广告. 所以, 这里文字就比广告重要。
 
-上面的这些情况，都可以通过优先下载最重要的部分，稍后懒加载剩余部分，从而来提升页面首次加载的性能。在 webpack 中，使用[`import()` 函数](https://webpack.js.org/api/module-methods/#import-) 和 [代码拆分](https://webpack.js.org/guides/code-splitting/)即可实现。
+上面的这些情况，都可以通过优先下载最重要的部分，稍后懒加载剩余部分，从而来提升页面首次加载的性能。在 webpack 中，使用[`import()` 函数](https://webpack.js.org/api/module-methods/#import-) 和[代码拆分](https://webpack.js.org/guides/code-splitting/)即可实现。
 
 ``` js
 // videoPlayer.js
@@ -519,7 +515,7 @@ module.exports = {
 
 这个选项可以开启智能代码拆分。有了这个选项，webpack 将自动查找到公共代码，并且提取到单独的文件中。
 
-**在 webpack 3中**，可以使用[`CommonsChunkPlugin`](https://webpack.js.org/plugins/commons-chunk-plugin/)插件，它会将公共的依赖项移动到一个新的指定文件中：
+**在 webpack 3 中**，可以使用 [`CommonsChunkPlugin`](https://webpack.js.org/plugins/commons-chunk-plugin/) 插件，它会将公共的依赖项移动到一个新的指定文件中：
 
 ``` js
 // webpack.config.js (适用于 webpack 3)
@@ -545,7 +541,7 @@ module.exports = {
 
 * Webpack 文档 [关于 CommonsChunkPlugin 插件](https://webpack.js.org/plugins/commons-chunk-plugin/)
 
-* [“CommonsChunkPlugin的最佳实践”](https://medium.com/webpack/webpack-bits-getting-the-most-out-of-the-commonschunkplugin-ab389e5f318)
+* [“CommonsChunkPlugin 的最佳实践”](https://medium.com/webpack/webpack-bits-getting-the-most-out-of-the-commonschunkplugin-ab389e5f318)
 
 * [`optimization.splitChunks` 和 `optimization.runtimeChunk` 的工作原理](https://gist.github.com/sokra/1522d586b8e5c0f5072d7565c2bee693)
 
@@ -612,9 +608,9 @@ Time: 2150ms
        + 1 hidden module
 ``` 
 
-这将使包含或依赖于这些被更改 ID 的模块的所有 chunk 都无效 - 即使它们实际代码没有更改。在我们的案例中，ID为 `0` 的chunk ( `comments.js` 的 chunk)  和 `main` chunk （其它应用代码的 chunk ）都将失效 - 但其实只有 `main` 应该失效。
+这将使包含或依赖于这些被更改 ID 的模块的所有 chunk 都无效 - 即使它们实际代码没有更改。在我们的案例中，ID 为 `0` 的chunk ( `comments.js` 的 chunk)  和 `main` chunk （其它应用代码的 chunk ）都将失效 - 但其实只有 `main` 应该失效。
 
-为了解决这个问题，可以使用[`HashedModuleIdsPlugin`](https://webpack.js.org/plugins/hashed-module-ids-plugin/)插件来改变模块 ID 的计算方式。这个插件用模块路径的哈希值代替了基于计数器的ID：
+为了解决这个问题，可以使用 [`HashedModuleIdsPlugin`](https://webpack.js.org/plugins/hashed-module-ids-plugin/) 插件来改变模块 ID 的计算方式。这个插件用模块路径的哈希值代替了基于计数器的 ID：
 
 ``` js
 $ webpack
