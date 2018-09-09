@@ -190,15 +190,15 @@ module.exports = {
 
 - **大的依赖** 为什么他们那么大？是否有更小的替代品（例如 Preact 代替 React）？你是否需要其中的全部代码？（例如，Moment.js 包含很多并不常使用并可以扔掉的本地化语言环境 ）
 
-- **重复的依赖** 你是否在多个文件里看到相同的依赖？（使用像 webpack4 中的 `optimization.splitChunks.chunks` 选项或者 `webpack3 中的CommonsChunkPlugin` 来将他们移到一个公共文件里）或者 bundle 是否包含了同一个库的多个版本？
+- **重复的依赖** 你是否在多个文件里看到相同的依赖？（使用像 webpack4 中的 `optimization.splitChunks.chunks` 选项或者 `webpack3 中的 CommonsChunkPlugin` 来将他们移到一个公共文件里）或者 bundle 是否包含了同一个库的多个版本？
 
-- **相似的依赖.** 是否有相似的库做着差不多的事情？（例如 `comment` 和 `date-fns` 或者 `lodash` 和 `lodash-es`）试着统一成单一的工具。
+- **相似的依赖** 是否有相似的库做着差不多的事情？（例如 `comment` 和 `date-fns` 或者 `lodash` 和 `lodash-es`）试着统一成单一的工具。
 
-同时,建议看一下 Sean Larkin 的 [great analysis of webpack
+同时，建议看一下 Sean Larkin 的 [great analysis of webpack
 bundles](https://medium.com/webpack/webpack-bits-getting-the-most-out-of-the-commonschunkplugin-ab389e5f318)。
 
 ## 总结
 
 - 使用 webpack-dashboard 和 bundlesize 来持续关注你的应用大小。
 
-- 用`webpack-bundle-analyzer`来深究应用大小的构成
+- 用 `webpack-bundle-analyzer` 来深究应用大小的构成
