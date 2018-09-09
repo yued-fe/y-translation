@@ -9,7 +9,7 @@
 
 当你正在优化一个应用时，第一件事就是尽可能地减少它的大小。这里介绍如何利用 webpack 来实现。
 
-## 使用生产模式(只在 webpack4)
+## 使用生产模式(仅限 webpack4)
 
 Webpack 4 引入了 [新的 `mode` 标志](https://webpack.js.org/concepts/mode/). 你可以将这个标志设置为 `'development'` 或者 `'production'` 来告诉 webpack 你正在为特定环境构建应用：
 
