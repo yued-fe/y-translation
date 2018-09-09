@@ -50,7 +50,7 @@ module.exports = {
 
 如果你需要将文件名发送给客户端，可以使用 `HtmlWebpackPlugin` 或者 `WebpackManifestPlugin`。
 
-[`HtmlWebpackPlugin`](https://github.com/jantimon/html-webpack-plugin)是一个简单但扩展性不强的插件。在编译期间，它会生成一个 HTML 文件，文件包含了所有已经被编译的资源。如果你的服务端逻辑不是很复杂，那么它应该能满足你：
+[`HtmlWebpackPlugin`](https://github.com/jantimon/html-webpack-plugin) 是一个简单但扩展性不强的插件。在编译期间，它会生成一个 HTML 文件，文件包含了所有已经被编译的资源。如果你的服务端逻辑不是很复杂，那么它应该能满足你：
 
 ```js
 <!-- index.html -->
@@ -59,7 +59,7 @@ module.exports = {
 <script src="bundle.8e0d62a03.js"></script>
 ```
 
-[`WebpackManifestPlugin`](https://github.com/danethurber/webpack-manifest-plugin)是一个扩展性更佳的插件，它可以帮助你解决服务端逻辑比较复杂的那部分。在打包时，它会生成一个 JSON 文件，里面包含了原文件名和带哈希文件名的映射。在服务端，通过这个 JSON 就能方便的找到我们真正要执行的文件：
+[`WebpackManifestPlugin`](https://github.com/danethurber/webpack-manifest-plugin) 是一个扩展性更佳的插件，它可以帮助你解决服务端逻辑比较复杂的那部分。在打包时，它会生成一个 JSON 文件，里面包含了原文件名和带哈希文件名的映射。在服务端，通过这个 JSON 就能方便的找到我们真正要执行的文件：
 
 ``` js
 // manifest.json
@@ -78,7 +78,7 @@ module.exports = {
 
 应用的依赖通常比实际应用内的代码变更频率低。如果将它们移到单独的文件中，浏览器就可以独立缓存它们 – 这样每次应用中的代码变更也不会去重新下载它们。
 
-> 关键术语：在 webpack 术语中，把带有应用代码的独立文件称之为 *chunk*。我们在下面的文章中会使用到这个名称。
+> 关键术语：在 webpack 术语中，把带有应用代码的独立文件称之为 **chunk**。我们在下面的文章中会使用到这个名称。
 
 要将依赖项提取到独立的 chunk 中，需要执行下面三个步骤：
 
@@ -192,7 +192,7 @@ console.log('Wat');
 ./vendor.e6ea4504d61a1cc1c60b.js  47 kB       1  [emitted]  vendor
 ```
 
-这是由于 webpack 打包时，除了模块代码之外，webpack 的 bundle 中还包含了 *[runtime](https://webpack.js.org/concepts/manifest/)*  - 一小段可以管理模块执行的代码。当你将代码拆分成多个文件时，这小部分代码在 chunk id 和匹配的文件之间会生成一个映射：
+这是由于 webpack 打包时，除了模块代码之外，webpack 的 bundle 中还包含了 **[runtime](https://webpack.js.org/concepts/manifest/)**  - 一小段可以管理模块执行的代码。当你将代码拆分成多个文件时，这小部分代码在 chunk id 和匹配的文件之间会生成一个映射：
 
 ``` js
 // vendor.e6ea4504d61a1cc1c60b.js
@@ -264,7 +264,7 @@ Time: 3816ms
 
 * Webpack 指南 [关于持久化缓存](https://webpack.js.org/guides/caching/)
   
-* Webpack 文档 [关于webpack的 runtime 和 manifest 文件](https://webpack.js.org/concepts/manifest/)
+* Webpack 文档 [关于 webpack 的 runtime 和 manifest 文件](https://webpack.js.org/concepts/manifest/)
 
 * [“CommonsChunkPlugin 的最佳实践”](https://medium.com/webpack/webpack-bits-getting-the-most-out-of-the-commonschunkplugin-ab389e5f318)
 
@@ -441,13 +441,13 @@ Time: 4273ms
 
 这样可以让 `入口` bundle 变得更小，从而减少首次加载时间。不仅如此，它还可以优化缓存 - 如果你修改了入口 chunk 的代码，注释 chunk 不会受到影响。
 
-> ⭐️ 注意: 如果你使用 Babel 编译代码，会因为 Babel 无法识别 `import()` 而出现语法错误。为了避免这个错误，你可以添加[`syntax-dynamic-import`](https://www.npmjs.com/package/babel-plugin-syntax-dynamic-import)插件。
+> ⭐️ 注意: 如果你使用 Babel 编译代码，会因为 Babel 无法识别 `import()` 而出现语法错误。为了避免这个错误，你可以添加 [`syntax-dynamic-import`](https://www.npmjs.com/package/babel-plugin-syntax-dynamic-import) 插件。
 
 ### 扩展阅读
 
 * Webpack 文档 [`import()` 函数的使用](https://webpack.js.org/api/module-methods/#import-)
 
-* JavaScript 提案  [实现`import()`语法](https://github.com/tc39/proposal-dynamic-import)
+* JavaScript 提案  [实现 `import()` 语法](https://github.com/tc39/proposal-dynamic-import)
 
 ## 将代码拆分为路由和页面
 
@@ -463,9 +463,9 @@ Time: 4273ms
 
 要通过路由来拆分单页应用，可以使用 `import()`（参加上文[代码懒加载](#lazy-loading)部分）。如果你使用的是一个框架，目前也有现成的解决方案：
 
-* `react-router`文档中的["代码分离”](https://reacttraining.com/react-router/web/guides/code-splitting)(适用于 React)
+* `react-router` 文档中的["代码分离”](https://reacttraining.com/react-router/web/guides/code-splitting)(适用于 React)
 
-* `vue-router`文档中的[“路由的懒加载”](https://router.vuejs.org/en/advanced/lazy-loading.html)(适用于 Vue.js)
+* `vue-router` 文档中的[“路由的懒加载”](https://router.vuejs.org/en/advanced/lazy-loading.html)(适用于 Vue.js)
 
 ### 传统多页应用
 
@@ -500,7 +500,7 @@ Time: 4273ms
 
 所以，如果只有 article 页面使用到了 Lodash，那么 home 和 profile bundle 就不会包含它 - 用户也不会在访问首页的时候下载到这个库。
 
-但是，单独的依赖树有它们的缺点。如果两个入口都使用到了 Lodash，同时你没有将依赖项移到 vendor bundle中，则两个入口都将包含 Lodash 的副本。为了解决这个问题，**在 webpack 4 中**，可以在你的 webpack 配置中加入`optimization.splitChunks.chunks: 'all'`选项：
+但是，单独的依赖树有它们的缺点。如果两个入口都使用到了 Lodash，同时你没有将依赖项移到 vendor bundle 中，则两个入口都将包含 Lodash 的副本。为了解决这个问题，**在 webpack 4 中**，可以在你的 webpack 配置中加入`optimization.splitChunks.chunks: 'all'`选项：
 
 ``` js
 // webpack.config.js (适用于webpack 4)
@@ -547,7 +547,7 @@ module.exports = {
 
 ## 确保模块的 id 更加稳定
 
-构建代码时，webpack 会为每个模块分配一个ID。随后，这些 ID 将在 bundle 里的 `require()` 函数中被使用到。你通常会在编译输出的模块路径前看到这些 ID：
+构建代码时，webpack 会为每个模块分配一个 ID。随后，这些 ID 将在 bundle 里的 `require()` 函数中被使用到。你通常会在编译输出的模块路径前看到这些 ID：
 
 ``` bash
 $ webpack
@@ -608,7 +608,7 @@ Time: 2150ms
        + 1 hidden module
 ``` 
 
-这将使包含或依赖于这些被更改 ID 的模块的所有 chunk 都无效 - 即使它们实际代码没有更改。在我们的案例中，ID 为 `0` 的chunk ( `comments.js` 的 chunk)  和 `main` chunk （其它应用代码的 chunk ）都将失效 - 但其实只有 `main` 应该失效。
+这将使包含或依赖于这些被更改 ID 的模块的所有 chunk 都无效 - 即使它们实际代码没有更改。在我们的案例中，ID 为 `0` 的 chunk ( `comments.js` 的 chunk)  和 `main` chunk （其它应用代码的 chunk ）都将失效 - 但其实只有 `main` 应该失效。
 
 为了解决这个问题，可以使用 [`HashedModuleIdsPlugin`](https://webpack.js.org/plugins/hashed-module-ids-plugin/) 插件来改变模块 ID 的计算方式。这个插件用模块路径的哈希值代替了基于计数器的 ID：
 
