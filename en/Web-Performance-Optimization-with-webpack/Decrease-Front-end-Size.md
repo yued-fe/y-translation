@@ -1,5 +1,5 @@
 
-# 减小前端大小
+# 减小前端资源大小
 
 > - **原文地址：** [decrease frontend size](https://developers.google.com/web/fundamentals/performance/webpack/decrease-frontend-size)
 > - **原文作者：** [Ivan Akulov](https://developers.google.com/web/resources/contributors/iamakulov)
@@ -26,11 +26,11 @@ module.exports = {
 
 * [`mode` 标志具体在配置些什么](https://medium.com/webpack/webpack-4-mode-and-optimization-5423a6bc597a)
 
-## 启用缩减
+## 启用最小化
 
-> ⭐️ **注意：** 这些大部分只适用于 webpack 3。如果你[在 webpack 4 中开启了 production 模式](#enable-the-production-mode)，bundle-level 缩减已经启用 – 你只需要启用 [loader-specific 选项](#loader-specific-options)。
+> ⭐️ **注意：** 这些大部分只适用于 webpack 3。如果你[在 webpack 4 中开启了 production 模式](#enable-the-production-mode)，bundle-level 最小化已经启用 – 你只需要启用 [loader-specific 选项](#loader-specific-options)。
 
-缩减尺寸是在你通过移除多余的空格、缩短变量的命名等方式压缩代码的时候进行的。例如这样：
+最小化尺寸是在你通过移除多余的空格、缩短变量的命名等方式压缩代码的时候进行的。例如这样：
 
 ``` js
 // 原来的代码
@@ -49,13 +49,13 @@ function map(array, iteratee) {
 ↓
 
 ``` js
-// 缩减后的代码
+// 最小化后的代码
 function map(n,r){let t=-1;for(const a=null==n?0:n.length,l=Array(a);++t<a;)l[t]=r(n[t],t,n);return l} 
 ```
 
-Webpack 支持两种方式缩减代码： **bundle-level 缩减** 和 **loader-specific 选项**。 它们应该同时使用。
+Webpack 支持两种方式最小化代码： **bundle-level 最小化** 和 **loader-specific 选项**。 它们应该同时使用。
 
-### Bundle-level 缩减
+### Bundle-level 最小化
 
 当编译完成后，bundle-level 最小化功能会压缩整个 bundle 。这里展示了它是如何工作的： 
 
@@ -90,7 +90,7 @@ Webpack 支持两种方式缩减代码： **bundle-level 缩减** 和 **loader-s
     Object.defineProperty(n,"__esModule",{value:!0}),n.render=t;var o=r(1);r.n(o)
     ```   
 
-**在 webpack 4 中,** bundle-level 最小化功能是自动开启的 – 无论是否在生产模式。它在底层使用的是 [UglifyJS minifier](https://github.com/mishoo/UglifyJS2)。（如果你需要禁用缩减，只要使用开发模式或者将 `optimization.minimize` 选项设置为`false` 。）
+**在 webpack 4 中,** bundle-level 最小化功能是自动开启的 – 无论是否在生产模式。它在底层使用的是 [UglifyJS minifier](https://github.com/mishoo/UglifyJS2)。（如果你需要禁用最小化，只要使用开发模式或者将 `optimization.minimize` 选项设置为`false` 。）
 
 **在 webpack 3 中,** 你需要直接使用 [UglifyJS 插件](https://github.com/webpack-contrib/uglifyjs-webpack-plugin)。这个插件是 webpack 自带的；将它添加到配置的 `plugins` 部分即可启用：
 
@@ -109,9 +109,9 @@ module.exports = {
   
 > 如果你需要编译包含新的语法（的代码），使用 [uglifyjs-webpack-plugin](https://github.com/webpack-contrib/uglifyjs-webpack-plugin) 插件。 这同样是 webpack 自带的插件，但是版本更新，并且可以编译 ES2015+ 的代码。
 
-### Loader-specific 选项
+###  loader 特定(loader-specific)的选项
 
-缩减代码的第二种方法是 loader-specific 选项 ([loader 是什么](https://webpack.js.org/concepts/loaders/)). 利用 loader 选项，你可以压缩 minifier 不能缩减的东西。例如，当你利用 [`css-loader`](https://github.com/webpack-contrib/css-loader) 导入一个 CSS 文件时，该文件会被编译成一个字符串：
+最小化代码的第二种方法是 loader-specific 选项 ([loader 是什么](https://webpack.js.org/concepts/loaders/)). 利用 loader 选项，你可以压缩 minifier 不能最小化的东西。例如，当你利用 [`css-loader`](https://github.com/webpack-contrib/css-loader) 导入一个 CSS 文件时，该文件会被编译成一个字符串：
 
 ``` css
 /* comments.css */  
@@ -123,12 +123,12 @@ module.exports = {
 ↓
 
 ``` js
-// 缩减后的 bundle.js (部分代码)
+// 最小化后的 bundle.js (部分代码)
 exports=module.exports=__webpack_require__(1)(),
 exports.push([module.i,".comment {\r\n  color: black;\r\n}",""]);
 ```
 
-Minifier 不能压缩该代码，因为它是一个字符串。为了缩减文件内容，我们需要像这样配置 loader：
+Minifier 不能压缩该代码，因为它是一个字符串。为了最小化文件内容，我们需要像这样配置 loader：
 
 ``` js
 // webpack.config.js
@@ -189,7 +189,7 @@ warning$3(
 // … 
 ```
 
-在生产环境中通常不需要这些检查和警告，但是它们还是存在于代码中并增加了库的大小。 **在 webpack 4 中,** 通过添加 `optimization.nodeEnv: 'production'` 选项以移除它们:
+在生产环境中通常不需要这些检查和警告，但是它们还是存在于代码中并增加了库的大小。 **在 webpack 4 中，** 通过添加 `optimization.nodeEnv: 'production'` 选项以移除它们:
 
 ``` js
 // webpack.config.js (for webpack 4)
@@ -217,7 +217,7 @@ module.exports = {
 }; 
 ```
 
-`optimization.nodeEnv` 选项和 `DefinePlugin` 工作方式相同 – 它们会用某个特定的值取代所有在执行的 process.env.NODE_ENV。使用上面的配置：
+`optimization.nodeEnv` 选项和 `DefinePlugin` 工作方式相同 – 它们会用某个特定的值取代所有在执行的 process.env.NODE_ENV。通过上面的配置：
 
 1.  Webpack 会将所有存在的 `process.env.NODE_ENV` 替换成 `"production"`:
     ``` js
@@ -266,7 +266,7 @@ module.exports = {
 
 ## 使用 ES 模块
 
-降低前端尺寸的另一种方法是使用 [ES 模块](https://ponyfoo.com/articles/es6-modules-in-depth).
+减小前端尺寸的另一种方法是使用 [ES 模块](https://ponyfoo.com/articles/es6-modules-in-depth).
 
 当你使用 ES 模块, webpack 就可以进行 tree-shaking。Tree-shaking 是当 bundler 遍历整个依赖树时，检查使用了什么依赖，并移除无用的。所以，如果你使用了 ES 模块语法， webpack 可以去掉未使用的代码：
 
@@ -606,7 +606,7 @@ define(["/libraries/react.min.js", "/libraries/react-dom.min.js"], function () {
 ## 总结
 
 * 如果使用 webpack 4，请启用生产模式
-* 缩减你的代码，通过 bundle-level minifier 和 loader 选项
+* 最小化你的代码，通过 bundle-level minifier 和 loader 选项
 * 移除仅在开发环境使用的代码，通过将 `NODE_ENV` 替换成 `production`
 * 使用 ES 模块以启用 tree shaking
 * 压缩图片
