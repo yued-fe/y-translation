@@ -3,7 +3,7 @@
 > - **原文地址：** [monitor and analyze](https://developers.google.com/web/fundamentals/performance/webpack/monitor-and-analyze)
 > - **原文作者：** [Ivan Akulov](https://developers.google.com/web/resources/contributors/iamakulov)
 > - **译文地址：** [监控和分析应用](https://github.com/yued-fe/y-translation/blob/master/en/Web-Performance-Optimization-with-webpack/Monitor-and-analyze-the-app.md)
-> - **译者：** 泥坤
+> - **译者：** [泥坤](https://github.com/nkplus)
 > - **校对者：** [杨建](https://github.com/ASkyBig)、[闫蒙](https://github.com/yanyixin)
 
 即使你可以通过配置 webpack 使得应用尽可能小，追踪它并且知道它包含什么仍然是很重要的。否则，你可能安装了一个
