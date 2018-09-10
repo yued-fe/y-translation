@@ -28,7 +28,7 @@ module.exports = {
 
 ## 启用缩减
 
-> ⭐️ **注意：** 这些大部分只适用于 webpack 3. 如果你[在 webpack 4 中开启了 production 模式](#enable-the-production-mode), bundle-level 缩减已经启用 – 你只需要启用 [loader-specific 选项](#loader-specific-options).
+> ⭐️ **注意：** 这些大部分只适用于 webpack 3。如果你[在 webpack 4 中开启了 production 模式](#enable-the-production-mode)，bundle-level 缩减已经启用 – 你只需要启用 [loader-specific 选项](#loader-specific-options)。
 
 缩减尺寸是在你通过移除多余的空格、缩短变量的命名等方式压缩代码的时候进行的。例如这样：
 
