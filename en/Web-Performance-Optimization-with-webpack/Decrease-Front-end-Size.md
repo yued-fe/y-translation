@@ -154,7 +154,7 @@ module.exports = {
 
 ## 指定 **NODE_ENV=production**
 
-> ⭐️ **注意：** 这只适用于 webpack 3. 如果你在[production 模式下使用 webpack 4](#enable-the-production-mode),  `NODE_ENV=production` 优化已启用 – 可自由选择地跳过该部分.
+> ⭐️ **注意：** 这只适用于 webpack 3. 如果你在 [production 模式下使用 webpack 4](#enable-the-production-mode),  `NODE_ENV=production` 优化已启用 – 可自由选择地跳过该部分.
 
 减少前端大小的另一种方法是在你的代码中将 `NODE_ENV` [环境变量](https://superuser.com/questions/284342/what-are-path-and-other-environment-variables-and-how-can-i-set-or-use-them) 设置为 `production`.
 
@@ -266,7 +266,7 @@ module.exports = {
 
 ## 使用 ES 模块
 
-减小前端尺寸的另一种方法是使用 [ES 模块](https://ponyfoo.com/articles/es6-modules-in-depth).
+减小前端尺寸的另一种方法是使用 [ES 模块](https://ponyfoo.com/articles/es6-modules-in-depth)。
 
 当你使用 ES 模块, webpack 就可以进行 tree-shaking。Tree-shaking 是当 bundler 遍历整个依赖树时，检查使用了什么依赖，并移除无用的。所以，如果你使用了 ES 模块语法， webpack 可以去掉未使用的代码：
 
@@ -305,11 +305,11 @@ module.exports = {
 
 > ⭐️ **注意:** 在 webpack 中, tree-shaking 没有 minifier 是不会起作用的。Webpack 仅仅移除没有被用到的 export 变量；是 minifier 移除未使用的代码的。所以，如果你在没有使用 minifier 的情况下编译 bundle，是不会减小的。
   
-> 然而，你不需要特定使用 webpack 内置的 minifier (`UglifyJsPlugin`). 任意的 minifier 都支持移除无用代码(例如 [Babel Minify plugin](https://github.com/webpack-contrib/babel-minify-webpack-plugin) 或 [Google Closure Compiler plugin](https://github.com/roman01la/webpack-closure-compiler)) 都可以奏效.
+> 然而，你不需要特定使用 webpack 内置的 minifier (`UglifyJsPlugin`)。任意的 minifier 都支持移除无用代码(例如 [Babel Minify plugin](https://github.com/webpack-contrib/babel-minify-webpack-plugin) 或 [Google Closure Compiler plugin](https://github.com/roman01la/webpack-closure-compiler)) 都可以奏效。
 
 > ❗ **警告:** 不要将 ES 模块编译为 CommonJS 模块。
   
-> 如果你使用 Babel 的 `babel-preset-env` 或 `babel-preset-es2015`， 检查它们预先的设置。默认情况下， 它们将 ES 的 `import` 和 `export` 转译为 CommonJS 的 `require` 和 `module.exports`. [通过 `{ modules: false }` 选项](https://github.com/babel/babel/tree/master/packages/babel-preset-env) 来禁用它.  
+> 如果你使用 Babel 的 `babel-preset-env` 或 `babel-preset-es2015`， 检查它们预先的设置。默认情况下， 它们将 ES 的 `import` 和 `export` 转译为 CommonJS 的 `require` 和 `module.exports`。[通过 `{ modules: false }` 选项](https://github.com/babel/babel/tree/master/packages/babel-preset-env)来禁用它.  
   
 > 与 TypeScript 相同：记得在你的 `tsconfig.json` 中设置 `{ "compilerOptions": { "module": "es2015" } }`。
 
@@ -353,7 +353,7 @@ import imageUrl from './image.png';
 
 > ⭐️ **注意：** 内联图片减少了单独请求的数量，这是好的([即使通过 HTTP/2](https://blog.octo.com/en/http2-arrives-but-sprite-sets-aint-no-dead/))，但是增加了 bundle 和内存消耗的下载/解析时间。确保不要嵌入大的或者很多的图片，否则增加的 bundle 时间可能超过内联带来的好处。
 
-[`svg-url-loader`](https://github.com/bhovhannes/svg-url-loader)的工作原理类似于 `url-loader` – 除了它利用 [URL encoding](https://developer.mozilla.org/en-US/docs/Glossary/percent-encoding) 而不是 Base64 对文件编码。对于 SVG 图片这是有效的 – 因为 SVG 文件恰好是纯文本，这种编码规模效应更加明显：
+[`svg-url-loader`](https://github.com/bhovhannes/svg-url-loader) 的工作原理类似于 `url-loader` – 除了它利用 [URL encoding](https://developer.mozilla.org/en-US/docs/Glossary/percent-encoding) 而不是 Base64 对文件编码。对于 SVG 图片这是有效的 – 因为 SVG 文件恰好是纯文本，这种编码规模效应更加明显：
 
 ``` js
 // webpack.config.js
@@ -376,7 +376,7 @@ module.exports = {
 };
 ```
 
-> ⭐️ **注意:** svg-url-loader 拥有改善 IE 浏览器支持的选项，但是在其他浏览器中更糟糕。如果你需要兼容 IE 浏览器，[设置 `iesafe: true` 选项](https://github.com/bhovhannes/svg-url-loader#iesafe).
+> ⭐️ **注意:** svg-url-loader 拥有改善 IE 浏览器支持的选项，但是在其他浏览器中更糟糕。如果你需要兼容 IE 浏览器，[设置 `iesafe: true` 选项](https://github.com/bhovhannes/svg-url-loader#iesafe)。
 
 [`image-webpack-loader`](https://github.com/tcoopman/image-webpack-loader) 会压缩检查到的所有图片。它支持 JPG、PNG、GIF 和 SVG 格式的图片，因此我们在碰到所有这些类型的图片都会使用它。
 
@@ -398,7 +398,7 @@ module.exports = {
 };
 ```
 
-加载器的默认设置已经很好了 - 但是如果你想更进一步去配置它，参考[插件选项](https://github.com/tcoopman/image-webpack-loader#options). 要选择指定选项，请查看 Addy Osmani 的[图像优化指南](https://images.guide/).
+加载器的默认设置已经很好了 - 但是如果你想更进一步去配置它，参考[插件选项](https://github.com/tcoopman/image-webpack-loader#options)。要选择指定选项，请查看 Addy Osmani 的[图像优化指南](https://images.guide/)。
 
 ### 扩展阅读
 
@@ -409,15 +409,15 @@ module.exports = {
 
 平均一半以上的 Javascript 体积大小来源于依赖包，并且这其中的一部分可能都不是必要的。
 
-例如，Lodash (自 v4.17.4 版本起) 增加了 72KB 的最小化代码到 bundle 中。但是如果你仅仅用到它的20种方法，那么大约 65KB 的代码是无用的。
+例如，Lodash (自 v4.17.4 版本起) 增加了 72KB 的最小化代码到 bundle 中。但是如果你仅仅用到它的 20 种方法，那么大约 65KB 的代码是无用的。
 
-另一个例子是 Moment.js。2.19.1 版本有 223KB 大小，这是巨大的 - 截至 2017 年 10 月，一个页面的 JavaScript 平均体积是 [452 KB] (http://httparchive.org/interesting.php?a=All&l=Oct%2016%202017)。然而，其中的 170KB 是[本地化文件](https://github.com/moment/moment/tree/4caa268356434f3ae9b5041985d62a0e8c246c78/locale)。如果你没有用到多语言版 Moment.js，这些文件都将毫无目的地使 bundle 更臃肿。
+另一个例子是 Moment.js。2.19.1 版本有 223KB 大小，这是巨大的 - 截至 2017 年 10 月，一个页面的 JavaScript 平均体积是 [452 KB](http://httparchive.org/interesting.php?a=All&l=Oct%2016%202017)。然而，其中的 170KB 是[本地化文件](https://github.com/moment/moment/tree/4caa268356434f3ae9b5041985d62a0e8c246c78/locale)。如果你没有用到多语言版 Moment.js，这些文件都将毫无目的地使 bundle 更臃肿。
 
 所有的这些依赖都可以轻易地优化。我们已经在 GitHub 仓库中收集了优化方法 - [来看一下](https://github.com/GoogleChromeLabs/webpack-libs-optimizations)!
 
 ## 为 ES 模块启用模块串联（又称作用域提升）
 
-> ⭐️ **注意：** 如果在生产模式下使用 [webpack 4](#启用生产模式),模块串联已经启用。自由地跳过该部分。
+> ⭐️ **注意：** 如果在生产模式下使用 [webpack 4](#启用生产模式)，模块串联已经启用。自由地跳过该部分。
 
 当你构建 bundle 时，webpack 将每个 module 包装进一个函数中：
 
@@ -459,7 +459,7 @@ export function render(data, target) {
 
 过去，需要将 CommonJS/AMD 模块相互隔离。然而，这增加了每个模块的大小和性能开支。
 
-Webpack 2 引入了对 ES 模块的支持，不同于 CommonJS 和 AMD module，它们可以在不将每个模块都封装进函数中的情况下进行打包。并且 webpack 3 使这样的捆绑变得可能 -  通过 [模块连接](https://webpack.js.org/plugins/module-concatenation-plugin/)。这是模块连接的工作原理：
+Webpack 2 引入了对 ES 模块的支持，不同于 CommonJS 和 AMD module，它们可以在不将每个模块都封装进函数中的情况下进行打包。并且 webpack 3 使这样的捆绑变得可能 -  通过[模块连接](https://webpack.js.org/plugins/module-concatenation-plugin/)。这是模块连接的工作原理：
 
 ``` js
 // index.js
@@ -496,7 +496,7 @@ export function render(data, target) {
 })
 ```
 
-看到不同了吗？在普通绑定中，模块 0 需要模块 1 的 `render`。使用模块连接， `require` 只需用所需要的功能替换，模块 1 就被移除了。 bundle 拥有更小的模块 – 以及更少的模块开支!
+看到不同了吗？在普通绑定中，模块 0 需要模块 1 的 `render`。使用模块连接，`require` 只需用所需要的功能替换，模块 1 就被移除了。bundle 拥有更小的模块 – 以及更少的模块开支!
 
 要在 **webpack 4** 中开启这个功能，启用 `optimization.concatenateModules` 选项即可：
 
@@ -538,7 +538,7 @@ module.exports = {
 
 (完全随机的视频托管网站)
 
-如果代码块有公共的依赖，你可以共享它们以避免多次下载其代码。这是通过 [webpack 的 `externals` 选项]完成的(https://webpack.js.org/configuration/externals/) – 它通过变量或其它的额外导入来替换模块。
+如果代码块有公共的依赖，你可以共享它们以避免多次下载其代码。这是通过 [webpack 的 `externals` 选项](https://webpack.js.org/configuration/externals/)完成的 – 它通过变量或其它的额外导入来替换模块。
 
 ### 如果依赖在 `window` 中可获得
 
