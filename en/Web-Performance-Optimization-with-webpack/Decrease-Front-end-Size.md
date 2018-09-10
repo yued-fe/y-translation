@@ -301,7 +301,7 @@ module.exports = {
     (function(n,e){"use strict";var r=function(){return"Rendered!"};e.b=r})
      ```
 
-This works even with libraries if they are written with ES modules.
+即使是对用 ES 模块写成的库也是有效的。
 
 > ⭐️ **注意:** 在 webpack 中, tree-shaking 没有 minifier 是不会起作用的。Webpack 仅仅移除没有被用到的 export 变量；是 minifier 移除未使用的代码的。所以，如果你在没有使用 minifier 的情况下编译 bundle，是不会减小的。
   
@@ -315,7 +315,7 @@ This works even with libraries if they are written with ES modules.
 
 ### 扩展阅读
 
-* [“深入 ES6 Module”](https://ponyfoo.com/articles/es6-modules-in-depth) 
+* [“深入 ES6 模块(module)”](https://ponyfoo.com/articles/es6-modules-in-depth) 
 * Webpack 文档 [关于 tree shaking](https://webpack.js.org/guides/tree-shaking/)  
 
 ## 优化图片
