@@ -90,9 +90,9 @@ Webpack 支持两种方式最小化代码： **bundle-level 最小化** 和 **lo
     Object.defineProperty(n,"__esModule",{value:!0}),n.render=t;var o=r(1);r.n(o)
     ```   
 
-**在 webpack 4 中,** bundle-level 最小化功能是自动开启的 – 无论是否在生产模式。它在底层使用的是 [UglifyJS minifier](https://github.com/mishoo/UglifyJS2)。（如果你需要禁用最小化，只要使用开发模式或者将 `optimization.minimize` 选项设置为`false` 。）
+**在 webpack 4 中，** bundle-level 最小化功能是自动开启的 – 无论是否在生产模式。它在底层使用的是 [UglifyJS minifier](https://github.com/mishoo/UglifyJS2)。（如果你需要禁用最小化，只要使用开发模式或者将 `optimization.minimize` 选项设置为`false` 。）
 
-**在 webpack 3 中,** 你需要直接使用 [UglifyJS 插件](https://github.com/webpack-contrib/uglifyjs-webpack-plugin)。这个插件是 webpack 自带的；将它添加到配置的 `plugins` 部分即可启用：
+**在 webpack 3 中，** 你需要直接使用 [UglifyJS 插件](https://github.com/webpack-contrib/uglifyjs-webpack-plugin)。这个插件是 webpack 自带的；将它添加到配置的 `plugins` 部分即可启用：
 
 ``` js
 // webpack.config.js
@@ -105,13 +105,13 @@ module.exports = {
 };  
 ```
 
-> ⭐️ **注意：** 在 webpack 3 中, UglifyJS 插件不能编译版本超过 ES2015 (即 ES6) 的代码。这意味着如果你的代码使用了类、箭头函数或者其它新的语言特性，你不能将它们编译成 ES5 版本的代码, 否则插件将抛出一个错误。
+> ⭐️ **注意：** 在 webpack 3 中，UglifyJS 插件不能编译版本超过 ES2015 (即 ES6) 的代码。这意味着如果你的代码使用了类、箭头函数或者其它新的语言特性，你不能将它们编译成 ES5 版本的代码, 否则插件将抛出一个错误。
   
 > 如果你需要编译包含新的语法（的代码），使用 [uglifyjs-webpack-plugin](https://github.com/webpack-contrib/uglifyjs-webpack-plugin) 插件。 这同样是 webpack 自带的插件，但是版本更新，并且可以编译 ES2015+ 的代码。
 
 ###  loader 特定(loader-specific)的选项
 
-最小化代码的第二种方法是 loader-specific 选项 ([loader 是什么](https://webpack.js.org/concepts/loaders/)). 利用 loader 选项，你可以压缩 minifier 不能最小化的东西。例如，当你利用 [`css-loader`](https://github.com/webpack-contrib/css-loader) 导入一个 CSS 文件时，该文件会被编译成一个字符串：
+最小化代码的第二种方法是 loader-specific 选项 ([loader 是什么](https://webpack.js.org/concepts/loaders/))。利用 loader 选项，你可以压缩 minifier 不能最小化的东西。例如，当你利用 [`css-loader`](https://github.com/webpack-contrib/css-loader) 导入一个 CSS 文件时，该文件会被编译成一个字符串：
 
 ``` css
 /* comments.css */  
@@ -150,15 +150,15 @@ module.exports = {
 ### 扩展阅读
 
 * [UglifyJsPlugin 文档](https://github.com/webpack-contrib/uglifyjs-webpack-plugin)
-* 其它流行的 minifier: [Babel Minify](https://github.com/webpack-contrib/babel-minify-webpack-plugin), [Google Closure Compiler](https://github.com/roman01la/webpack-closure-compiler) 
+* 其它流行的 minifier: [Babel Minify](https://github.com/webpack-contrib/babel-minify-webpack-plugin)，[Google Closure Compiler](https://github.com/roman01la/webpack-closure-compiler) 
 
 ## 指定 **NODE_ENV=production**
 
-> ⭐️ **注意：** 这只适用于 webpack 3. 如果你在 [production 模式下使用 webpack 4](#enable-the-production-mode),  `NODE_ENV=production` 优化已启用 – 可自由选择地跳过该部分.
+> ⭐️ **注意：** 这只适用于 webpack 3。如果你在 [production 模式下使用 webpack 4](#enable-the-production-mode)，`NODE_ENV=production` 优化已启用 – 可自由选择地跳过该部分。
 
-减少前端大小的另一种方法是在你的代码中将 `NODE_ENV` [环境变量](https://superuser.com/questions/284342/what-are-path-and-other-environment-variables-and-how-can-i-set-or-use-them) 设置为 `production`.
+减少前端大小的另一种方法是在你的代码中将 `NODE_ENV` [环境变量](https://superuser.com/questions/284342/what-are-path-and-other-environment-variables-and-how-can-i-set-or-use-them) 设置为 `production`。
 
-库会读取 `NODE_ENV` 变量以检测它们应该在哪个模式下工作 – 在开发或生产中。 有些库基于该变量而有不同的表现。例如，当 `NODE_ENV` 没有设置为 `production`, Vue.js 会做额外的检查并打印警告：
+库会读取 `NODE_ENV` 变量以检测它们应该在哪个模式下工作 – 在开发或生产中。 有些库基于该变量而有不同的表现。例如，当 `NODE_ENV` 没有设置为 `production`，Vue.js 会做额外的检查并打印警告：
 
 ``` js
 // vue/dist/vue.runtime.esm.js
@@ -262,7 +262,7 @@ module.exports = {
 ### 扩展阅读
 
 * [“环境变量”是什么](https://superuser.com/questions/284342/what-are-path-and-other-environment-variables-and-how-can-i-set-or-use-them)
-* 关于: [`DefinePlugin`](https://webpack.js.org/plugins/define-plugin/), [`EnvironmentPlugin`](https://webpack.js.org/plugins/environment-plugin/) 的 Webpack 文档
+* 关于: [`DefinePlugin`](https://webpack.js.org/plugins/define-plugin/)，[`EnvironmentPlugin`](https://webpack.js.org/plugins/environment-plugin/) 的 Webpack 文档
 
 ## 使用 ES 模块
 
@@ -303,13 +303,13 @@ module.exports = {
 
 即使是对用 ES 模块写成的库也是有效的。
 
-> ⭐️ **注意:** 在 webpack 中, tree-shaking 没有 minifier 是不会起作用的。Webpack 仅仅移除没有被用到的 export 变量；是 minifier 移除未使用的代码的。所以，如果你在没有使用 minifier 的情况下编译 bundle，是不会减小的。
+> ⭐️ **注意:** 在 webpack 中，tree-shaking 没有 minifier 是不会起作用的。Webpack 仅仅移除没有被用到的 export 变量；是 minifier 移除未使用的代码的。所以，如果你在没有使用 minifier 的情况下编译 bundle，是不会减小的。
   
 > 然而，你不需要特定使用 webpack 内置的 minifier (`UglifyJsPlugin`)。任意的 minifier 都支持移除无用代码(例如 [Babel Minify plugin](https://github.com/webpack-contrib/babel-minify-webpack-plugin) 或 [Google Closure Compiler plugin](https://github.com/roman01la/webpack-closure-compiler)) 都可以奏效。
 
 > ❗ **警告:** 不要将 ES 模块编译为 CommonJS 模块。
   
-> 如果你使用 Babel 的 `babel-preset-env` 或 `babel-preset-es2015`， 检查它们预先的设置。默认情况下， 它们将 ES 的 `import` 和 `export` 转译为 CommonJS 的 `require` 和 `module.exports`。[通过 `{ modules: false }` 选项](https://github.com/babel/babel/tree/master/packages/babel-preset-env)来禁用它.  
+> 如果你使用 Babel 的 `babel-preset-env` 或 `babel-preset-es2015`， 检查它们预先的设置。默认情况下， 它们将 ES 的 `import` 和 `export` 转译为 CommonJS 的 `require` 和 `module.exports`。[通过 `{ modules: false }` 选项](https://github.com/babel/babel/tree/master/packages/babel-preset-env)来禁用它。
   
 > 与 TypeScript 相同：记得在你的 `tsconfig.json` 中设置 `{ "compilerOptions": { "module": "es2015" } }`。
 
@@ -320,7 +320,7 @@ module.exports = {
 
 ## 优化图片
 
-图片占页面大小的[一半以上](http://httparchive.org/interesting.php?a=All&l=Oct%2016%202017)。 尽管它们不如 JavaScript 关键(例如，它们不会阻塞渲染)，但仍然消耗了带宽的一大部分。可以在 webpack 中使用 `url-loader`, `svg-url-loader` 和 `image-webpack-loader` 来优化它们。
+图片占页面大小的[一半以上](http://httparchive.org/interesting.php?a=All&l=Oct%2016%202017)。 尽管它们不如 JavaScript 关键(例如，它们不会阻塞渲染)，但仍然消耗了带宽的一大部分。可以在 webpack 中使用 `url-loader`、`svg-url-loader` 和 `image-webpack-loader` 来优化它们。
 
 [`url-loader`](https://github.com/webpack-contrib/url-loader) 将小的静态文件内联进应用。没有配置的话，它需要通过传递文件，将它放在编译后的打包 bundle 内并返回一个这个文件的 url。然而，如果我们指定了 `limit` 选项，它会将文件编码成比无配置更小的 [Base64 的数据 url](https://css-tricks.com/data-uris/) 并将该 url 返回。这样可以将图片内联进 JavaScript 代码中，并节省一次 HTTP 请求：
 
