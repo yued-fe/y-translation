@@ -591,7 +591,7 @@ module.exports = {
 Webpack 将把 bundle 包装进 `define()` 并让其依赖于这些 URLs：
 
 ``` js
-// bundle.js (beginning)
+// bundle.js (开始)
 define(["/libraries/react.min.js", "/libraries/react-dom.min.js"], function () { … });
 ```
 
