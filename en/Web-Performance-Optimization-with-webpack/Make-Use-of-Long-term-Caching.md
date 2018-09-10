@@ -4,7 +4,7 @@
 > - **原文作者：** [Ivan Akulov](https://developers.google.com/web/resources/contributors/iamakulov)
 > - **译文地址：** [利用好持久化缓存](https://github.com/yued-fe/y-translation/blob/master/en/Web-Performance-Optimization-with-webpack/Make-Use-of-Long-term-Caching.md)
 > - **译者：** [周文康](https://github.com/wenkangzhou)
-> - **校对者：** [闫蒙]()、[泥坤]()
+> - **校对者：** [闫蒙](https://github.com/yanyixin)、[泥坤](https://github.com/nkplus)
 
 在[优化应用体积](https://developers.google.com/web/fundamentals/performance/webpack/decrease-frontend-size)之后，下一个提升应用加载时间的策略就是缓存。将资源缓存在客户端中，可以避免之后每次都重新下载。
 
