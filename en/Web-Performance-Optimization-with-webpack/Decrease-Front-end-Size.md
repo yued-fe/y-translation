@@ -85,7 +85,7 @@ Webpack 支持两种方式最小化代码： **bundle-level 最小化** 和 **lo
 3.  minifier 大致会压缩成下面那样：
     
     ```js
-    // minified bundle.js (part of)
+    // 最小化过的 bundle.js (part of)
     "use strict";function t(e,n){console.log("Rendered!")}
     Object.defineProperty(n,"__esModule",{value:!0}),n.render=t;var o=r(1);r.n(o)
     ```   
@@ -284,7 +284,7 @@ module.exports = {
 2.  Webpack 明白 `commentRestEndpoint` 没有用到并且不会在 bundle 中生成单独的 export： 
     
     ``` js
-    // bundle.js (part that corresponds to comments.js)
+    // bundle.js (和 comments.js 有关联的部分)
     (function(module, __webpack_exports__, __webpack_require__) {
       "use strict";
       const render = () => { return 'Rendered!'; };
@@ -333,7 +333,7 @@ module.exports = {
         test: /\.(jpe?g|png|gif)$/,
         loader: 'url-loader',
         options: {
-          // Inline files smaller than 10 kB (10240 bytes)
+          // 小于 10kB(10240字节）的内联文件
           limit: 10 * 1024,
         },
       },
@@ -345,10 +345,10 @@ module.exports = {
 ``` js
 // index.js
 import imageUrl from './image.png';
-// → If image.png is smaller than 10 kB, `imageUrl` will include
-// the encoded image: 'data:image/png;base64,iVBORw0KGg…'
-// → If image.png is larger than 10 kB, the loader will create a new file,
-// and `imageUrl` will include its url: `/2fcd56a1920be.png`
+// → 如果图片小于 10kB， `imageUrl` 将包含
+// 编码后的图片: 'data:image/png;base64,iVBORw0KGg…'
+// → 如果图片大于 10B，该 loader 将创建一个新文件，
+// 并且 `imageUrl` 将会包含它的 url: `/2fcd56a1920be.png`
 ```
 
 > ⭐️ **注意：** 内联图片减少了单独请求的数量，这是好的([即使通过 HTTP/2](https://blog.octo.com/en/http2-arrives-but-sprite-sets-aint-no-dead/))，但是增加了 bundle 和内存消耗的下载/解析时间。确保不要嵌入大的或者很多的图片，否则增加的 bundle 时间可能超过内联带来的好处。
@@ -364,10 +364,10 @@ module.exports = {
         test: /\.svg$/,
         loader: 'svg-url-loader',
         options: {
-          // Inline files smaller than 10 kB (10240 bytes)
+          // 小于 10kB(10240字节）的内联文件
           limit: 10 * 1024,
-          // Remove the quotes from the url
-          // (they’re unnecessary in most cases)
+          // 移除 url 中的引号
+          // (在大多数情况下它们都不是必要的)
           noquotes: true,
         },
       },
@@ -390,7 +390,7 @@ module.exports = {
       {
         test: /\.(jpe?g|png|gif|svg)$/,
         loader: 'image-webpack-loader',
-        // This will apply the loader before the other ones
+        // 这会应用该 loader，在其它之前
         enforce: 'pre',
       },
     ],
@@ -475,22 +475,22 @@ export function render(data, target) {
 ↓
 
 ``` js
-// Unlike the previous snippet, this bundle has only one module
-// which includes the code from both files
+// 与前面的代码段不同，此包只有一个模块
+// 它包含来自两个文件的代码
 
-// bundle.js (part of; compiled with ModuleConcatenationPlugin)
+// bundle.js (部分; 通过 ModuleConcatenationPlugin 编译)
 /* 0 */
 (function(module, __webpack_exports__, __webpack_require__) {
 
   "use strict";
   Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
-  // CONCATENATED MODULE: ./comments.js
+  // 级联模块: ./comments.js
   function render(data, target) {
     console.log('Rendered!');
   }
 
-  // CONCATENATED MODULE: ./index.js
+  // 级联模块: ./index.js
   render();
 
 })
@@ -559,13 +559,13 @@ module.exports = {
 ``` js
 // bundle.js (part of)
 (function(module, exports) {
-  // A module that exports `window.React`. Without `externals`,
-  // this module would include the whole React bundle
+  // 导出 `window.React` 的模块。 没有 `externals`,
+  // 这个模块会包含整个的 React 包
   module.exports = React;
 }),
 (function(module, exports) {
-  // A module that exports `window.ReactDOM`. Without `externals`,
-  // this module would include the whole ReactDOM bundle
+  // 导出 `window.React` 的模块。 没有 `externals`,
+  // 这个模块会包含整个的 ReactDOM 包
   module.exports = ReactDOM;
 })
 ```
