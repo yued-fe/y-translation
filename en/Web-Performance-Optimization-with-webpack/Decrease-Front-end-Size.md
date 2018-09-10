@@ -11,7 +11,7 @@
 
 ## 使用生产模式(仅限 webpack4)
 
-Webpack 4 引入了 [新的 `mode` 标志](https://webpack.js.org/concepts/mode/). 你可以将这个标志设置为 `'development'` 或者 `'production'` 来告诉 webpack 你正在为特定环境构建应用：
+Webpack 4 引入了 [新的 `mode` 标志](https://webpack.js.org/concepts/mode/)。你可以将这个标志设置为 `'development'` 或者 `'production'` 来告诉 webpack 你正在为特定环境构建应用：
 
 ```js
 // webpack.config.js
