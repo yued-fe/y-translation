@@ -192,7 +192,7 @@ warning$3(
 在生产环境中通常不需要这些检查和警告，但是它们还是存在于代码中并增加了库的大小。 **在 webpack 4 中，** 通过添加 `optimization.nodeEnv: 'production'` 选项以移除它们:
 
 ``` js
-// webpack.config.js (for webpack 4)
+// webpack.config.js (基于 webpack 4)
 module.exports = {
   optimization: {
     nodeEnv: 'production',
@@ -204,7 +204,7 @@ module.exports = {
 **在 webpack 3 中，** 则使用 [`DefinePlugin`](https://webpack.js.org/plugins/define-plugin/) 来替代:
 
 ```
-// webpack.config.js (for webpack 3)
+// webpack.config.js (基于 webpack 3)
 const webpack = require('webpack');
 
 module.exports = {
