@@ -59,7 +59,7 @@ compiler.apply(new DashboardPlugin());
 
 **确定大小上限**
 
-1. 先优化应用，让它尽可能小，然后运行 prodocution build；
+1. 先优化应用，让它尽可能小，然后运行生产环境构建；
 2. 在 `package.json` 中增加 `bundlesize` 字段的配置，如下：
 
     ``` js
@@ -144,8 +144,7 @@ compiler.apply(new DashboardPlugin());
 
 ### 扩展阅读:
 
-- Alex Russell [about the real-world loading time we should
-target](https://infrequently.org/2017/10/can-you-afford-it-real-world-web-performance-budgets/)
+- Alex Russell [关于现实世界中我们应该追求的加载时间](https://infrequently.org/2017/10/can-you-afford-it-real-world-web-performance-budgets/)
 
 ## 分析 bundle 为什么这么大
 
