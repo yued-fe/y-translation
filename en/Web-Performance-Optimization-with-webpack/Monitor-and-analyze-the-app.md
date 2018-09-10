@@ -60,7 +60,7 @@ compiler.apply(new DashboardPlugin());
 **确定大小上限**
 
 1. 先优化应用，让它尽可能小，然后运行 prodocution build；
-2. 在 `package.json` 中增加 `bundlesize ` 字段的配置，如下：
+2. 在 `package.json` 中增加 `bundlesize` 字段的配置，如下：
 
     ``` js
     // package.json
