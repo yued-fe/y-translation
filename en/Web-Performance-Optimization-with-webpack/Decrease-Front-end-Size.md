@@ -53,7 +53,7 @@ function map(array, iteratee) {
 function map(n,r){let t=-1;for(const a=null==n?0:n.length,l=Array(a);++t<a;)l[t]=r(n[t],t,n);return l} 
 ```
 
-Webpack 支持两种方式最小化代码：**bundle-level 最小化** 和 **loader 特定的选项**。它们应该同时使用。
+webpack 支持两种方式最小化代码：**bundle-level 最小化** 和 **loader 特定的选项**。它们应该同时使用。
 
 ### Bundle-level 最小化
 
@@ -262,7 +262,7 @@ module.exports = {
 ### 扩展阅读
 
 * [“环境变量”是什么](https://superuser.com/questions/284342/what-are-path-and-other-environment-variables-and-how-can-i-set-or-use-them)
-* 关于：[`DefinePlugin`](https://webpack.js.org/plugins/define-plugin/)，[`EnvironmentPlugin`](https://webpack.js.org/plugins/environment-plugin/) 的 Webpack 文档
+* 关于：[`DefinePlugin`](https://webpack.js.org/plugins/define-plugin/)，[`EnvironmentPlugin`](https://webpack.js.org/plugins/environment-plugin/) 的 webpack 文档
 
 ## 使用 ES 模块（module）
 
@@ -281,7 +281,7 @@ module.exports = {
     import { render } from './comments.js';
     render();
     ```
-2.  Webpack 明白 `commentRestEndpoint` 没有用到并且不会在 bundle 中生成单独的 export： 
+2.  webpack 明白 `commentRestEndpoint` 没有用到并且不会在 bundle 中生成单独的 export： 
     
     ``` js
     // bundle.js (和 comments.js 有关联的部分)
@@ -317,7 +317,7 @@ module.exports = {
 ### 扩展阅读
 
 * [“深入 ES6 模块”](https://ponyfoo.com/articles/es6-modules-in-depth) 
-* Webpack 文档 [关于 tree shaking](https://webpack.js.org/guides/tree-shaking/)  
+* webpack 文档 [关于 tree shaking](https://webpack.js.org/guides/tree-shaking/)  
 
 ## 优化图片
 
@@ -460,7 +460,7 @@ export function render(data, target) {
 
 过去，需要将 CommonJS/AMD 模块相互隔离。然而，这增加了每个模块的大小和性能开支。
 
-Webpack 2 引入了对 ES 模块的支持，不同于 CommonJS 和 AMD module，它们可以在不将每个模块都封装进函数中的情况下进行打包。并且 webpack 3 使这样的捆绑变得可能 -  通过[模块连接](https://webpack.js.org/plugins/module-concatenation-plugin/)。这是模块连接的工作原理：
+webpack 2 引入了对 ES 模块的支持，不同于 CommonJS 和 AMD module，它们可以在不将每个模块都封装进函数中的情况下进行打包。并且 webpack 3 使这样的捆绑变得可能 -  通过[模块连接](https://webpack.js.org/plugins/module-concatenation-plugin/)。这是模块连接的工作原理：
 
 ``` js
 // index.js
@@ -589,7 +589,7 @@ module.exports = {
 };
 ```
 
-Webpack 将把 bundle 包装进 `define()` 并让其依赖于这些 URLs：
+webpack 将把 bundle 包装进 `define()` 并让其依赖于这些 URLs：
 
 ``` js
 // bundle.js (开始)
@@ -602,7 +602,7 @@ define(["/libraries/react.min.js", "/libraries/react-dom.min.js"], function () {
 
 ### 扩展阅读
 
-* Webpack 文档 [`externals`](https://webpack.js.org/configuration/externals/)
+* webpack 文档 [`externals`](https://webpack.js.org/configuration/externals/)
 
 ## 总结
 
