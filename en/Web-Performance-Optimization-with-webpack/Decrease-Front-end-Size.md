@@ -304,13 +304,14 @@ module.exports = {
 即使是对用 ES 模块写成的库也是有效的。
 
 > ⭐️ **注意:** 在 webpack 中，tree-shaking 没有 minifier 是不会起作用的。Webpack 仅仅移除没有被用到的 export 变量；是 minifier 移除未使用的代码的。所以，如果你在没有使用 minifier 的情况下编译 bundle，是不会减小的。
-  
+
 > 然而，你不需要特定使用 webpack 内置的 minifier (`UglifyJsPlugin`)。任意的 minifier 都支持移除无用代码(例如 [Babel Minify plugin](https://github.com/webpack-contrib/babel-minify-webpack-plugin) 或 [Google Closure Compiler plugin](https://github.com/roman01la/webpack-closure-compiler)) 都可以奏效。
 
+
 > ❗ **警告:** 不要将 ES 模块编译为 CommonJS 模块。
-  
+
 > 如果你使用 Babel 的 `babel-preset-env` 或 `babel-preset-es2015`， 检查它们预先的设置。默认情况下， 它们将 ES 的 `import` 和 `export` 转译为 CommonJS 的 `require` 和 `module.exports`。[通过 `{ modules: false }` 选项](https://github.com/babel/babel/tree/master/packages/babel-preset-env)来禁用它。
-  
+
 > 与 TypeScript 相同：记得在你的 `tsconfig.json` 中设置 `{ "compilerOptions": { "module": "es2015" } }`。
 
 ### 扩展阅读
