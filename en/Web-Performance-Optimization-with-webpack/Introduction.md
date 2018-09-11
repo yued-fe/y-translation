@@ -22,7 +22,7 @@ webpack 是当下最流行的打包工具之一。我们可以利用其特性来
 
 让我们从现今应用中最耗费资源之一的 JavaScript 开始优化。
 
-* [减小前端资源大小](https://developers.google.com/web/fundamentals/performance/webpack/decrease-frontend-size)
+* [减小前端资源大小](https://github.com/yued-fe/y-translation/blob/master/en/Web-Performance-Optimization-with-webpack/Decrease-Front-end-Size.md)
 * [利用好持久化缓存](https://github.com/yued-fe/y-translation/blob/master/en/Web-Performance-Optimization-with-webpack/Make-Use-of-Long-term-Caching.md)
-* [监控和分析应用](https://developers.google.com/web/fundamentals/performance/webpack/monitor-and-analyze)
-* [结论](https://developers.google.com/web/fundamentals/performance/webpack/conclusion)
+* [监控和分析应用](https://github.com/yued-fe/y-translation/blob/master/en/Web-Performance-Optimization-with-webpack/Monitor-and-analyze-the-app.md)
+* [结论](https://github.com/yued-fe/y-translation/blob/master/en/Web-Performance-Optimization-with-webpack/Conclusion.md)
