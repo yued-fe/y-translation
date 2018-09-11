@@ -53,7 +53,7 @@ function map(array, iteratee) {
 function map(n,r){let t=-1;for(const a=null==n?0:n.length,l=Array(a);++t<a;)l[t]=r(n[t],t,n);return l} 
 ```
 
-webpack 支持两种方式最小化代码：**bundle-level 最小化** 和 **loader 特定的选项**。它们应该同时使用。
+webpack 支持两种方式最小化代码：**bundle-level 最小化**和 **loader 特定的选项**。它们应该同时使用。
 
 ### Bundle-level 最小化
 
