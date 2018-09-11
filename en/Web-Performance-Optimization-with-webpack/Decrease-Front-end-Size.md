@@ -90,7 +90,7 @@ Webpack 支持两种方式最小化代码： **bundle-level 最小化** 和 **lo
     Object.defineProperty(n,"__esModule",{value:!0}),n.render=t;var o=r(1);r.n(o)
     ```   
 
-**在 webpack 4 中，** bundle-level 最小化功能是自动开启的 – 无论是否在生产模式。它在底层使用的是 [UglifyJS minifier](https://github.com/mishoo/UglifyJS2)。（如果你需要禁用最小化，只要使用开发模式或者将 `optimization.minimize` 选项设置为`false` 。）
+**在 webpack 4 中，** bundle-level 最小化功能是自动开启的 – 无论是否在生产模式。它在底层使用的是 [UglifyJS 最小化](https://github.com/mishoo/UglifyJS2)。（如果你需要禁用最小化，只要使用开发模式或者将 `optimization.minimize` 选项设置为`false` 。）
 
 **在 webpack 3 中，** 你需要直接使用 [UglifyJS 插件](https://github.com/webpack-contrib/uglifyjs-webpack-plugin)。这个插件是 webpack 自带的；将它添加到配置的 `plugins` 部分即可启用：
 
