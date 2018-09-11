@@ -53,13 +53,13 @@ function map(array, iteratee) {
 function map(n,r){let t=-1;for(const a=null==n?0:n.length,l=Array(a);++t<a;)l[t]=r(n[t],t,n);return l} 
 ```
 
-Webpack 支持两种方式最小化代码： **bundle-level 最小化** 和 **loader 特定的选项**。 它们应该同时使用。
+Webpack 支持两种方式最小化代码：**bundle-level 最小化** 和 **loader 特定的选项**。它们应该同时使用。
 
 ### Bundle-level 最小化
 
-当编译完成后，bundle-level 最小化功能会压缩整个 bundle 。这里展示了它是如何工作的： 
+当编译完成后，bundle-level 最小化功能会压缩整个 bundle。这里展示了它是如何工作的： 
 
-1.  你的代码是这样的:
+1.  你的代码是这样的：
     ``` js
     // comments.js
     import './comments.css';
@@ -67,7 +67,7 @@ Webpack 支持两种方式最小化代码： **bundle-level 最小化** 和 **lo
       console.log('Rendered!');
     }
     ```
-2.  Webpack 大致会将其编译成如下内容:
+2.  webpack 大致会将其编译成如下内容：
     
     ``` js
     // bundle.js (part of)
@@ -109,9 +109,9 @@ module.exports = {
   
 > 如果你需要编译包含新的语法（的代码），使用 [uglifyjs-webpack-plugin](https://github.com/webpack-contrib/uglifyjs-webpack-plugin) 插件。 这同样是 webpack 自带的插件，但是版本更新，并且可以编译 ES2015+ 的代码。
 
-###  loader 特定(loader-specific)的选项
+###  loader 特定（loader-specific）的选项
 
-最小化代码的第二种方法是 loader 特定的选项 ([loader 是什么](https://webpack.js.org/concepts/loaders/))。利用 loader 选项，你可以压缩 minifier 不能最小化的东西。例如，当你利用 [`css-loader`](https://github.com/webpack-contrib/css-loader) 导入一个 CSS 文件时，该文件会被编译成一个字符串：
+最小化代码的第二种方法是 loader 特定的选项（[loader 是什么](https://webpack.js.org/concepts/loaders/)）。利用 loader 选项，你可以压缩 minifier 不能最小化的东西。例如，当你利用 [`css-loader`](https://github.com/webpack-contrib/css-loader) 导入一个 CSS 文件时，该文件会被编译成一个字符串：
 
 ``` css
 /* comments.css */  
@@ -150,7 +150,7 @@ module.exports = {
 ### 扩展阅读
 
 * [UglifyJsPlugin 文档](https://github.com/webpack-contrib/uglifyjs-webpack-plugin)
-* 其它流行的 minifier: [Babel Minify](https://github.com/webpack-contrib/babel-minify-webpack-plugin)，[Google Closure Compiler](https://github.com/roman01la/webpack-closure-compiler) 
+* 其它流行的 minifier：[Babel Minify](https://github.com/webpack-contrib/babel-minify-webpack-plugin)，[Google Closure Compiler](https://github.com/roman01la/webpack-closure-compiler) 
 
 ## 指定 **NODE_ENV=production**
 
@@ -189,7 +189,7 @@ warning$3(
 // … 
 ```
 
-在生产环境中通常不需要这些检查和警告，但是它们还是存在于代码中并增加了库的大小。 **在 webpack 4 中，** 通过添加 `optimization.nodeEnv: 'production'` 选项以移除它们:
+在生产环境中通常不需要这些检查和警告，但是它们还是存在于代码中并增加了库的大小。 **在 webpack 4 中，** 通过添加 `optimization.nodeEnv: 'production'` 选项以移除它们：
 
 ``` js
 // webpack.config.js (基于 webpack 4)
@@ -201,7 +201,7 @@ module.exports = {
 }; 
 ```
 
-**在 webpack 3 中，** 则使用 [`DefinePlugin`](https://webpack.js.org/plugins/define-plugin/) 来替代:
+**在 webpack 3 中，** 则使用 [`DefinePlugin`](https://webpack.js.org/plugins/define-plugin/) 来替代：
 
 ```
 // webpack.config.js (基于 webpack 3)
@@ -219,7 +219,7 @@ module.exports = {
 
 `optimization.nodeEnv` 选项和 `DefinePlugin` 工作方式相同 – 它们会用某个特定的值取代所有在执行的 process.env.NODE_ENV。通过上面的配置：
 
-1.  Webpack 会将所有存在的 `process.env.NODE_ENV` 替换成 `"production"`:
+1.  Webpack 会将所有存在的 `process.env.NODE_ENV` 替换成 `"production"`：
     ``` js
     // vue/dist/vue.runtime.esm.js
     if (typeof val === 'string') {
@@ -262,7 +262,7 @@ module.exports = {
 ### 扩展阅读
 
 * [“环境变量”是什么](https://superuser.com/questions/284342/what-are-path-and-other-environment-variables-and-how-can-i-set-or-use-them)
-* 关于: [`DefinePlugin`](https://webpack.js.org/plugins/define-plugin/)，[`EnvironmentPlugin`](https://webpack.js.org/plugins/environment-plugin/) 的 Webpack 文档
+* 关于：[`DefinePlugin`](https://webpack.js.org/plugins/define-plugin/)，[`EnvironmentPlugin`](https://webpack.js.org/plugins/environment-plugin/) 的 Webpack 文档
 
 ## 使用 ES 模块（module）
 
@@ -303,12 +303,12 @@ module.exports = {
 
 即使是对用 ES 模块写成的库也是有效的。
 
-> ⭐️ **注意:** 在 webpack 中，tree-shaking 没有 minifier 是不会起作用的。Webpack 仅仅移除没有被用到的 export 变量；是 minifier 移除未使用的代码的。所以，如果你在没有使用 minifier 的情况下编译 bundle，是不会减小的。
+> ⭐️ **注意：** 在 webpack 中，tree-shaking 没有 minifier 是不会起作用的。Webpack 仅仅移除没有被用到的 export 变量；是 minifier 移除未使用的代码的。所以，如果你在没有使用 minifier 的情况下编译 bundle，是不会减小的。
 
 > 然而，你不需要特定使用 webpack 内置的 minifier (`UglifyJsPlugin`)。任意的 minifier 都支持移除无用代码(例如 [Babel Minify plugin](https://github.com/webpack-contrib/babel-minify-webpack-plugin) 或 [Google Closure Compiler plugin](https://github.com/roman01la/webpack-closure-compiler)) 都可以奏效。
 
 
-> ❗ **警告:** 不要将 ES 模块编译为 CommonJS 模块。
+> ❗ **警告：** 不要将 ES 模块编译为 CommonJS 模块。
 
 > 如果你使用 Babel 的 `babel-preset-env` 或 `babel-preset-es2015`， 检查它们预先的设置。默认情况下， 它们将 ES 的 `import` 和 `export` 转译为 CommonJS 的 `require` 和 `module.exports`。[通过 `{ modules: false }` 选项](https://github.com/babel/babel/tree/master/packages/babel-preset-env)来禁用它。
 
@@ -510,7 +510,7 @@ module.exports = {
 };
 ```
 
-在 **webpack 3** 中，使用 `ModuleConcatenationPlugin` 插件:
+在 **webpack 3** 中，使用 `ModuleConcatenationPlugin` 插件：
 
 ``` js
 // webpack.config.js (for webpack 3)
