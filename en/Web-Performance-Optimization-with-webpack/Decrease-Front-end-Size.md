@@ -11,7 +11,7 @@
 
 ## 使用生产模式(仅限 webpack4)
 
-Webpack 4 引入了 [新的 `mode` 标志](https://webpack.js.org/concepts/mode/)。你可以将这个标志设置为 `'development'` 或者 `'production'` 来告诉 webpack 你正在为特定环境构建应用：
+Webpack 4 引入了[新的 `mode` 标志](https://webpack.js.org/concepts/mode/)。你可以将这个标志设置为 `'development'` 或者 `'production'` 来告诉 webpack 你正在为特定环境构建应用：
 
 ```js
 // webpack.config.js
@@ -28,7 +28,7 @@ module.exports = {
 
 ## 启用最小化
 
-> ⭐️ **注意：** 这些大部分只适用于 webpack 3。如果你[在 webpack 4 中开启了 production 模式](#enable-the-production-mode)，bundle-level 最小化已经启用 – 你只需要启用 [loader-specific 选项](#loader-specific-options)。
+> ⭐️ **注意：** 这些大部分只适用于 webpack 3。如果你[在 webpack 4 中开启了 production 模式](#enable-the-production-mode)，bundle-level 最小化已经启用 – 你只需要启用 [loader 特定(loader-specific)的选项](#loader-specific-options)。
 
 最小化尺寸是在你通过移除多余的空格、缩短变量的命名等方式压缩代码的时候进行的。例如这样：
 
@@ -53,7 +53,7 @@ function map(array, iteratee) {
 function map(n,r){let t=-1;for(const a=null==n?0:n.length,l=Array(a);++t<a;)l[t]=r(n[t],t,n);return l} 
 ```
 
-Webpack 支持两种方式最小化代码： **bundle-level 最小化** 和 **loader-specific 选项**。 它们应该同时使用。
+Webpack 支持两种方式最小化代码： **bundle-level 最小化** 和 **loader 特定的选项**。 它们应该同时使用。
 
 ### Bundle-level 最小化
 
@@ -111,7 +111,7 @@ module.exports = {
 
 ###  loader 特定(loader-specific)的选项
 
-最小化代码的第二种方法是 loader-specific 选项 ([loader 是什么](https://webpack.js.org/concepts/loaders/))。利用 loader 选项，你可以压缩 minifier 不能最小化的东西。例如，当你利用 [`css-loader`](https://github.com/webpack-contrib/css-loader) 导入一个 CSS 文件时，该文件会被编译成一个字符串：
+最小化代码的第二种方法是 loader 特定的选项 ([loader 是什么](https://webpack.js.org/concepts/loaders/))。利用 loader 选项，你可以压缩 minifier 不能最小化的东西。例如，当你利用 [`css-loader`](https://github.com/webpack-contrib/css-loader) 导入一个 CSS 文件时，该文件会被编译成一个字符串：
 
 ``` css
 /* comments.css */  
@@ -264,7 +264,7 @@ module.exports = {
 * [“环境变量”是什么](https://superuser.com/questions/284342/what-are-path-and-other-environment-variables-and-how-can-i-set-or-use-them)
 * 关于: [`DefinePlugin`](https://webpack.js.org/plugins/define-plugin/)，[`EnvironmentPlugin`](https://webpack.js.org/plugins/environment-plugin/) 的 Webpack 文档
 
-## 使用 ES 模块
+## 使用 ES 模块（module）
 
 减小前端尺寸的另一种方法是使用 [ES 模块](https://ponyfoo.com/articles/es6-modules-in-depth)。
 
@@ -316,7 +316,7 @@ module.exports = {
 
 ### 扩展阅读
 
-* [“深入 ES6 模块(module)”](https://ponyfoo.com/articles/es6-modules-in-depth) 
+* [“深入 ES6 模块”](https://ponyfoo.com/articles/es6-modules-in-depth) 
 * Webpack 文档 [关于 tree shaking](https://webpack.js.org/guides/tree-shaking/)  
 
 ## 优化图片
@@ -602,12 +602,12 @@ define(["/libraries/react.min.js", "/libraries/react-dom.min.js"], function () {
 
 ### 扩展阅读
 
-* Webpack 文档 [on `externals`](https://webpack.js.org/configuration/externals/)
+* Webpack 文档 [`externals`](https://webpack.js.org/configuration/externals/)
 
 ## 总结
 
 * 如果使用 webpack 4，请启用生产模式
-* 最小化你的代码，通过 bundle-level minifier 和 loader 选项
+* 最小化你的代码，通过 bundle-level 最小化和 loader 选项
 * 移除仅在开发环境使用的代码，通过将 `NODE_ENV` 替换成 `production`
 * 使用 ES 模块以启用 tree shaking
 * 压缩图片
