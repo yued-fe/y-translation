@@ -14,7 +14,7 @@
 
  1. 告诉浏览器需要缓存一个文件很长时间（比如，一年）
 
-    ``` js
+    ```
     # Server header
     Cache-Control: max-age=31536000
     ```
@@ -23,7 +23,7 @@
 
 2. 当文件改变时，文件会被重命名，这样就迫使浏览器重新下载：
 
-    ``` js
+    ```
     <!-- 修改前 -->
     <script src="./index-v15.js"></script>
     
@@ -35,7 +35,7 @@
 这个方法可以告诉浏览器去下载 JS 文件，并将它缓存，之后使用的都是它的缓存副本。浏览器只会在文件名发生改变（或者一年之后缓存失效）时才会请求网络。
 
 使用 webpack，同样可以做到，但使用的不是版本号，而是指定文件的哈希值。使用 [`[chunkhash]`](https://webpack.js.org/configuration/output/#output-filename) 可以将哈希值写入文件名中：
-``` js
+```
 // webpack.config.js
 module.exports = {
   entry: './index.js',
@@ -52,7 +52,7 @@ module.exports = {
 
 [`HtmlWebpackPlugin`](https://github.com/jantimon/html-webpack-plugin) 是一个简单但扩展性不强的插件。在编译期间，它会生成一个 HTML 文件，文件包含了所有已经被编译的资源。如果你的服务端逻辑不是很复杂，那么它应该能满足你：
 
-```js
+```
 <!-- index.html -->
 <!doctype html>
 <!-- ... -->
@@ -61,7 +61,7 @@ module.exports = {
 
 [`WebpackManifestPlugin`](https://github.com/danethurber/webpack-manifest-plugin) 是一个扩展性更佳的插件，它可以帮助你解决服务端逻辑比较复杂的那部分。在打包时，它会生成一个 JSON 文件，里面包含了原文件名和带哈希文件名的映射。在服务端，通过这个 JSON 就能方便的找到我们真正要执行的文件：
 
-``` js
+```
 // manifest.json
 {
   "bundle.js": "bundle.8e0d62a03.js"
@@ -84,7 +84,7 @@ module.exports = {
 
 1. 将输出文件名替换为`[name].[chunkname].js`：
 
-    ``` js
+    ```
     // webpack.config.js
     module.exports = {
       output: {
@@ -99,7 +99,7 @@ module.exports = {
   当 webpack 编译应用时，它会将[`[name]`](https://webpack.js.org/configuration/output/#output-filename) 作为 chunk 的名称。如果我们没有添加 `[name]` 的部分，我们将不得不通过哈希值来区分 chunk - 这样就变得非常困难！
 
 2. 将 `entry` 的值改为对象：
-    ``` js
+    ```
     // webpack.config.js
     module.exports = {
       // Before
@@ -117,7 +117,7 @@ module.exports = {
 
 3. **在 webpack 4 中**，可以将 `optimization.splitChunks.chunks: 'all'` 选项添加到 webpack 的配置中:
 
-    ``` js
+    ```
     // webpack.config.js (for webpack 4)
     module.exports = {
       optimization: {
@@ -132,7 +132,7 @@ module.exports = {
      
     **在 webpack 3 中**添加 [CommonsChunkPlugin](https://webpack.js.org/plugins/commons-chunk-plugin/) 插件:
     
-    ``` js
+    ```
     // webpack.config.js (for webpack 3)
     module.exports = {
       plugins: [
@@ -153,7 +153,7 @@ module.exports = {
 
 完成这些更改后，每次打包都将从原来的生成一个文件变为生成两个文件：`main.[chunkhash].js` 和`vendor.[chunkhash].js` (`vendors~main.[chunkhash].js` 只有在 webpack 4 才有)。在 webpack 4 中，如果依赖项很小，则可能不会生成 vendor bundle - 这点做的不错：
 
-``` js
+```
 $ webpack
 Hash: ac01483e8fec1fa70676
 Version: webpack 3.8.1
@@ -169,7 +169,7 @@ Time: 3816ms
 
 遗憾的是，仅仅提取第三方库代码还是不够的。如果你想尝试在应用代码中修改一些东西：
 
-``` js
+```
 // index.js
 …
 …
@@ -180,21 +180,21 @@ console.log('Wat');
 
 你会发现 `vendor` 的哈希值也会被改变：
 
-``` js
+```
                            Asset   Size  Chunks             Chunk Names
 ./vendor.d9e134771799ecdf9483.js  47 kB       1  [emitted]  vendor
 ```
 
 ↓
 
-``` js
+```
                             Asset   Size  Chunks             Chunk Names
 ./vendor.e6ea4504d61a1cc1c60b.js  47 kB       1  [emitted]  vendor
 ```
 
 这是由于 webpack 打包时，除了模块代码之外，webpack 的 bundle 中还包含了 **[runtime](https://webpack.js.org/concepts/manifest/)**  - 一小段可以管理模块执行的代码。当你将代码拆分成多个文件时，这小部分代码在 chunk id 和匹配的文件之间会生成一个映射：
 
-``` js
+```
 // vendor.e6ea4504d61a1cc1c60b.js
 script.src = __webpack_require__.p + chunkId + "." + {
   "0": "2f2269c7f0a55a5c1871"
@@ -205,7 +205,7 @@ Webpack 将 runtime 包含在了最新生成的 chunk 中，这个 chunk 就是�
 
 为了解决这个问题，我们可以将 runtime 移动到一个独立的文件中。**在 webpack 4 中**，可以通过开启 `optimization.runtimeChunk` 选项来实现：
 
-``` js
+```
 // webpack.config.js (for webpack 4)
 module.exports = {
   optimization: {
@@ -216,7 +216,7 @@ module.exports = {
 
 **在 webpack 3 中**，可以通过 `CommonsChunkPlugin` 创建一个额外的空 chunk：
 
-``` js
+```
 // webpack.config.js (for webpack 3)
 module.exports = {
   plugins: [
@@ -240,7 +240,7 @@ module.exports = {
 
 完成这些变更后，每次构建将生成三个文件：
 
-``` js
+```
 $ webpack
 Hash: ac01483e8fec1fa70676
 Version: webpack 3.8.1
@@ -253,7 +253,7 @@ Time: 3816ms
 
 将这几个文件按倒序的方式添加到 `index.html` 中，就完成了：
 
-``` js
+```
 <!-- index.html -->
 <script src="./runtime.79f17c27b335abc7aaf4.js"></script>
 <script src="./vendor.26886caf15818fa82dfa.js"></script>
@@ -274,14 +274,14 @@ Time: 3816ms
 
 为了达到更好的体验，我们可以尝试把 webpack 的 runtime 内联到 HTML 中。例如，我们不要这么做：
 
-``` js
+```
 <!-- index.html -->
 <script src="./runtime.79f17c27b335abc7aaf4.js"></script>
 ```
 
 而是像下面这样:
 
-``` js
+```
 <!-- index.html -->
 <script>
 !function(e){function n(r){if(t[r])return t[r].exports;…}} ([]);
@@ -296,7 +296,7 @@ Runtime 的代码不多，内联到 HTML 中可以帮助我们节省 HTTP 请求
 
 如果你使用 [HtmlWebpackPlugin](https://github.com/jantimon/html-webpack-plugin) 来生成 HTML 文件，那么你一定需要 [InlineSourcePlugin](https://github.com/DustinJackson/html-webpack-inline-source-plugin) ：
 
-``` js
+```
 // webpack.config.js
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const InlineSourcePlugin = require('html-webpack-inline-source-plugin');
@@ -320,7 +320,7 @@ module.exports = {
 
 1. 添加 [WebpackManifestPlugin](https://github.com/danethurber/webpack-manifest-plugin) 插件可以获取生成的 runtume chunk 的名称：
 
-    ``` js
+    ```
     // webpack.config.js (for webpack 4)
     const ManifestPlugin = require('webpack-manifest-plugin');
     
@@ -333,7 +333,7 @@ module.exports = {
     
     使用这个插件构建会生成像下面这样的文件：
     
-    ``` js
+    ```
     // manifest.json
     {
       "runtime~main.js": "runtime~main.8e0d62a03.js"
@@ -342,7 +342,7 @@ module.exports = {
 
 2. 可以用一个便利的方式内联 runtime chunk 的内容。例如，使用 Node.js 和 Express：
 
-    ``` js
+    ```
     // server.js
     const fs = require('fs');
     const manifest = require('./manifest.json');
@@ -362,7 +362,7 @@ module.exports = {
 
 1. 通过指定 `filename` ，可以使 runtime 的名称不发生改变 :
 
-    ``` js
+    ```
     // webpack.config.js (for webpack 3)
     module.exports = {
       plugins: [
@@ -379,7 +379,7 @@ module.exports = {
 
 2. 可以用一个便利的方式内联 <code>runtime.js</code> 的内容。例如，使用 Node.js 和 Express：
 
-    ``` js
+    ```
     // server.js
     const fs = require('fs');
     const runtimeContent = fs.readFileSync('./runtime.js', 'utf-8');
@@ -403,7 +403,7 @@ module.exports = {
 
 上面的这些情况，都可以通过优先下载最重要的部分，稍后懒加载剩余部分，从而来提升页面首次加载的性能。在 webpack 中，使用[`import()` 函数](https://webpack.js.org/api/module-methods/#import-) 和[代码拆分](https://webpack.js.org/guides/code-splitting/)即可实现。
 
-``` js
+```
 // videoPlayer.js
 export function renderVideoPlayer() { … }
 
@@ -425,7 +425,7 @@ onShowCommentsClick(() => {
 `import()` 函数可以帮助你实现按需加载。Webpack 在打包时遇到 `import('./module.js')`，就会把这个模块放到单独的 chunk 中：
 
 
-``` js
+```
 $ webpack
 Hash: 39b2a53cb4e73f0dc5b2
 Version: webpack 3.8.1
@@ -471,7 +471,7 @@ Time: 4273ms
 
 要通过页面来拆分传统应用，可以使用 webpack 的 [entry points](https://webpack.js.org/concepts/entry-points/)。假设你的应用中有三类页面：主页、文章页和用户账户页，- 那么就应该有三个入口：
 
-``` js
+```
 // webpack.config.js
 module.exports = {
   entry: {
@@ -484,7 +484,7 @@ module.exports = {
 
 对于每个入口文件，webpack 将构建一个单独的依赖树并生成一个 bundle，这个 bundle 里只有包含这个入口所使用到的模块：
 
-``` js
+```
 $ webpack
 Hash: 318d7b8490a7382bf23b
 Version: webpack 3.8.1
@@ -502,7 +502,7 @@ Time: 4273ms
 
 但是，单独的依赖树有它们的缺点。如果两个入口都使用到了 Lodash，同时你没有将依赖项移到 vendor bundle 中，则两个入口都将包含 Lodash 的副本。为了解决这个问题，**在 webpack 4 中**，可以在你的 webpack 配置中加入`optimization.splitChunks.chunks: 'all'`选项：
 
-``` js
+```
 // webpack.config.js (适用于webpack 4)
 module.exports = {
   optimization: {
@@ -517,7 +517,7 @@ module.exports = {
 
 **在 webpack 3 中**，可以使用 [`CommonsChunkPlugin`](https://webpack.js.org/plugins/commons-chunk-plugin/) 插件，它会将公共的依赖项移动到一个新的指定文件中：
 
-``` js
+```
 // webpack.config.js (适用于 webpack 3)
 module.exports = {
   plugins: [
@@ -549,7 +549,7 @@ module.exports = {
 
 构建代码时，webpack 会为每个模块分配一个 ID。随后，这些 ID 将在 bundle 里的 `require()` 函数中被使用到。你通常会在编译输出的模块路径前看到这些 ID：
 
-``` bash
+```
 $ webpack
 Hash: df3474e4f76528e3bbc9
 Version: webpack 3.8.1
@@ -563,7 +563,7 @@ Time: 2150ms
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ 看下面
 
-``` bash
+```
    [0] ./index.js 29 kB {1} [built]
    [2] (webpack)/buildin/global.js 488 bytes {2} [built]
    [3] (webpack)/buildin/module.js 495 bytes {2} [built]
@@ -574,7 +574,7 @@ Time: 2150ms
 
 默认情况下，这些 ID 是使用计数器计算出来的（例如，第一个模块的 ID 是 0，第二个模块的 ID 就是 1，以此类推）。但这样做有个问题，当你新增一个模块时，它会可能出现在模块列表的中间，从而导致之后所有模块的 ID 都被改变：
 
-``` js
+```
 $ webpack
 Hash: df3474e4f76528e3bbc9
 Version: webpack 3.8.1
@@ -591,19 +591,19 @@ Time: 2150ms
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ 我们添加了一个新模块...
 
-``` js
+```
    [4] ./webPlayer.js 24 kB {1} [built]
 ```
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ 看看下面做了什么！ `comments.js` 的 ID 由 4 变成了 5
 
-``` js
+```
    [5] ./comments.js 58 kB {0} [built]
 ```
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓ `ads.js` 的 ID 由 5 变成了 6
 
-``` JS
+```
    [6] ./ads.js 74 kB {1} [built]
        + 1 hidden module
 ``` 
@@ -612,7 +612,7 @@ Time: 2150ms
 
 为了解决这个问题，可以使用 [`HashedModuleIdsPlugin`](https://webpack.js.org/plugins/hashed-module-ids-plugin/) 插件来改变模块 ID 的计算方式。这个插件用模块路径的哈希值代替了基于计数器的 ID：
 
-``` js
+```
 $ webpack
 Hash: df3474e4f76528e3bbc9
 Version: webpack 3.8.1
@@ -626,7 +626,7 @@ Time: 2150ms
 
 &nbsp;&nbsp;&nbsp;↓ 看下面
 
-``` js
+```
 [3IRH] ./index.js 29 kB {1} [built]
 [DuR2] (webpack)/buildin/global.js 488 bytes {2} [built]
 [JkW7] (webpack)/buildin/module.js 495 bytes {2} [built]
@@ -640,7 +640,7 @@ Time: 2150ms
 
 可以在配置中的 `plugins` 部分开启这个插件：
 
-``` js
+```
 // webpack.config.js
 module.exports = {
   plugins: [
