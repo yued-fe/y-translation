@@ -1,12 +1,12 @@
 > * 原文地址：[What are JavaScript Generators and how to use them](https://codeburst.io/what-are-javascript-generators-and-how-to-use-them-c6f2713fd12e)
 
-> * 译者：李智
+> * 译者：[li-z](https://github.com/li-z)
 
-> * 校对者：
+> * 校对者：[ziven27](https://github.com/ziven27) [小爷](https://github.com/djmaxwow)
 
 # 什么是JavaScript generator 以及如何使用它们
 
-在本文中，我们看看 ECMAScript 6中介绍的 generator 是什么，以及关于它们的使用案例。
+在本文中，我们将要介绍 ECMAScript 6中的 generator 是什么，以及关于它们的使用案例。
 
 ### 什么是JavaScript generator
 
@@ -62,7 +62,7 @@ let generator = ()* => {} // SyntaxError
 let generator = (*) => {} // SyntaxError
 ```
 
-从上面的示例中可以看出，我们不能使用箭头函数创建生成器。
+从上面的示例中可以看出，我们不能使用箭头函数来创建一个 generator。
 
 接下来 —— generator 作为方法。它的声明方式与函数相同。
 
@@ -100,7 +100,7 @@ withReturn(6); // 11
 function * withYield(a) {
   let b = 5;
   yield a + b;
-  b = 6; // 第一次调用之后仍可以重新定义变量
+  b = 6; // 第一次执行之后仍可以重新定义变量
   yield a * b;
 }
 
@@ -113,7 +113,7 @@ calcSix.next().value; // 36
 
 *yield* 只返回一次值，下次调用 *next()* 时，它将执行到下一个 *yield* 语句。
 
-在 generator 中我们通常都会获得一个对象。它有两个属性 *value* 和 *done*。正如你所想，*value* 表示返回的值，*done* 告诉我们 generator 是否完成了它的工作(是否迭代完成)。
+在 generator 中我们通常都会获得一个对象作为输出。它有两个属性 *value* 和 *done*。正如你所想，*value* 表示返回的值，*done* 告诉我们 generator 是否完成了它的工作(是否迭代完成)。
 
 ```js
 function * generator() {
@@ -127,7 +127,7 @@ gen.next(); // {value: undefined, done: true}
 gen.next(); // {value: undefined, done: true} - 继续调用 next() 将返回相同的输出。
 ```
 
-在 generator 中不仅可以使用 *yield*，*return* 语句也会返回相同的对象，但是当执行第一个 *retrurn* 语句时，迭代就会停止了。
+在 generator 中不仅可以使用 *yield*，*return* 语句也会返回相同的对象，但是当执行完第一个 *retrurn* 语句时，迭代就会停止了。
 
 ```js
 function * generator() {
@@ -145,7 +145,7 @@ gen.next(); // {value: undefined, done: true}
 
 #### Yield delegator
 
-带星号的 *yield* 可以代理执行其他的 generator。这样你就可以按照你想要的方式连续调用多个 generator。
+带星号的 *yield* 可以代理执行另一个 generator。这样你就可以根据需要连续调用多个 generator。
 
 ```js
 function * anotherGenerator(i) {
@@ -167,7 +167,7 @@ gen.next().value; // 4
 
 在我们介绍方法之前，让我们先来看看第一次可能看起来相当奇怪的一些行为。
 
-这是正常的代码，没有任何错误，这向我们展示了 *yield* 可以在调用方法 *next()* 中返回传递的值。
+下面这段代码向我们展示了 *yield* 可以在调用方法 *next()* 中返回传递的值，不会报任何错误
 
 ```js
 function * generator(arr) {
@@ -314,7 +314,7 @@ gen.math(1); // 3.141592653589793
 
 #### generator 的用途
 
-在前面，我们用了已知迭代次数的 generator。但如果我们不知道要迭代多少次会怎么样呢？为了解决这个问题，需要在 generator 函数中创建一个死循环。下面是一个返回随机数的函数的例子：
+在前面，我们用了已知迭代次数的 generator。但如果我们不知道要迭代多少次会怎么样呢？要想解决这个问题，在 generator 函数中创建一个死循环就足够了。下面是一个返回随机数的函数的例子：
 
 ```js
 function * randomFrom(...arr) {
