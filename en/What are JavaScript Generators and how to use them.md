@@ -249,9 +249,9 @@ for (const g of gen) {
 gen.next(); // {value: undefined, done: true}
 ```
 
-但这不适用于 **for in** 循环，也不能直接用数字下标来访问属性：generator[0] = undefined。
+但这不适用于 **for in** 循环，也不能直接用数字下标来访问属性：`generator[0] = undefined`。
 
-**方法 _return():_**
+**方法 return():**
 
 ```js
 function * generator() {
@@ -271,7 +271,7 @@ gen.next(); // {value: undefined, done: true} - 在 return() 之后的所有 nex
 
 **return()** 将会忽略生成器中的任何代码。它会根据传值设定 value，并将 **done** 设为 true。任何在 **return()** 之后进行的 **next()** 调用都会返回 done 属性为 true 的对象。
 
-**方法 _throw():_**
+**方法 throw():**
 
 ```js
 function * generator() {
