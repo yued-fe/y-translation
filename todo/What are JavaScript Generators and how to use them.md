@@ -1,23 +1,29 @@
-# What are JavaScript Generators and how to use them
+> * 原文地址：[What are JavaScript Generators and how to use them](https://codeburst.io/what-are-javascript-generators-and-how-to-use-them-c6f2713fd12e)
 
-In this article, we’re going to take a look at the generators that were introduced in ECMAScript 6. We’ll see what it is and then look at some examples of their use.
+> * 译者：[li-z](https://github.com/li-z)
 
-### What are JavaScript Generators?
+> * 校对者：[张舰](https://github.com/zhangjiana) [赵冉](https://github.com/heiranran)
 
-Generators are functions that you can use to control the iterator. They can be suspended and later resumed at any time.
+# 什么是JavaScript generator 以及如何使用它们
 
-If that doesn’t make sense, then let’s look at some examples that will explain what generators are, and what’s the difference between a generator and an iterator like _for-loop_.
+在本文中，我们将要介绍 ECMAScript 6中的 generator 是什么，以及关于它们的使用案例。
 
-This is a _for-loop_ loop that returns a heap of values immediately. What does this code do? — simply repeats numbers from 0 to 5.
+### 什么是JavaScript generator
+
+generators 是可以控制 iterator(迭代器)的函数。并在任何时候都可以暂停和恢复。
+
+如果这不好理解，那让我们看一些示例，这些示例将解释 generator 是什么，以及它和 iterator(迭代器，如for-loop)之间的区别。
+
+这是一个立即输出值的 *for* 循环。这段代码是做什么的？—— 只是输出 0 到 5 之间的数
 
 ```js
 for (let i = 0; i < 5; i += 1) {
   console.log(i);
 }
-// this will return immediately 0 -> 1 -> 2 -> 3 -> 4
+// 将会立即输出 0 -> 1 -> 2 -> 3 -> 4
 ```
 
-Now let’s look at the generator function.
+现在让我们看看 generator 函数
 
 ```js
 function * generatorForLoop(num) {
@@ -28,18 +34,19 @@ function * generatorForLoop(num) {
 
 const genForLoop = generatorForLoop(5);
 
-genForLoop.next(); // first console.log - 0
+genForLoop.next(); // 首先 console.log —— 0
 genForLoop.next(); // 1
 genForLoop.next(); // 2
 genForLoop.next(); // 3
 genForLoop.next(); // 4
 ```
 
-What does it do? In fact, it just wraps our for-loop from the example above with some changes. But the most significant change is that it does not ring immediately. And this is the most important feature in generators — we can get the next value in only when we really need it, not all the values at once. And in some situations it can be very convenient.
+这段代码做了什么呢？实际上，它只是做了一些修改来包装上面的 *for* 循环。但是最主要的变化是，它不会立即执行。这是 generator 中最重要的特性 — 我们可以在真正需要下一个值的时候，才去获取它，而不是一次获得所有值。在有些情况下，这会非常方便。
 
-### The syntax generators
 
-How can we declare the generator function? There is a list of possible ways to do this, but the main thing is to add an asterisk after the function keyword.
+### generator 语法
+
+如何声明一个 generator 函数呢？我们有很多方法可以实现，但是最主要的是在函数关键字之后添加一个星号。
 
 ```js
 function * generator () {}
@@ -55,9 +62,9 @@ let generator = ()* => {} // SyntaxError
 let generator = (*) => {} // SyntaxError
 ```
 
-As you can see from the example above, we cannot create a generator using the arrow function.
+从上面的示例中可以看出，我们不能使用箭头函数来创建一个 generator。
 
-Next-the generator as a method. It is declared in the same way as functions.
+接下来 —— generator 作为一种方法。它的声明方式与函数相同。
 
 ```js
 class MyClass {
@@ -73,27 +80,27 @@ const obj = {
 
 #### Yield
 
-Now let’s take a look at the new keyword _yield_. It’s a bit like _return_, but not. _Return_ simply returns the value after the function call, and it will not allow you to do anything else after the _return_ statement.
+现在，让我们来看看新的关键字 *yield*。它有点像 *return*，但不是。*return* 只是在函数调用之后返回值，它不允许你在 *return* 语句之后执行任何其他操作。
 
 ```js
 function withReturn(a) {
   let b = 5;
   return a + b;
-  b = 6; // we will never re-assign b
-  return a * b; // and will never return new value
+  b = 6; // 不会重新定义 b 了
+  return a * b; // 永远不会返回新的值了
 }
 
 withReturn(6); // 11
 withReturn(6); // 11
 ```
 
-_Yield_ works different.
+而 *yield* 的执行方式不同。
 
 ```js
 function * withYield(a) {
   let b = 5;
   yield a + b;
-  b = 6; // it will be re-assigned after first execution
+  b = 6; // 第一次执行之后仍可以重新定义变量
   yield a * b;
 }
 
@@ -103,9 +110,10 @@ calcSix.next().value; // 11
 calcSix.next().value; // 36
 ```
 
-_Yield_ returns a value only once, and the next time you call the same function it will move on to the next _yield_ statement.
 
-Also in generators we always get the object as output. It always has two properties _value_ and _done_. And as you can expect, _value_ \- returned value, and _done_ shows us whether the generator has finished its job or not.
+*yield* 只返回一次值，下次调用 *next()* 时，它将执行到下一个 *yield* 语句。
+
+在 generator 中我们通常都会获得一个对象作为输出。它有两个属性 *value* 和 *done*。正如你所想，*value* 表示返回的值，*done* 告诉我们 generator 是否完成了它的工作(是否迭代完成)。
 
 ```js
 function * generator() {
@@ -116,16 +124,16 @@ const gen = generator();
 
 gen.next(); // {value: 5, done: false}
 gen.next(); // {value: undefined, done: true}
-gen.next(); // {value: undefined, done: true} - all other calls will produce the same result
+gen.next(); // {value: undefined, done: true} - 继续调用 next() 将返回相同的输出。
 ```
 
-Not only can _yield_ be used in generators, _return_ will also return the same object to you, but after you reach the first _return_ statement the generator will finish it’s job.
+在 generator 中不仅可以使用 *yield*，*return* 语句也会返回相同的对象，但是当执行完第一个 *retrurn* 语句时，迭代就会停止了。
 
 ```js
 function * generator() {
   yield 1;
   return 2;
-  yield 3; // we will never reach this yield
+  yield 3; // 这个 yield 永远都不会执行
 }
 
 const gen = generator();
@@ -137,7 +145,7 @@ gen.next(); // {value: undefined, done: true}
 
 #### Yield delegator
 
-Y_ield_ with asterisk can delegate it’s work to another generator. This way you can chain as many generators as you want.
+带星号的 *yield* 可以代理执行另一个 generator。这样你就可以根据需要连续调用多个 generator。
 
 ```js
 function * anotherGenerator(i) {
@@ -157,9 +165,9 @@ gen.next().value; // 3
 gen.next().value; // 4
 ```
 
-Before we move on to methods, let’s take a look at some behavior that may seem rather strange the first time.
+在我们详细介绍 generator 中的方法之前，让我们来看看第一次看到会觉得很奇怪的一些行为。
 
-This is normal code without any errors, which shows us that _yield_ can return passed value in the call method _next()_.
+下面这段代码向我们展示了 *yield* 可以返回在 *next()* 方法调用中传递的值
 
 ```js
 function * generator(arr) {
@@ -185,11 +193,11 @@ gen.next('B'); // {value: "B", done: false}
 gen.next(); // {value: undefined, done: true}
 ```
 
-As you can see in this example _yield_ by default is _undefined_ but if we will pass any value and just calls _yield_ it will return us our passed value. We will use this feature soon.
+正如你在这个例子中所看到的，默认情况下，*yield* 是 *undefined* 的，但是如果我们传递任何值，并且只调用 *yield*，它将返回传递给我们的值。我们很快就会使用这个功能。
 
-#### Methods and initialization
+#### 方法和初始化
 
-Generators are reusable, but to be so — you need to initialize them, fortunately it is quite simple.
+generator 是可重用的，但是你需要初始化它们，幸运的是，这非常简单。
 
 ```js
 function * generator(arg = 'Nothing') {
@@ -200,14 +208,14 @@ const gen0 = generator(); // OK
 const gen1 = generator('Hello'); // OK
 const gen2 = new generator(); // Not OK
 
-generator().next(); // It will work, but every time from the beginning
+generator().next(); // 这样也可以，但是会每一次从都头开始
 ```
 
-So _gen0_ and _gen1_ are won’t affect each other. And _gen2_ won’t work at all, even more you will get an error. Initialization is important to keep the state of progress.
+*gen0* 和 *gen1* 不会相互影响。*gen2* 不会起作用，甚至会报一个错误。合理的初始化一个 *generator* 对于保持其内部的执行进度非常重要。
 
-Now let’s look at the methods that generators give us.
+现在让我们看看 generator 提供给我们的一些方法。
 
-**Method _next():_**
+**方法 next():**
 
 ```js
 function * generator() {
@@ -221,13 +229,12 @@ const gen = generator();
 gen.next(); // {value: 1, done: false}
 gen.next(); // {value: 2, done: false}
 gen.next(); // {value: 3, done: false}
-gen.next(); // {value: undefined, done: true} and all next calls will return the same output 
+gen.next(); // {value: undefined, done: true} 继续调用 next() 将返回相同的输出。
 ```
 
-This is the main method that you will use most often. It gives us the next output object every time we call it. And when it is done, _next()_ set the _done_ property to _true_ and _value_ to _undefined_.
+这将会是你最常使用的方法。每次调用它时，它都会为我们输出一个对象。当所有的yield表达式被执行完之后，*next()* 会把属性 *done* 设置为 *true*，将属性 *value* 设置为 *undfined*。
 
-
-Not only _next()_ we can use to iterate generator. But using _for-of loop_ we get all the values (not the object) of our generator.
+我们不仅可以用 *next()* 来迭代 generator，还可以用 *for of* 循环来一次得到生成器所有的值（而不是对象）。
 
 ```js
 function * generator(arr) {
@@ -244,9 +251,9 @@ for (const g of gen) {
 gen.next(); // {value: undefined, done: true}
 ```
 
-This will not work with _for-in loop_ and you can’t get access to properties by just typing number — _generator\[0\]_ = undefined.
+但这不适用于 *for in* 循环，也不能直接用数字下标来访问属性：generator[0] = undefined。
 
-**Method _return():_**
+**方法 _return():_**
 
 ```js
 function * generator() {
@@ -260,13 +267,13 @@ const gen = generator();
 gen.return(); // {value: undefined, done: true}
 gen.return('Heeyyaa'); // {value: "Heeyyaa", done: true}
 
-gen.next(); // {value: undefined, done: true} - all next() calls after return() will return the same output
+gen.next(); // {value: undefined, done: true} - 在 return() 之后的所有 next() 调用都会返回相同的输出
 
 ```
 
-_Return()_ will ignore any code in the generator function that you have. But will set the value based on a passed argument and set _done_ to be true. Any calls _next()_ after _return()_ will return done-object.
+*return()* 将会忽略生成器中的任何代码。它会根据传值设定 value，并将 *done* 设为 true。任何在 *return()* 之后进行的 *next()* 调用都会返回 done 属性为 true 的对象。
 
-**Method _throw():_**
+**方法 _throw():_**
 
 ```js
 function * generator() {
@@ -281,11 +288,11 @@ gen.throw('Something bad'); // Error Uncaught Something bad
 gen.next(); // {value: undefined, done: true}
 ```
 
-It’s easy one all is _throw()_ do — just throws the error. We can handle it using _try — catch_.
+*throw()* 做的事情非常简单 — 就是抛出错误。我们可以用 *try-catch* 来处理。
 
-#### Implementation of custom methods
+#### 实现自定义方法
 
-We can’t directly access the _Generator_ constructor, so we need to figure out how to add new methods. That’s what I do, but you can choose a different path.
+我们无法直接访问 *generator* 构造函数，因此我们需要另想办法来添加自定义。 这就是我的办法，当然你也可以选择不同的方式。
 
 ```js
 function * generator() {
@@ -294,7 +301,7 @@ function * generator() {
 
 generator.prototype.__proto__; // Generator {constructor: GeneratorFunction, next: ƒ, return: ƒ, throw: ƒ, Symbol(Symbol.toStringTag): "Generator"}
 
-// as Generator is not global variable we have to write something like this
+// 由于 generator 不是一个全局变量，所以我们只能这么写：
 generator.prototype.__proto__.math = function(e = 0) {
   return e * Math.PI;
 }
@@ -305,9 +312,9 @@ const gen = generator();
 gen.math(1); // 3.141592653589793
 ```
 
-#### The use of generators!
+#### generator 的作用
 
-Previously, we used generators with a known number of iterations. But what if we don’t know how many iterations are needed. To solve this problem, it is enough to create an infinite loop in the function generator. The example below demonstrates this for a function that returns a random number.
+在前面，我们用了已知迭代次数的 generator。但如果我们不知道要迭代多少次会怎么样呢？要想解决这个问题，在 generator 函数中创建一个死循环就足够了。下面是一个返回随机数的函数的例子：
 
 ```js
 function * randomFrom(...arr) {
@@ -317,10 +324,10 @@ function * randomFrom(...arr) {
 
 const getRandom = randomFrom(1, 2, 5, 9, 4);
 
-getRandom.next().value; // returns random value
+getRandom.next().value; // 返回一个随机数
 ```
 
-It was easy, as for the more complex functions, for example, we can write a function of the throttle. If you don’t know what it is, there’s a [great article](https://medium.com/@_jh3y/throttling-and-debouncing-in-javascript-b01cad5c8edf) about it.
+这很容易，但是对于更复杂的功能，例如节流函数。 如果你不知道它是什么，请参考[参考文章]（https://medium.com/@_jh3y/throttling-and-debouncing-in-javascript-b01cad5c8edf）。
 
 ```js
 function * throttle(func, time) {
@@ -336,10 +343,10 @@ function * throttle(func, time) {
 const thr = throttle(console.log, 1000);
 
 thr.next(); // {value: undefined, done: false}
-thr.next('hello'); // {value: undefined, done: false} + 1s after -> 'hello'
+thr.next('hello'); // {value: undefined, done: false} 1秒后输出 -> 'hello'
 ```
 
-But what about something more useful in terms of using generators? If you’ve ever heard of recursions I’m sure you’ve also heard of [Fibonacci numbers](https://en.wikipedia.org/wiki/Fibonacci_number). Usually it is solved with recursion, but with the help of a generator we can write it this way:
+还有没有更好的使用 generator 的例子呢？如果你听说过递归，我相信你也听说过[斐波那契数列]（https://en.wikipedia.org/wiki/Fibonacci_number）。 通常它是通过递归来解决的，但是在 generator 的帮助下我们可以这样写它：
 
 ```js
 function * fibonacci(seed1, seed2) {
@@ -360,18 +367,18 @@ fib.next(); // {value: 5, done: false}
 fib.next(); // {value: 8, done: false}
 ```
 
-There is no need of recursion more! And we can get the next number, when we really need them.
+不再需要递归了！我们可以在需要的时候获得数列中的下一个数字。
 
-#### The use of generators with HTML
+#### 将 generator 用在 HTML 中
 
-Since we are talking about JavaScript the most obvious way to use the generator is to perform some actions with HTML.
+既然我们讨论的是JavaScript，那最显著的方式就是使用 generator 对 HTML 进行一些操作。
 
-So, suppose we have some number of HTML blocks that we want to go through, we can easily achieve this with a generator, but keep in mind that there are many more possible ways to do this without generators.
+因此，假设我们有一些 HTML 块要处理，我们可以很容易地通过 generator 实现，但要记住，在不使用 generator 的情况下，还有很多可能的方法可以实现这一点。
 
 [Using generator-iterator with HTML elements
 A PEN BY Vlad](https://codepen.io/vldvel/pen/LQqegv)
 
-This is done with a small amount of code.
+我们只需要很少的代码就能完成此需求。
 
 ```js
 const strings = document.querySelectorAll('.string');
@@ -391,10 +398,10 @@ btn.addEventListener('click', (el) => {
 });
 ```
 
-In fact, only five lines of logic.
+实际上，仅有 5 行逻辑代码。
 
-#### That’s it!
+#### 总结
 
-There are many more possible ways to use generators. For example, they can be useful when working with asynchronous operations. Or iterate through an on-demand item loop.
+使用 generator 还有很多能做的事情。例如，在进行异步操作时，它可以很有用。或者是遍历一个按需项循环。
 
-I hope this article has helped you better understand JavaScript generators.
+我希望这篇文章能帮助你更好地理解JavaScript generator。

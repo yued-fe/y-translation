@@ -610,7 +610,7 @@ Time: 2150ms
 
 这将使包含或依赖于这些被更改 ID 的模块的所有 chunk 都无效 - 即使它们实际代码没有更改。在我们的案例中，ID 为 `0` 的 chunk ( `comments.js` 的 chunk)  和 `main` chunk （其它应用代码的 chunk ）都将失效 - 但其实只有 `main` 应该失效。
 
-为了解决这个问题，可以使用 [`HashedModuleIdsPlugin`](https://webpack.js.org/plugins/hashed-module-ids-plugin/) 插件来改变模块 ID 的计算方式。这个插件用模块路径的哈希值代替了基于计数器的 ID：
+为了解决这个问题，可以使用 [`HashedidsPlugin`](https://webpack.js.org/plugins/hashed-module-ids-plugin/) 插件来改变模块 ID 的计算方式。这个插件用模块路径的哈希值代替了基于计数器的 ID：
 
 ```
 $ webpack
@@ -644,14 +644,14 @@ Time: 2150ms
 // webpack.config.js
 module.exports = {
   plugins: [
-    new webpack.HashedModuleIdsPlugin(),
+    new webpack.HashedidsPlugin(),
   ],
 };
 ```
 
 ### 扩展阅读
 
-* Webpack 文档 [关于 HashedModuleIdsPlugin](https://webpack.js.org/plugins/hashed-module-ids-plugin/)
+* Webpack 文档 [关于 HashedidsPlugin](https://webpack.js.org/plugins/hashed-module-ids-plugin/)
 
 ## 总结
 
