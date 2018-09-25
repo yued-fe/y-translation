@@ -1,5 +1,5 @@
 > * 原文地址：[What are JavaScript Generators and how to use them](https://codeburst.io/what-are-javascript-generators-and-how-to-use-them-c6f2713fd12e)
-> * 译文地址：[什么是JavaScript generator 以及如何使用它们](https://github.com/yued-fe/y-translation/blob/master/en/What%20are%20JavaScript%20Generators%20and%20how%20to%20use%20them.md)
+> * 译文地址：[什么是 JavaScript generator 以及如何使用它们](https://github.com/yued-fe/y-translation/blob/master/en/What%20are%20JavaScript%20Generators%20and%20how%20to%20use%20them.md)
 > * 译者：[li-z](https://github.com/li-z)
 > * 校对者：[张舰](https://github.com/zhangjiana) [赵冉](https://github.com/heiranran)
 
@@ -9,9 +9,9 @@
 
 ### 什么是 JavaScript generator
 
-generators 是可以控制 iterator (迭代器)的函数。并在任何时候都可以暂停和恢复。
+generators 是可以控制 iterator（迭代器）的函数。并在任何时候都可以暂停和恢复。
 
-如果这不好理解，那让我们看一些示例，这些示例将解释 generator 是什么，以及它和 iterator(迭代器，如 for-loop) 之间的区别。
+如果这不好理解，那让我们看一些示例，这些示例将解释 generator 是什么，以及它和 iterator（迭代器，如 for-loop) 之间的区别。
 
 这是一个立即输出值的 **for** 循环。这段代码是做什么的？—— 只是输出 0 到 5 之间的数
 
@@ -78,7 +78,7 @@ const obj = {
 
 #### Yield
 
-现在，让我们来看看新的关键字 *yield*。它有点像 **return**，但不是。**return** 只是在函数调用之后返回值，它不允许你在 **return** 语句之后执行任何其他操作。
+现在，让我们来看看新的关键字 *yield*。它有点像 **return**，但不是。**return** 只在函数调用之后返回值，**return** 语句之后不允许你执行任何其他操作。
 
 ```js
 function withReturn(a) {
@@ -111,7 +111,7 @@ calcSix.next().value; // 36
 
 **yield** 只返回一次值，下次调用 **next()** 时，它将执行到下一个 **yield** 语句。
 
-在 generator 中我们通常都会获得一个对象作为输出。它有两个属性 **value** 和 **done**。正如你所想，**value** 表示返回的值，**done** 告诉我们 generator 是否完成了它的工作(是否迭代完成)。
+在 generator 中我们通常都会获得一个对象作为输出。它有两个属性 **value** 和 **done**。正如你所想，**value** 表示返回的值，**done** 告诉我们 generator 是否完成了它的工作（是否迭代完成）。
 
 ```js
 function * generator() {
