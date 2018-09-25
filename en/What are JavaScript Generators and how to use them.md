@@ -191,7 +191,7 @@ gen.next('B'); // {value: "B", done: false}
 gen.next(); // {value: undefined, done: true}
 ```
 
-正如你在这个例子中所看到的，默认情况下，**yield** 是 **undefined** 的，但是如果我们传递任何值，并且只调用 **yield**，它将返回传递给我们的值。我们很快就会使用这个功能。
+正如你在这个例子中所看到的，默认情况下，**yield** 是 **undefined** 的，但是如果我们传递任何值，并且只调用 **yield**，它将返回我们传递的值。我们很快就会使用这个功能。
 
 #### 方法和初始化
 
@@ -290,7 +290,7 @@ gen.next(); // {value: undefined, done: true}
 
 #### 实现自定义方法
 
-我们无法直接访问 **generator** 构造函数，因此我们需要另想办法来添加自定义。 这就是我的办法，当然你也可以选择不同的方式。
+我们无法直接访问 **generator** 构造函数，因此我们需要另想办法来添加自定义方法。 示例是我的办法，当然你也可以选择不同的方式。
 
 ```js
 function * generator() {
@@ -325,7 +325,7 @@ const getRandom = randomFrom(1, 2, 5, 9, 4);
 getRandom.next().value; // 返回一个随机数
 ```
 
-这很容易，但是对于更复杂的功能，例如节流函数。 如果你不知道它是什么，请参考[参考文章](https://medium.com/@_jh3y/throttling-and-debouncing-in-javascript-b01cad5c8edf)。
+这很容易，但是对于更复杂的功能，例如节流函数。 如果你不知道它是什么，请参考[这篇文章](https://medium.com/@_jh3y/throttling-and-debouncing-in-javascript-b01cad5c8edf)。
 
 ```js
 function * throttle(func, time) {
