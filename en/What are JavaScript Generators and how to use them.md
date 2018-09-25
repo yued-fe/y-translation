@@ -1,20 +1,19 @@
 > * 原文地址：[What are JavaScript Generators and how to use them](https://codeburst.io/what-are-javascript-generators-and-how-to-use-them-c6f2713fd12e)
-
+> * 译文地址：[什么是JavaScript generator 以及如何使用它们](https://github.com/yued-fe/y-translation/blob/master/en/What%20are%20JavaScript%20Generators%20and%20how%20to%20use%20them.md)
 > * 译者：[li-z](https://github.com/li-z)
-
 > * 校对者：[张舰](https://github.com/zhangjiana) [赵冉](https://github.com/heiranran)
 
 # 什么是JavaScript generator 以及如何使用它们
 
-在本文中，我们将要介绍 ECMAScript 6中的 generator 是什么，以及关于它们的使用案例。
+在本文中，我们将要介绍 ECMAScript 6 中的 generator 是什么，以及关于它们的使用案例。
 
-### 什么是JavaScript generator
+### 什么是 JavaScript generator
 
-generators 是可以控制 iterator(迭代器)的函数。并在任何时候都可以暂停和恢复。
+generators 是可以控制 iterator (迭代器)的函数。并在任何时候都可以暂停和恢复。
 
-如果这不好理解，那让我们看一些示例，这些示例将解释 generator 是什么，以及它和 iterator(迭代器，如for-loop)之间的区别。
+如果这不好理解，那让我们看一些示例，这些示例将解释 generator 是什么，以及它和 iterator(迭代器，如for-loop) 之间的区别。
 
-这是一个立即输出值的 *for* 循环。这段代码是做什么的？—— 只是输出 0 到 5 之间的数
+这是一个立即输出值的 **for** 循环。这段代码是做什么的？—— 只是输出 0 到 5 之间的数
 
 ```js
 for (let i = 0; i < 5; i += 1) {
@@ -41,8 +40,7 @@ genForLoop.next(); // 3
 genForLoop.next(); // 4
 ```
 
-这段代码做了什么呢？实际上，它只是做了一些修改来包装上面的 *for* 循环。但是最主要的变化是，它不会立即执行。这是 generator 中最重要的特性 — 我们可以在真正需要下一个值的时候，才去获取它，而不是一次获得所有值。在有些情况下，这会非常方便。
-
+这段代码做了什么呢？实际上，它只是做了一些修改来包装上面的 **for** 循环。但是最主要的变化是，它不会立即执行。这是 generator 中最重要的特性 — 我们可以在真正需要下一个值的时候，才去获取它，而不是一次获得所有值。在有些情况下，这会非常方便。
 
 ### generator 语法
 
@@ -80,7 +78,7 @@ const obj = {
 
 #### Yield
 
-现在，让我们来看看新的关键字 *yield*。它有点像 *return*，但不是。*return* 只是在函数调用之后返回值，它不允许你在 *return* 语句之后执行任何其他操作。
+现在，让我们来看看新的关键字 *yield*。它有点像 **return**，但不是。**return** 只是在函数调用之后返回值，它不允许你在 **return** 语句之后执行任何其他操作。
 
 ```js
 function withReturn(a) {
@@ -94,7 +92,7 @@ withReturn(6); // 11
 withReturn(6); // 11
 ```
 
-而 *yield* 的执行方式不同。
+而 **yield** 的执行方式不同。
 
 ```js
 function * withYield(a) {
@@ -111,9 +109,9 @@ calcSix.next().value; // 36
 ```
 
 
-*yield* 只返回一次值，下次调用 *next()* 时，它将执行到下一个 *yield* 语句。
+**yield** 只返回一次值，下次调用 **next()** 时，它将执行到下一个 **yield** 语句。
 
-在 generator 中我们通常都会获得一个对象作为输出。它有两个属性 *value* 和 *done*。正如你所想，*value* 表示返回的值，*done* 告诉我们 generator 是否完成了它的工作(是否迭代完成)。
+在 generator 中我们通常都会获得一个对象作为输出。它有两个属性 **value** 和 **done**。正如你所想，**value** 表示返回的值，**done** 告诉我们 generator 是否完成了它的工作(是否迭代完成)。
 
 ```js
 function * generator() {
@@ -127,7 +125,7 @@ gen.next(); // {value: undefined, done: true}
 gen.next(); // {value: undefined, done: true} - 继续调用 next() 将返回相同的输出。
 ```
 
-在 generator 中不仅可以使用 *yield*，*return* 语句也会返回相同的对象，但是当执行完第一个 *retrurn* 语句时，迭代就会停止了。
+在 generator 中不仅可以使用 **yield**，**return** 语句也会返回相同的对象，但是当执行完第一个 **retrurn** 语句时，迭代就会停止了。
 
 ```js
 function * generator() {
@@ -145,7 +143,7 @@ gen.next(); // {value: undefined, done: true}
 
 #### Yield delegator
 
-带星号的 *yield* 可以代理执行另一个 generator。这样你就可以根据需要连续调用多个 generator。
+带星号的 **yield** 可以代理执行另一个 generator。这样你就可以根据需要连续调用多个 generator。
 
 ```js
 function * anotherGenerator(i) {
@@ -167,7 +165,7 @@ gen.next().value; // 4
 
 在我们详细介绍 generator 中的方法之前，让我们来看看第一次看到会觉得很奇怪的一些行为。
 
-下面这段代码向我们展示了 *yield* 可以返回在 *next()* 方法调用中传递的值
+下面这段代码向我们展示了 **yield** 可以返回在 **next()** 方法调用中传递的值。
 
 ```js
 function * generator(arr) {
@@ -193,7 +191,7 @@ gen.next('B'); // {value: "B", done: false}
 gen.next(); // {value: undefined, done: true}
 ```
 
-正如你在这个例子中所看到的，默认情况下，*yield* 是 *undefined* 的，但是如果我们传递任何值，并且只调用 *yield*，它将返回传递给我们的值。我们很快就会使用这个功能。
+正如你在这个例子中所看到的，默认情况下，**yield** 是 **undefined** 的，但是如果我们传递任何值，并且只调用 **yield**，它将返回传递给我们的值。我们很快就会使用这个功能。
 
 #### 方法和初始化
 
@@ -211,7 +209,7 @@ const gen2 = new generator(); // Not OK
 generator().next(); // 这样也可以，但是会每一次从都头开始
 ```
 
-*gen0* 和 *gen1* 不会相互影响。*gen2* 不会起作用，甚至会报一个错误。合理的初始化一个 *generator* 对于保持其内部的执行进度非常重要。
+**gen0** 和 **gen1** 不会相互影响。**gen2** 不会起作用，甚至会报一个错误。合理的初始化一个 **generator** 对于保持其内部的执行进度非常重要。
 
 现在让我们看看 generator 提供给我们的一些方法。
 
@@ -232,9 +230,9 @@ gen.next(); // {value: 3, done: false}
 gen.next(); // {value: undefined, done: true} 继续调用 next() 将返回相同的输出。
 ```
 
-这将会是你最常使用的方法。每次调用它时，它都会为我们输出一个对象。当所有的yield表达式被执行完之后，*next()* 会把属性 *done* 设置为 *true*，将属性 *value* 设置为 *undfined*。
+这将会是你最常使用的方法。每次调用它时，它都会为我们输出一个对象。当所有的 yield 表达式被执行完之后，**next()** 会把属性 **done** 设置为 **true**，将属性 **value** 设置为 **undfined**。
 
-我们不仅可以用 *next()* 来迭代 generator，还可以用 *for of* 循环来一次得到生成器所有的值（而不是对象）。
+我们不仅可以用 **next()** 来迭代 generator，还可以用 **for of** 循环来一次得到生成器所有的值（而不是对象）。
 
 ```js
 function * generator(arr) {
@@ -251,7 +249,7 @@ for (const g of gen) {
 gen.next(); // {value: undefined, done: true}
 ```
 
-但这不适用于 *for in* 循环，也不能直接用数字下标来访问属性：generator[0] = undefined。
+但这不适用于 **for in** 循环，也不能直接用数字下标来访问属性：generator[0] = undefined。
 
 **方法 _return():_**
 
@@ -271,7 +269,7 @@ gen.next(); // {value: undefined, done: true} - 在 return() 之后的所有 nex
 
 ```
 
-*return()* 将会忽略生成器中的任何代码。它会根据传值设定 value，并将 *done* 设为 true。任何在 *return()* 之后进行的 *next()* 调用都会返回 done 属性为 true 的对象。
+**return()** 将会忽略生成器中的任何代码。它会根据传值设定 value，并将 **done** 设为 true。任何在 **return()** 之后进行的 **next()** 调用都会返回 done 属性为 true 的对象。
 
 **方法 _throw():_**
 
@@ -288,11 +286,11 @@ gen.throw('Something bad'); // Error Uncaught Something bad
 gen.next(); // {value: undefined, done: true}
 ```
 
-*throw()* 做的事情非常简单 — 就是抛出错误。我们可以用 *try-catch* 来处理。
+**throw()** 做的事情非常简单 — 就是抛出错误。我们可以用 **try-catch** 来处理。
 
 #### 实现自定义方法
 
-我们无法直接访问 *generator* 构造函数，因此我们需要另想办法来添加自定义。 这就是我的办法，当然你也可以选择不同的方式。
+我们无法直接访问 **generator** 构造函数，因此我们需要另想办法来添加自定义。 这就是我的办法，当然你也可以选择不同的方式。
 
 ```js
 function * generator() {
@@ -327,7 +325,7 @@ const getRandom = randomFrom(1, 2, 5, 9, 4);
 getRandom.next().value; // 返回一个随机数
 ```
 
-这很容易，但是对于更复杂的功能，例如节流函数。 如果你不知道它是什么，请参考[参考文章]（https://medium.com/@_jh3y/throttling-and-debouncing-in-javascript-b01cad5c8edf）。
+这很容易，但是对于更复杂的功能，例如节流函数。 如果你不知道它是什么，请参考[参考文章](https://medium.com/@_jh3y/throttling-and-debouncing-in-javascript-b01cad5c8edf)。
 
 ```js
 function * throttle(func, time) {
@@ -346,7 +344,7 @@ thr.next(); // {value: undefined, done: false}
 thr.next('hello'); // {value: undefined, done: false} 1秒后输出 -> 'hello'
 ```
 
-还有没有更好的使用 generator 的例子呢？如果你听说过递归，我相信你也听说过[斐波那契数列]（https://en.wikipedia.org/wiki/Fibonacci_number）。 通常它是通过递归来解决的，但是在 generator 的帮助下我们可以这样写它：
+还有没有更好的使用 generator 的例子呢？如果你听说过递归，我相信你也听说过[斐波那契数列](https://en.wikipedia.org/wiki/Fibonacci_number)。 通常它是通过递归来解决的，但是在 generator 的帮助下我们可以这样写它：
 
 ```js
 function * fibonacci(seed1, seed2) {
@@ -371,7 +369,7 @@ fib.next(); // {value: 8, done: false}
 
 #### 将 generator 用在 HTML 中
 
-既然我们讨论的是JavaScript，那最显著的方式就是使用 generator 对 HTML 进行一些操作。
+既然我们讨论的是 JavaScript，那最显著的方式就是使用 generator 对 HTML 进行一些操作。
 
 因此，假设我们有一些 HTML 块要处理，我们可以很容易地通过 generator 实现，但要记住，在不使用 generator 的情况下，还有很多可能的方法可以实现这一点。
 
@@ -404,4 +402,4 @@ btn.addEventListener('click', (el) => {
 
 使用 generator 还有很多能做的事情。例如，在进行异步操作时，它可以很有用。或者是遍历一个按需项循环。
 
-我希望这篇文章能帮助你更好地理解JavaScript generator。
+我希望这篇文章能帮助你更好地理解 JavaScript generator。
