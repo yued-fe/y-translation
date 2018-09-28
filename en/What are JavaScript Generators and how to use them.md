@@ -22,7 +22,7 @@ for (let i = 0; i < 5; i += 1) {
 // 将会立即输出 0 -> 1 -> 2 -> 3 -> 4
 ```
 
-现在让我们看看 generator 函数
+现在让我们看看 generator 函数：
 
 ```js
 function * generatorForLoop(num) {
@@ -78,7 +78,7 @@ const obj = {
 
 #### Yield
 
-现在，让我们来看看新的关键字 *yield*。它有点像 **return**，但不是。**return** 只在函数调用之后返回值，**return** 语句之后不允许你执行任何其他操作。
+现在，让我们来看看新的关键字 **yield**。它有点像 **return**，但不是。**return** 只在函数调用之后返回值，**return** 语句之后不允许你执行任何其他操作。
 
 ```js
 function withReturn(a) {
