@@ -187,7 +187,7 @@ function multiply(e, f) {
 c = multiply(20, 30);
 ```
 
-执行上下文看起来如下所示：
+执行上下文如下所示：
 
 ```
 GlobalExectionContext = {
