@@ -1,6 +1,6 @@
 > * 原文地址：[Understanding Execution Context and Execution Stack in Javascript](https://blog.bitsrc.io/understanding-execution-context-and-execution-stack-in-javascript-1c9ea8642dd0)
 
-> * 译文地址：[理解 Javascript 执行上下文和执行栈](https://github.com/yued-fe/y-translation/blob/master/todo/understanding-execution-context-and-execution-stack-in-javascript.md)
+> * 译文地址：[理解 Javascript 执行上下文和执行栈](https://github.com/yued-fe/y-translation/blob/master/en/understanding-execution-context-and-execution-stack-in-javascript.md)
 
 > * 译者：[夏佳昊](https://github.com/TJ-XiaJiaHao)
 
