@@ -1,6 +1,6 @@
 > 原文：[https://developers.google.com/web/updates/2019/02/using-twa](https://developers.google.com/web/updates/2019/02/using-twa)
 
-**Trusted Web Activities** 是集成 Web 应用的新方法，你可以通过基于 Custom Tabs 的协议将 PWA 应用和 Android APP 进行集成。
+**Trusted Web Activities** 是集成 Web 应用的新方法，你可以通过基于 Custom Tabs 的协议将 PWA 应用和 Android app 进行集成。
 
 代码参考：
 
