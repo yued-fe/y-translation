@@ -1,7 +1,4 @@
-
-- 原文地址：[https://developers.google.com/web/updates/2019/02/using-twa](https://developers.google.com/web/updates/2019/02/using-twa)
-- 译者：[xiepan](https://github.com/bigggge)
-- 校对者：
+> 原文：[https://developers.google.com/web/updates/2019/02/using-twa](https://developers.google.com/web/updates/2019/02/using-twa)
 
 **Trusted Web Activities** 是集成 Web 应用的新方法，你可以通过基于 Custom Tabs 的协议将 PWA 应用和 Android APP 进行集成。
 
@@ -276,4 +273,3 @@ adb logcat | grep -e OriginVerifier -e digital_asset_links
 ```
 
 生成上传 APK 后，就 [可以将应用上传到 Play 商店](https://developer.android.com/studio/publish/upload-bundle) 了。
-
