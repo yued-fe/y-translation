@@ -9,7 +9,7 @@
 
 Trusted Web Activities 和其他一些 Web 与 APP 集成的方式有所不同：
 
-1. Trusted Web Activities 中的内容是**受信任的** - APP 及其打开的网站来自同一个开发者。（通过 [Digital Asset Links](https://developers.google.com/digital-asset-links/v1/getting-started) 来验证的 ）
+1. Trusted Web Activities 中的内容是**受信任的** - APP 及其打开的网站来自同一个开发者。（这是通过 [Digital Asset Links](https://developers.google.com/digital-asset-links/v1/getting-started) 来验证的。）
 2. Trusted Web Activities 来自 **Web**：它们由用户的浏览器渲染，这与用户在浏览器中看到的东西完全相同，不过 TWA 可以全屏运行。Web 内容应该首先保证在浏览器中的可用性。
 3. Chrome 浏览器不依赖于 Android 和你的 APP 进行更新，它在 Android Jelly Bean 也可以使用。这可以减小 APK 包的大小，并确保你可以使用现代的 Web 运行环境。（从 Android Lollipop 开始，WebView 也可以独立于 Android 进行了更新，但是有大量的用户使用比 Lollipop 更老的版本。）
 4. APP 无法直接访问 Trusted Web activity 中的 Web 内容或其他 Web 状态，比如 cookie 和 localStorage 。不过，你可以通过在 URL 中传递数据（比如通过 query parameters，自定义 HTTP 头和  [intent URIs](https://developer.chrome.com/multidevice/android/intents) 。
