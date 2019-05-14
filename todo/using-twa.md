@@ -7,7 +7,7 @@
 - [TrustedWebUtils Android Support Library API reference](https://developer.android.com/reference/android/support/customtabs/TrustedWebUtils.html)
 - [Sample Trusted Web Activity application](https://github.com/GoogleChromeLabs/svgomg-twa)
 
-Trusted Web Activities 与其他一些 Web 与 APP 集成的方式有所不同：
+Trusted Web Activities 和其他一些 Web 与 APP 集成的方式有所不同：
 
 1. Trusted Web Activities 中的内容是**受信任的** - APP 及其打开的网站来自同一个开发者。（通过 [Digital Asset Links](https://developers.google.com/digital-asset-links/v1/getting-started) 来验证的 ）
 2. Trusted Web Activities 来自 **Web**：它们由用户的浏览器渲染，这与用户在浏览器中看到的东西完全相同，不过 TWA 可以全屏运行。Web 内容应该首先保证在浏览器中的可用性。
