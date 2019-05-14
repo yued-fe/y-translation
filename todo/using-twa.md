@@ -1,53 +1,51 @@
-> 原文：[https://developers.google.com/web/updates/2019/02/using-twa](https://developers.google.com/web/updates/2019/02/using-twa)
+**Trusted Web Activities** are a new way to integrate *your* web-app content such as *your* PWA with *your* Android app using a protocol based on Custom Tabs.
 
-**Trusted Web Activities** 是集成 Web 应用的新方法，你可以通过基于 Custom Tabs 的协议将 PWA 应用和 Android APP 进行集成。
-
-代码参考：
+*Looking for the code?*
 
 - [TrustedWebUtils Android Support Library API reference](https://developer.android.com/reference/android/support/customtabs/TrustedWebUtils.html)
 - [Sample Trusted Web Activity application](https://github.com/GoogleChromeLabs/svgomg-twa)
 
-Trusted Web Activities 与其他一些 Web 与 APP 集成的方式有所不同：
+There are a few things that make Trusted Web Activities different from other ways to integrate web content with your app:
 
-1. Trusted Web Activities 中的内容是**受信任的** - APP 及其打开的网站来自同一个开发者。（通过 [Digital Asset Links](https://developers.google.com/digital-asset-links/v1/getting-started) 来验证的 ）
-2. Trusted Web Activities 来自 **Web**：它们由用户的浏览器渲染，这与用户在浏览器中看到的东西完全相同，不过 TWA 可以全屏运行。Web 内容应该首先保证在浏览器中的可用性。
-3. Chrome 浏览器不依赖于 Android 和你的 APP 进行更新，它在 Android Jelly Bean 也可以使用。这可以减小 APK 包的大小，并确保你可以使用现代的 Web 运行环境。（从 Android Lollipop 开始，WebView 也可以独立于 Android 进行了更新，但是有大量的用户使用比 Lollipop 更老的版本。）
-4. APP 无法直接访问 Trusted Web activity 中的 Web 内容或其他 Web 状态，比如 cookie 和 localStorage 。不过，您可以通过在 URL 中传递数据（比如通过 query parameters，自定义 HTTP 头和  [intent URIs](https://developer.chrome.com/multidevice/android/intents) 。
-5. Web 和 Native 之间的跳转是在 **Activities** 之间进行的。APP 的每个 Activity（即页面）要么由 Web 提供，要么由 Android Activity 提供。
+1. Content in a Trusted Web activity is **trusted** -- the app and the site it opens are expected to come from the same developer. (This is verified using [Digital Asset Links](https://developers.google.com/digital-asset-links/v1/getting-started).)
+2. Trusted Web activities come from the **web**: they're rendered by the user's browser, in exactly the same way as a user would see it in their browser except they are run fullscreen. Web content should be accessible and useful in the browser first.
+3. Browsers are also updated independent of Android and your app -- Chrome, for example, is available back to Android Jelly Bean. That saves on APK size and ensures you can use a modern web runtime. (Note that since Lollipop, WebView has also been updated independent of Android, but there are a [significant number](https://developer.android.com/about/dashboards/index.html) of pre-Lollipop Android users.)
+4. The host app doesn't have direct access to web content in a Trusted Web activity or any other kind of web state, like cookies and `localStorage`. Nevertheless, you can coordinate with the web content by passing data to and from the page in URLs (e.g. through query parameters, custom HTTP headers, and [intent URIs](https://developer.chrome.com/multidevice/android/intents).)
+5. Transitions between web and native content are between **activities**. Each activity (i.e. screen) of your app is either completely provided by the web, or by an Android activity
 
-为了便于测试，目前在 Trusted Web activities 中对打开的内容没有要求。但是，Trusted Web activities 可能也需要 [Add to Home Screen](https://developers.google.com/web/fundamentals/app-install-banners/#criteria) 权限。您可以使用 [Lighthouse](https://developers.google.com/web/tools/lighthouse/)  的 "*user can be prompted to Add to Home screen*" 审查来审核这些网站权限 。
+To make it easier to test, there are currently no qualifications for content opened in the preview of Trusted Web activities. You can expect, however, that Trusted Web activities will need to meet the same [Add to Home Screen](https://developers.google.com/web/fundamentals/app-install-banners/#criteria)requirements. You can audit your site for these requirements using the [Lighthouse](https://developers.google.com/web/tools/lighthouse/) "*user can be prompted to Add to Home screen*" audit.
 
-如果用户的 Chrome 版本不支持 Trusted Web activities，Chrome 将展示基于 Custom Tab 的简单工具栏。其他浏览器也可以实现 Trusted Web activities 协议。虽然 APP 可以决定打开哪种浏览器，但我们建议使用与 Custom Tabs 相同的策略：使用用户的默认浏览器，只要该浏览器提供所需的功能即可。
+Today, if the user's version of Chrome doesn't support Trusted Web activities, Chrome will fall back to a simple toolbar using a Custom Tab. It is also possible for other browsers to implement the same protocol that Trusted Web activities use. While the host app has the final say on what browser gets opened, we recommend the same policy as for Custom Tabs: use the user's default browser, so long as that browser provides the required capabilities.
 
-## 入门
+## Getting started
 
-设置 Trusted Web Activity（TWA）不要求开发人员编写 Java 代码，但需要 [Android Studio](https://developer.android.com/studio/)。本指南基于 Android Studio 3.3。查看 [安装文档](https://developer.android.com/studio/install)。
+Setting up a Trusted Web Activity (TWA) doesn’t require developers to author Java code, but [Android Studio](https://developer.android.com/studio/) is required. This guide was created using *Android Studio 3.3*. Check the [docs on how to install it](https://developer.android.com/studio/install).
 
-### 创建 Trusted Web Activity 项目
+### Create a Trusted Web Activity Project
 
-使用 Trusted Web Activities 时，项目必须为 API 16 或更高版本。
+When using Trusted Web Activities, the project must target API 16 or higher.
 
-打开 Android Studio，然后点击 *Start a new Android Studio project*。
+Open Android Studio and click on *Start a new Android Studio project*.
 
-Android Studio 将提示您选择 Activity 类型。由于 TWA 使用 support 库提供的 Activity，因此选择 *Add No Activity* 并点击 *Next*。
+Android Studio will prompt to choose an Activity type. Since TWAs use an Activity provided by support library, choose *Add No Activity* and click *Next*.
 
-下一步，向导将提示项目的配置。以下是每个字段的简短描述：
+Next step, the wizard will prompt for configurations for the project. Here's a short description of each field:
 
-- **Name:**  *Android桌面* 上的应用程序名称 。
-- **Package Name:** Play 商店和 Android 设备上 Android 应用程序的唯一标识符。 有关为 Android 应用程序创建程序包名称的要求和最佳实践的请查看 [文档](https://developer.android.com/guide/topics/manifest/manifest-element#package)。
-- **Save location:** Android Studio 将在电脑中创建项目的目录。
-- **Language:** 该项目不需要编写任何 Java 或 Kotlin 代码。选择 Java 作为默认值。
-- **Minimum API Level：** support 库至少需要 API 16。选择 API 16 以上的版本。
+- **Name:** The name that will be used for your application on the *Android Launcher*.
+- **Package Name:** An unique identifier for Android Applications on the Play Store and on Android devices. Check the [documentation](https://developer.android.com/guide/topics/manifest/manifest-element#package) for more information on requirements and best practices for creating package names for Android apps.
+- **Save location:** Where Android Studio will create the project in the file system.
+- **Language:** The project doesn't require writing any Java or Kotlin code. Select Java, as the default.
+- **Minimum API Level:** The Support Library requires at least *API Level 16*. Select API 16 any version above.
 
-忽略其他选项，然后点击 *Finish*。
+Leave the remaining checkboxes unchecked, as we will not be using Instant Apps or AndroidX artifacts, and click *Finish*.
 
-### 获取 TWA Support Library
+### Get the TWA Support Library
 
-要在项目中设置 TWA 库，您需要编辑几个文件。在 *Project Navigator* 查找 *Gradle Scripts* 部分。
+To setup the TWA library in the project you will need to edit a couple of files. Look for the *Gradle Scripts* section in the *Project Navigator*. Both files are called `build.gradle`, which may be a bit confusing, but the descriptions in parenthesis help identifying the correct one.
 
-第一个文件是 **Project** 级 `build.gradle`。
+The first file is the **Project** level `build.gradle`. Look for the one with your project name next to it.
 
-添加 [Jitpack](https://jitpack.io/) 配置到 `allprojects` 中：
+Add the [Jitpack](https://jitpack.io/) configuration (in bold below) to the list of repositories. Under the `allprojects` section:
 
 ```
 allprojects {
@@ -59,11 +57,11 @@ allprojects {
 }
 ```
 
-Android Studio 将提示 Sync 项目。点击 *Sync Now* 。
+Android Studio will prompt to synchronize the project. Click on the *Sync Now* link.
 
-我们需要更改的第二个文件是 **Module** 级的 `build.gradle`。
+The second file we need to change is the **Module** level `build.gradle`.
 
-Trusted Web Activities 库使用 [Java 8功能](https://developer.android.com/studio/write/java8-support) ，首先启用 Java 8。在 `android` 下添加 `compileOptions` 配置 ，如下所示：
+The Trusted Web Activities library uses [Java 8 features](https://developer.android.com/studio/write/java8-support) and the first change enables Java 8. Add a `compileOptions`section to the bottom of the `android` section, as below:
 
 ```
 android {
@@ -75,7 +73,7 @@ android {
 }
 ```
 
-下一步将 TWA Support 库添加到项目中。向 `dependencies` 添加新的依赖：
+The next step will add the TWA Support Library to the project. Add a new dependency to the `dependencies` section:
 
 ```
 dependencies {
@@ -83,17 +81,17 @@ dependencies {
 }
 ```
 
-点击 *Sync Now* 来同步项目。
+Android Studio will show prompt asking to synchronize the project once more. Click on the *Sync Now* link and synchronize it.
 
-### 添加 TWA Activity
+### Add the TWA Activity
 
-通过编辑 [Android App Manifest](https://developer.android.com/guide/topics/manifest/manifest-intro) 来实现设置TWA活动 。
+Setting up the TWA Activity is achieved by editing the [Android App Manifest](https://developer.android.com/guide/topics/manifest/manifest-intro).
 
-在*Project Navigator上*，展开 *app* 部分，然后展开 *manifests* 并双击 `AndroidManifest.xml ` 打开文件。
+On the *Project Navigator*, expand the *app* section, followed by the *manifests* and double click on `AndroidManifest.xml` to open the file.
 
-因为我们在创建项目时没有添加任何 Activity，因此 `manifest` 为空且仅包含 `application` 标记。
+Since we asked Android Studio not to add any Activity to our project when creating it, the manifest is empty and contains only the application tag.
 
-通过在 `application` 标记中插入 `activity` 标记来 添加 TWA Activity：
+Add the TWA Activity by inserting an `activity` tag into the `application` tag:
 
 ```xml
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
@@ -141,24 +139,24 @@ dependencies {
 </manifest>
 ```
 
-添加到 XML 的标记是标准的 [Android App Manifest](https://developer.android.com/guide/topics/manifest/manifest-intro)。Trusted Web Activities 有两个相关信息：
+The tags added to the XML are standard [Android App Manifest](https://developer.android.com/guide/topics/manifest/manifest-intro). There are two relevant pieces of information for the context of Trusted Web Activities:
 
-1. `meta-data` 标记告诉 TWA 活动打开哪个 URL 。修改 `android:value` 为你要打开的 PWA 页面的 URL。示例为 `https://airhorner.com`。
-2. 在第二个 `intent-filter` 标签允许 TWA 拦截 Android Intents 打开 `https://airhorner.com`。该 `android:host` 内部属性 `data` 标签必须指向被 TWA 打开的 网址。
+1. The `meta-data` tag tells the TWA Activity which URL it should open. Change the `android:value` attribute with the URL of the PWA you want to open. In this example, it is `https://airhorner.com`.
+2. The **second** `intent-filter` tag allows the TWA to intercept Android Intents that open `https://airhorner.com`. The `android:host` attribute inside the `data` tag must point to the domain being opened by the TWA.
 
-下一节将介绍如何设置 [Digital AssetLinks](https://developers.google.com/digital-asset-links/v1/getting-started) 以验证网站与应用之间的关系，并移除 URL 栏。
+The next section will show how to setup [Digital AssetLinks](https://developers.google.com/digital-asset-links/v1/getting-started) to verify relationship between the website and the app, and remove the URL bar.
 
-### 移除 URL 栏
+### Remove the URL bar
 
-Trusted Web Activities 需要在 Android 应用程序和网站之间建立关联以删除 URL 栏。
+Trusted Web Activities require an association between the Android application and the website to be established to remove the URL bar.
 
-此关联是通过 [Digital Asset Links](https://developers.google.com/digital-asset-links/v1/getting-started) 创建的， 必须用两种方式建立关联：[从 APP 链接到网站](https://developers.google.com/digital-asset-links/v1/create-statement) ， [从网站链接到 APP](https://developer.android.com/training/app-links/verify-site-associations#web-assoc)。
+This association is created via [Digital Asset Links](https://developers.google.com/digital-asset-links/v1/getting-started) and the association must be established in both ways, linking [from the app to the website](https://developers.google.com/digital-asset-links/v1/create-statement) and [from the website to the app](https://developer.android.com/training/app-links/verify-site-associations#web-assoc).
 
-也可以将 APP 设置为网站验证，并设置 Chrome 以跳过网站到 APP 验证，以进行调试。
+It is possible to setup the app to website validation and setup Chrome to skip the website to app validation, for debugging purposes.
 
-#### 建立从 APP 到网站的关联
+#### Establish an association from app to the website
 
-打开 string 资源文件`app > res > values > strings.xml`并在下面添加 Digital AssetLinks 语句：
+Open the string resources file `app > res > values > strings.xml` and add the Digital AssetLinks statement below:
 
 ```xml
 <resources>
@@ -174,9 +172,9 @@ Trusted Web Activities 需要在 Android 应用程序和网站之间建立关联
 </resources>
 ```
 
-更改 `site` 属性的内容以匹配 TWA 打开的 scheme 和 domain。
+Change the contents for the `site` attribute to match the schema and domain opened by the TWA.
 
-回到 `AndroidManifest.xml` 文件，通过在  `application` 标记 添加新 `meta-data` 标记链接到该 statements ：
+Back in the Android App Manifest file, `AndroidManifest.xml`, link to the statement by adding a new `meta-data` tag, but this time as a child of the `application` tag:
 
 ```xml
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
@@ -202,37 +200,37 @@ Trusted Web Activities 需要在 Android 应用程序和网站之间建立关联
 </manifest>
 ```
 
-我们现在已经建立了从 Android APP 到网站的关联。我们可以不创建网站到 APP 的验证来调试。
+We have now established a relationship from the Android application to the website. It is helpful to debug this part of the relationship without creating the website to application validation.
 
-以下是在开发设备上测试它的方法：
+Here’s how to test this on a development device:
 
-#### 启用调试模式
+#### Enable debug mode
 
-1. 在开发设备上打开 Chrome，导航到 `chrome://flags`，在非root设备上搜索名为 *Enable command line* 的项目，然后将其更改为 **ENABLED**，然后重新启动浏览器。
-2. 接下来，在终端上，使用 [Android Debug Bridge](https://developer.android.com/studio/command-line/adb) （随着 Android Studio一起安装），并运行以下命令：
+1. Open Chrome on the development device, navigate to `chrome://flags`, search for an item called *Enable command line on non-rooted devices* and change it to **ENABLED** and then restart the browser.
+2. Next, on the Terminal application of your operating system, use the [Android Debug Bridge](https://developer.android.com/studio/command-line/adb) (installed with Android Studio), and run the following command:
 
 ```
 adb shell "echo '_ --disable-digital-asset-link-verification-for-url=\"https://airhorner.com\"' > /data/local/tmp/chrome-command-line"
 ```
 
-关闭 Chrome 并从 Android Studio 重新启动您的应用程序。现在应该以全屏显示应用程序。
+Close Chrome and re-launch your application from Android Studio. The application should now be shown in full-screen.
 
-### 建立从网站到APP的关联
+### Establish an association from the website to the app
 
-开发人员需要从 APP 拿到2条信息才能创建关联：
+There are 2 pieces of information that the developer needs to collect from the app in order to create the association:
 
-- **Package Name:**  第一个信息是 APP 的包名称。这与创建 APP 时生成的包名称相同。可以在 *Gradle Scripts > build.gradle (Module: app)* 中找到 `applicationId` 的值。
-- **SHA-256 Fingerprint:** 必须签名 Android 应用程序才能上传到 Play 商店。相同的签名用于通过上传密钥的 SHA-256 在网站和 APP 之间建立连接。
+- **Package Name:** The first information is the package name for the app. This is the same package name generated when creating the app. It can also be found inside the **Module** `build.gradle`, under *Gradle Scripts > build.gradle (Module: app)*, and is the value of the `applicationId` attribute.
+- **SHA-256 Fingerprint:** Android applications must be signed in order to be uploaded to the Play Store. The same signature is used to establish the connection between the website and the app through the SHA-256 fingerprint of the upload key.
 
-Android文档 [详细说明了如何使用Android Studio生成密钥](https://developer.android.com/studio/publish/app-signing#generate-key)。请记下密钥的*路径*，*别名* 和*密码*，因为下一步需要用到。
+The Android documentation [explains in detail how to generate a key using Android Studio](https://developer.android.com/studio/publish/app-signing#generate-key). Make sure to take note the *path*, *alias* and *passwords* for the key store, as you will need it for the next step.
 
-使用 [keytool](https://docs.oracle.com/javase/6/docs/technotes/tools/windows/keytool.html) 提取 SHA-256，使用以下命令：
+Extract the SHA-256 fingerprint using the [keytool](https://docs.oracle.com/javase/6/docs/technotes/tools/windows/keytool.html), with the following command:
 
 ```
 keytool -list -v -keystore  -alias  -storepass  -keypass 
 ```
 
- *SHA-256* 打印在 *Certificate* 中。下面是个示例输出：
+The value for the *SHA-256 fingerprint* is printed under the *Certificate* fingerprints section. Here’s an example output:
 
 ```
 keytool -list -v -keystore ./mykeystore.ks -alias test -storepass password -keypass password
@@ -254,22 +252,22 @@ Subject Public Key Algorithm: 2048-bit RSA key
 Version: 3
 ```
 
-得到这两条信息后，请打开 [assetlinks生成器](https://developers.google.com/digital-asset-links/tools/generator)，填写字段并点击 *Generate Statement*。复制生成的语句，并设置到你网站的 `/.well-known/assetlinks.json` 目录中。
+With both pieces of information at hand, head over to the [assetlinks generator](https://developers.google.com/digital-asset-links/tools/generator), fill-in the fields and hit *Generate Statement*. Copy the generated statement and serve it from your domain, from the URL `/.well-known/assetlinks.json`.
 
-### 打包
+### Wrapping Up
 
-`assetlinks` 存在您的网站中，`asset_statements`在 Android APP 中配置完成后，下一步就是生成签名的 APP。请查看 [文档](https://developer.android.com/studio/publish/app-signing#sign-apk)。
+With the `assetlinks` file in place in your domain and the `asset_statements` tag configured in the Android application, the next step is generating a signed app. Again, the steps for this are widely [documented](https://developer.android.com/studio/publish/app-signing#sign-apk).
 
-可以使用 adb 将 APK 安装到测试设备中：
+The output APK can be installed into a test device, using adb:
 
 ```
 adb install app-release.apk
 ```
 
-如果验证失败，则可以使用 adb 从连接设备并电脑终端查看错误消息。
+If the verification step fails it is possible to check for error messages using the Android Debug Bridge, from your OS’s terminal and with the test device connected.
 
 ```
 adb logcat | grep -e OriginVerifier -e digital_asset_links
 ```
 
-生成上传 APK 后，就 [可以将应用上传到 Play 商店](https://developer.android.com/studio/publish/upload-bundle) 了。
+With the upload APK generated, you can now [upload the app to the Play Store](https://developer.android.com/studio/publish/upload-bundle).
